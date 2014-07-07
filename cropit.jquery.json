@@ -1,0 +1,37 @@
+{
+  "name": "cropit",
+  "title": "cropit",
+  "description": "Easy crop and zoom",
+  "keywords": [
+    "image",
+    "edit",
+    "crop",
+    "zoom"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "Scott Cheng",
+    "email": "me@scottcheng.com",
+    "url": "https://github.com/scottcheng"
+  },
+  "maintainers": [
+    {
+      "name": "Scott Cheng",
+      "email": "me@scottcheng.com",
+      "url": "https://github.com/scottcheng"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://zenorocha.mit-license.org/"
+    }
+  ],
+  "bugs": "https://github.com/scottcheng/cropit/issues",
+  "homepage": "https://github.com/scottcheng/cropit",
+  "docs": "https://github.com/scottcheng/cropit#readme",
+  "download": "https://github.com/scottcheng/cropit/archive/master.zip",
+  "dependencies": {
+    "jquery": ">=1.9"
+  }
+}

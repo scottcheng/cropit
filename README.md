@@ -1,4 +1,3 @@
-cropit
-======
+# cropit
 
-Easy crop and zoom
+Easy crop and zoom.
