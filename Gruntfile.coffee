@@ -13,6 +13,7 @@ module.exports = (grunt) ->
         ' *  <%= pkg.homepage %>\n' +
         ' *\n' +
         ' *  Made by <%= pkg.author.name %>\n' +
+        ' *  Based on https://github.com/yufeiliu/simple_image_uploader\n' +
         ' *  Under <%= pkg.licenses[0].type %> License\n' +
         ' */\n'
 

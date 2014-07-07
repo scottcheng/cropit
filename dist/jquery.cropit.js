@@ -4,6 +4,7 @@
  *  https://github.com/scottcheng/cropit
  *
  *  Made by Scott Cheng
+ *  Based on https://github.com/yufeiliu/simple_image_uploader
  *  Under MIT License
  */
 (function() {
