@@ -1,15 +1,73 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>jQuery Boilerplate</title>
+    <title>cropit</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="../dist/jquery.boilerplate.js"></script>
+    <script src="../dist/jquery.cropit.js"></script>
+
+    <style>
+      .image-preview {
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-color: #f8f8f8;
+        background-size: 100%;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 250px;
+        height: 250px;
+        cursor: move;
+      }
+
+      .image-background {
+        opacity: .2;
+        cursor: auto;
+      }
+
+      .file-upload {
+        text-align: left;
+      }
+
+      .image-size-label {
+        margin-top: 0.6rem;
+      }
+
+      .image-size {
+        width: 250px;
+      }
+
+      .optional-fields {
+        display: block;
+      }
+
+      input {
+        position: relative;
+        z-index: 10;
+      }
+    </style>
   </head>
   <body>
+    <div class="image-uploader">
+      <input type="file" name="image">
+      <!-- .image-preview needs a container for image-background to work -->
+      <div class="image-preview-container">
+        <div class="image-preview"></div>
+      </div>
+      <div class="image-size-label">
+        Resize image
+      </div>
+      <input type="range" class="image-zoom-level" name="zoom-level" min="0" max="1" value="0" step="0.01">
+    </div>
+
     <script>
       $(function() {
-        $("#element").defaultPluginName({
-          propertyName: "a custom value"
+        $('.image-uploader').cropit({
+          exportZoom: 1.25,
+          imageBackground: true,
+          imageBackgroundBorderSize: 10,
+          imageState: {
+            src: 'http://lorempixel.com/500/400/'
+          }
         });
       });
     </script>
