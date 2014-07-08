@@ -1,12 +1,13 @@
 class Zoomer
-  setup: (imageSize, previewSize, exportZoom, options) ->
+  setup: (imageSize, previewSize, exportZoom = 1, options) ->
     widthRatio = previewSize.w / imageSize.w
     heightRatio = previewSize.h / imageSize.h
-    if options.fitWidth && !options.fitHeight
+
+    if options?.fitWidth && !options?.fitHeight
       @minZoom = widthRatio
-    else if options.fitHeight && !options.fitWidth
+    else if options?.fitHeight && !options?.fitWidth
       @minZoom = heightRatio
-    else if options.fitWidth && options.fitHeight
+    else if options?.fitWidth && options?.fitHeight
       @minZoom = if widthRatio < heightRatio then widthRatio else heightRatio
     else
       @minZoom = if widthRatio < heightRatio then heightRatio else widthRatio
