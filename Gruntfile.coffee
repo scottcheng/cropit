@@ -77,7 +77,7 @@ module.exports = (grunt) ->
     clean:
       tmp: '.tmp'
 
-  grunt.registerTask 'default', [
+  grunt.registerTask 'build', [
     'coffeelint'
     'coffee'
     'uglify'
@@ -89,4 +89,9 @@ module.exports = (grunt) ->
     'coffee'
     'jasmine'
     'clean'
+  ]
+
+  grunt.registerTask 'default', [
+    'test'
+    'build'
   ]
