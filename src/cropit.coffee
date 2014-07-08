@@ -1,5 +1,3 @@
-pluginName = 'cropit'
-
 defaults =
   exportZoom: 1
   imageBackground: false
@@ -18,7 +16,6 @@ class Cropit
 
     @options = $.extend {}, defaults, dynamicDefaults, options
     @_defaults = defaults
-    @_name = pluginName
     @init()
 
   init: ->
@@ -71,6 +68,8 @@ class Cropit
     @zoom = @options.imageState?.zoom or null
     @sliderPos = @options.imageState?.sliderPos or @initialZoomSliderPos
 
+    @$imageZoomInput.val @sliderPos
+
     @moveContinue = false
 
     @zoomer = new Zoomer
@@ -87,11 +86,13 @@ class Cropit
     oFReader = new FileReader()
     file = @$fileInput.get(0).files[0]
     oFReader.readAsDataURL file
-    oFReader.onload = (oFREvent) =>
-      @imageSrc = oFREvent.target.result
-      @sliderPos = @initialZoomSliderPos
-      @offset = x: 0, y: 0
-      @loadImage()
+    oFReader.onload = @onFileReaderLoaded.bind @
+
+  onFileReaderLoaded: (e) ->
+    @imageSrc = e.target.result
+    @sliderPos = @initialZoomSliderPos
+    @offset = x: 0, y: 0
+    @loadImage()
 
   loadImage: ->
     @$hiddenImage.attr 'src', @imageSrc
@@ -198,7 +199,7 @@ class Cropit
   isZoomable: ->
     @zoomer.isZoomable()
 
-  getCroppedImage: ->
+  getCroppedImageData: ->
     return null unless @imageSrc
 
     croppedSize =
@@ -242,8 +243,3 @@ class Cropit
   $: (selector) ->
     return null unless @$el
     @$el.find selector
-
-$.fn[pluginName] = (options) ->
-  @each ->
-    unless $.data @, "plugin_#{pluginName}"
-      $.data @, "plugin_#{pluginName}", new Cropit @, options

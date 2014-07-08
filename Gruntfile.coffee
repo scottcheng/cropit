@@ -29,6 +29,7 @@ module.exports = (grunt) ->
         src: [
           '.tmp/src/zoomer.js'
           '.tmp/src/cropit.js'
+          '.tmp/src/plugin.js'
         ]
         dest: 'dist/jquery.cropit.js'
       distMin:
@@ -48,6 +49,7 @@ module.exports = (grunt) ->
         files:
           '.tmp/src/zoomer.js': 'src/zoomer.coffee'
           '.tmp/src/cropit.js': 'src/cropit.coffee'
+          '.tmp/src/plugin.js': 'src/plugin.coffee'
       test:
         files:
           '.tmp/test/zoomer.spec.js': 'test/zoomer.spec.coffee'
