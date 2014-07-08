@@ -67,10 +67,10 @@ class Cropit
     @disabled = true
 
     @imageSrc = @options.imageState?.src or null
-    @sliderPos = @options.imageState?.sliderPos or @initialZoomSliderPos
-    @zoom = @options.imageState?.zoom or null
-
     @offset = @options.imageState?.offset or x: 0, y: 0
+    @zoom = @options.imageState?.zoom or null
+    @sliderPos = @options.imageState?.sliderPos or @initialZoomSliderPos
+
     @moveContinue = false
 
     @zoomer = new Zoomer
