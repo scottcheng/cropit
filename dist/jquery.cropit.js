@@ -39,7 +39,10 @@
         this.$fileInput = this.options.$fileInput;
         this.$preview = this.options.$preview;
         this.$imageZoomInput = this.options.$imageZoomInput;
-        this.$hiddenImage = $('<img class="image-hidden-preview" alt="" style="display: none" />').appendTo(this.$el);
+        this.$hiddenImage = $('<img />').addClass('image-hidden-preview').attr({
+          alt: '',
+          style: 'display: none;'
+        }).appendTo(this.$el);
         if (this.options.width) {
           this.$preview.width(this.options.width);
         }

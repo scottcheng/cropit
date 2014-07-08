@@ -41,11 +41,15 @@ module.exports = (grunt) ->
         'Gruntfile.coffee'
         'src/*.coffee'
       ]
+      options:
+        max_line_length: level: 'ignore'
+        indentation: level: 'ignore'
 
     clean:
       tmp: '.tmp'
 
   grunt.registerTask 'default', [
+    'coffeelint'
     'coffee'
     'concat'
     'uglify'

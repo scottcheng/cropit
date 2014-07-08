@@ -27,7 +27,11 @@ do ($ = jQuery, window, document) ->
       @$fileInput = @options.$fileInput
       @$preview = @options.$preview
       @$imageZoomInput = @options.$imageZoomInput
-      @$hiddenImage = $ '<img class="image-hidden-preview" alt="" style="display: none" />'
+      @$hiddenImage = $ '<img />'
+        .addClass 'image-hidden-preview'
+        .attr
+          alt: ''
+          style: 'display: none;'
         .appendTo @$el
 
       @$preview.width @options.width if @options.width
@@ -219,8 +223,10 @@ do ($ = jQuery, window, document) ->
       canvasContext = $canvas[0].getContext '2d'
 
       canvasContext.drawImage @$hiddenImage[0],
-        @offset.x * @options.exportZoom, @offset.y * @options.exportZoom,
-        @zoom * @options.exportZoom * @imageSize.w, @zoom * @options.exportZoom * @imageSize.h
+        @offset.x * @options.exportZoom,
+        @offset.y * @options.exportZoom,
+        @zoom * @options.exportZoom * @imageSize.w,
+        @zoom * @options.exportZoom * @imageSize.h
 
       $canvas[0].toDataURL()
 
