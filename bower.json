@@ -1,0 +1,12 @@
+{
+  "name": "cropit",
+  "version": "0.0.1",
+  "main": "dist/jquery.cropit.js",
+  "dependencies": {
+    "jquery": ">=1.9"
+  },
+  "devDependencies": {
+    "jquery": "~2.1.1",
+    "jasmine-jquery": "~2.0.5"
+  }
+}

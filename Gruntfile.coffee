@@ -17,33 +17,62 @@ module.exports = (grunt) ->
         ' *  Under <%= pkg.licenses[0].type %> License\n' +
         ' */\n'
 
-    concat:
-      dist:
-        src: ['.tmp/jquery.cropit.js']
-        dest: 'dist/jquery.cropit.js'
-      options:
-        banner: '<%= meta.banner %>'
-
     uglify:
-      dist:
-        src: ['dist/jquery.cropit.js']
-        dest: 'dist/jquery.cropit.min.js'
       options:
+        enclose: 'window.jQuery': '$'
         banner: '<%= meta.banner %>'
+      dist:
+        options:
+          mangle: false
+          beautify: true
+          compress: false
+        src: [
+          '.tmp/src/zoomer.js'
+          '.tmp/src/cropit.js'
+        ]
+        dest: 'dist/jquery.cropit.js'
+      distMin:
+        options:
+          mangle: true
+          compress: true
+        src: [
+          '.tmp/src/zoomer.js'
+          '.tmp/src/cropit.js'
+        ]
+        dest: 'dist/jquery.cropit.min.js'
 
     coffee:
-      compile:
+      options:
+        bare: true
+      src:
         files:
-          '.tmp/jquery.cropit.js': 'src/jquery.cropit.coffee'
+          '.tmp/src/zoomer.js': 'src/zoomer.coffee'
+          '.tmp/src/cropit.js': 'src/cropit.coffee'
+      test:
+        files:
+          '.tmp/test/zoomer.spec.js': 'test/zoomer.spec.coffee'
+          '.tmp/test/cropit.spec.js': 'test/cropit.spec.coffee'
+          '.tmp/test/cropit_view.spec.js': 'test/cropit_view.spec.coffee'
 
     coffeelint:
       all: [
         'Gruntfile.coffee'
         'src/*.coffee'
+        'test/*.coffee'
       ]
       options:
         max_line_length: level: 'ignore'
         indentation: level: 'ignore'
+
+    jasmine:
+      test:
+        src: '.tmp/src/*.js'
+        options:
+          vendor: [
+            'bower_components/jquery/dist/jquery.js'
+            'bower_components/jasmine-jquery/lib/jasmine-jquery.js'
+          ]
+          specs: '.tmp/test/*.spec.js'
 
     clean:
       tmp: '.tmp'
@@ -51,7 +80,13 @@ module.exports = (grunt) ->
   grunt.registerTask 'default', [
     'coffeelint'
     'coffee'
-    'concat'
     'uglify'
+    'clean'
+  ]
+
+  grunt.registerTask 'test', [
+    'coffeelint'
+    'coffee'
+    'jasmine'
     'clean'
   ]
