@@ -1,7 +1,25 @@
 {
   "name": "cropit",
+  "description": "Easy crop and zoom.",
   "version": "0.0.1",
+  "authors": [
+    "Scott Cheng <me@scottcheng.com>",
+    "Yufei Liu <liu.yufei@gmail.com>"
+  ],
   "main": "dist/jquery.cropit.js",
+  "keywords": [
+    "crop",
+    "zoom",
+    "image editor"
+  ],
+  "license": "MIT",
+  "homepage": "http://scottcheng.github.io/cropit/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
   "dependencies": {
     "jquery": ">=1.9"
   },
