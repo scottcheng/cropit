@@ -9,10 +9,10 @@ class Cropit
     @$el = $ @element
 
     dynamicDefaults =
-      $fileInput: @$ 'input[name="image"]'
-      $preview: @$ '.image-preview'
-      $imageZoomInput: @$ '.image-zoom-level'
-      $previewContainer: @$ '.image-preview-container'
+      $fileInput: @$ 'input.cropit-image-input'
+      $preview: @$ '.cropit-image-preview'
+      $imageZoomInput: @$ 'input.cropit-image-zoom-input'
+      $previewContainer: @$ '.cropit-image-preview-container'
 
     @options = $.extend {}, defaults, dynamicDefaults, options
     @_defaults = defaults
@@ -23,7 +23,7 @@ class Cropit
     @$preview = @options.$preview
     @$imageZoomInput = @options.$imageZoomInput
     @$hiddenImage = $ '<img />'
-      .addClass 'image-hidden-preview'
+      .addClass 'cropit-image-hidden-preview'
       .attr
         alt: ''
         style: 'display: none;'
@@ -39,11 +39,11 @@ class Cropit
       imageBgBorderSize = @options.imageBackgroundBorderSize
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
-        .addClass 'image-background'
+        .addClass 'cropit-image-background'
         .attr 'alt', ''
         .css 'position', 'absolute'
       $imageBgContainer = $ '<div />'
-        .addClass 'image-background-container'
+        .addClass 'cropit-image-background-container'
         .css
           position: 'absolute'
           zIndex: 0

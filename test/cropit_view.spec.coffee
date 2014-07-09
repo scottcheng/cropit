@@ -19,12 +19,12 @@ describe 'Cropit View', ->
 
       it 'inserts hidden image', ->
         $el.cropit()
-        $hiddenImage = $el.find 'img.image-hidden-preview'
+        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
         expect($hiddenImage).toBeInDOM()
         expect($hiddenImage).not.toBeVisible()
 
       it 'sets preview size from options', ->
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
         $preview.css width: 1, height: 1
         expect($preview.width()).not.toBe 2
         expect($preview.height()).not.toBe 2
@@ -34,7 +34,7 @@ describe 'Cropit View', ->
         expect($preview.height()).toBe 2
 
       it 'sets zoom slider to 0', ->
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         $imageZoomInput.val 1
         expect($imageZoomInput.val()).not.toBe 0
 
@@ -46,7 +46,7 @@ describe 'Cropit View', ->
       it 'is invoked when file input changes', ->
         spyOn Cropit.prototype, 'onFileChange'
         $el.cropit()
-        $fileInput = $el.find 'input[name="image"]'
+        $fileInput = $el.find 'input.cropit-image-input'
 
         $fileInput.trigger 'change'
         expect(Cropit.prototype.onFileChange).toHaveBeenCalled()
@@ -68,14 +68,14 @@ describe 'Cropit View', ->
         cropit.imageSrc = imageData
 
       it 'sets preview background', ->
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
         expect($preview).not.toHaveCss backgroundImage: "url(#{imageData})"
 
         cropit.loadImage()
         expect($preview).toHaveCss backgroundImage: "url(#{imageData})"
 
       it 'sets hidden image source', ->
-        $hiddenImage = $el.find '.image-hidden-preview'
+        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
         expect($hiddenImage).not.toHaveAttr 'src', imageData
 
         cropit.loadImage()
@@ -103,7 +103,7 @@ describe 'Cropit View', ->
         expect(cropit.zoomer.setup).toHaveBeenCalled()
 
       it 'updates zoomer slider', ->
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         $imageZoomInput.val 1
         cropit.sliderPos = .5
         expect(Number($imageZoomInput.val())).not.toBe .5
@@ -125,7 +125,7 @@ describe 'Cropit View', ->
       it 'is invoked on mousedown on preview', ->
         spyOn Cropit.prototype, 'handlePreviewEvent'
         $el.cropit()
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mousedown'
         expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
@@ -133,7 +133,7 @@ describe 'Cropit View', ->
       it 'is invoked on mouseup on preview', ->
         spyOn Cropit.prototype, 'handlePreviewEvent'
         $el.cropit()
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mouseup'
         expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
@@ -141,7 +141,7 @@ describe 'Cropit View', ->
       it 'is invoked on mouseleave on preview', ->
         spyOn Cropit.prototype, 'handlePreviewEvent'
         $el.cropit()
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mouseleave'
         expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
@@ -153,7 +153,7 @@ describe 'Cropit View', ->
         cropit.imageSize = w: 8, h: 6
         cropit.previewSize = w: 2, h: 2
 
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
 
         spyOn Cropit.prototype, 'onMove'
         cropit.handlePreviewEvent
@@ -196,7 +196,7 @@ describe 'Cropit View', ->
         cropit.zoom = 1
 
       it 'moves preview image', ->
-        $preview = $el.find '.image-preview'
+        $preview = $el.find '.cropit-image-preview'
         expect($preview).not.toHaveCss backgroundPosition: '-1px -1px'
 
         cropit.updateImageOffset x: -1, y: -1
@@ -207,7 +207,7 @@ describe 'Cropit View', ->
       it 'is invoked when zoom slider changes', ->
         spyOn Cropit.prototype, 'updateImageZoom'
         $el.cropit()
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'change'
         expect(Cropit.prototype.updateImageZoom).toHaveBeenCalled()
@@ -215,7 +215,7 @@ describe 'Cropit View', ->
       it 'is invoked mousemove on zoom slider', ->
         spyOn Cropit.prototype, 'updateImageZoom'
         $el.cropit()
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'mousemove'
         expect(Cropit.prototype.updateImageZoom).toHaveBeenCalled()
@@ -230,8 +230,8 @@ describe 'Cropit View', ->
         cropit.zoomer.minZoom = .5
         cropit.zoomer.maxZoom = 1
 
-        $preview = $el.find '.image-preview'
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $preview = $el.find '.cropit-image-preview'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         expect(cropit.zoom).not.toBe 1
         expect(cropit.offset).not.toEqual x: -2, y: -3
         expect($preview).not.toHaveCss backgroundPosition: '-2px -3px'
@@ -254,13 +254,13 @@ describe 'Cropit View', ->
 
       it 'inserts background image', ->
         $el.cropit imageBackground: true
-        $imageBg = $el.find 'img.image-background'
+        $imageBg = $el.find 'img.cropit-image-background'
         expect($imageBg).toBeInDOM()
         expect($imageBg).toHaveCss position: 'absolute'
 
       it 'inserts background image container', ->
         $el.cropit imageBackground: true
-        $imageBgContainer = $el.find '.image-background-container'
+        $imageBgContainer = $el.find '.cropit-image-background-container'
         expect($imageBgContainer).toBeInDOM()
         expect($imageBgContainer).toHaveCss position: 'absolute'
 
@@ -270,7 +270,7 @@ describe 'Cropit View', ->
         $el.cropit imageBackground: true
         cropit = $el.data dataKey
         cropit.imageSrc = imageData
-        $imageBg = $el.find 'img.image-background'
+        $imageBg = $el.find 'img.cropit-image-background'
         expect($imageBg).not.toHaveAttr 'src', imageData
 
         cropit.onImageLoaded()
@@ -285,7 +285,7 @@ describe 'Cropit View', ->
         cropit.previewSize = w: 2, h: 2
         cropit.zoom = 1
 
-        $imageBg = $el.find 'img.image-background'
+        $imageBg = $el.find 'img.cropit-image-background'
         expect($imageBg).not.toHaveCss left: '-1px', top: '-1px'
 
         cropit.updateImageOffset x: -1, y: -1
@@ -300,7 +300,7 @@ describe 'Cropit View', ->
         cropit.previewSize = w: 2, h: 2
         cropit.zoom = 1
 
-        $imageBg = $el.find 'img.image-background'
+        $imageBg = $el.find 'img.cropit-image-background'
         expect($imageBg).not.toHaveCss left: '-1px', top: '-1px'
 
         cropit.updateImageOffset x: -3, y: -3
@@ -318,8 +318,8 @@ describe 'Cropit View', ->
         cropit.zoomer.minZoom = .5
         cropit.zoomer.maxZoom = 1
 
-        $imageBg = $el.find 'img.image-background'
-        $imageZoomInput = $el.find 'input.image-zoom-level'
+        $imageBg = $el.find 'img.cropit-image-background'
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         expect($imageBg).not.toHaveCss width: '8px', height: '12px'
 
         $imageZoomInput.val 1
