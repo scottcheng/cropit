@@ -1,6 +1,6 @@
 /*
- *  cropit - v0.0.1
- *  Easy crop and zoom
+ *  cropit - v0.0.2
+ *  Customizable crop and zoom.
  *  https://github.com/scottcheng/cropit
  *
  *  Made by Scott Cheng
@@ -56,10 +56,10 @@
             this.element = element;
             this.$el = $(this.element);
             dynamicDefaults = {
-                $fileInput: this.$('input[name="image"]'),
-                $preview: this.$(".image-preview"),
-                $imageZoomInput: this.$(".image-zoom-level"),
-                $previewContainer: this.$(".image-preview-container")
+                $fileInput: this.$("input.cropit-image-input"),
+                $preview: this.$(".cropit-image-preview"),
+                $imageZoomInput: this.$("input.cropit-image-zoom-input"),
+                $previewContainer: this.$(".cropit-image-preview-container")
             };
             this.options = $.extend({}, defaults, dynamicDefaults, options);
             this._defaults = defaults;
@@ -70,7 +70,7 @@
             this.$fileInput = this.options.$fileInput;
             this.$preview = this.options.$preview;
             this.$imageZoomInput = this.options.$imageZoomInput;
-            this.$hiddenImage = $("<img />").addClass("image-hidden-preview").attr({
+            this.$hiddenImage = $("<img />").addClass("cropit-image-hidden-preview").attr({
                 alt: "",
                 style: "display: none;"
             }).appendTo(this.$el);
@@ -87,8 +87,8 @@
             if (this.options.imageBackground) {
                 imageBgBorderSize = this.options.imageBackgroundBorderSize;
                 $previewContainer = this.options.$previewContainer;
-                this.$imageBg = $("<img />").addClass("image-background").attr("alt", "").css("position", "absolute");
-                $imageBgContainer = $("<div />").addClass("image-background-container").css({
+                this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
+                $imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
                     position: "absolute",
                     zIndex: 0,
                     top: -imageBgBorderSize,
