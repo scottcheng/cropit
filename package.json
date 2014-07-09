@@ -1,10 +1,11 @@
 {
   "name": "cropit",
   "title": "cropit",
-  "description": "Easy crop and zoom.",
-  "author": "Scott Cheng",
+  "description": "Customizable crop and zoom.",
+  "author": "Scott Cheng <me@scottcheng.com>",
   "homepage": "https://github.com/scottcheng/cropit/",
   "version": "0.0.1",
+  "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-coffeelint": "0.0.10",
