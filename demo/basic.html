@@ -10,7 +10,7 @@
         background-position: 0 0;
         background-repeat: no-repeat;
         background-color: #f8f8f8;
-        background-size: 100%;
+        background-size: cover;
         border: 1px solid #ccc;
         border-radius: 3px;
         margin-top: 7px;
@@ -49,22 +49,16 @@
   <body>
     <div class="image-editor">
       <input type="file" name="image">
-      <!-- .image-preview needs a container for image-background to work -->
-      <div class="image-preview-container">
-        <div class="image-preview"></div>
-      </div>
+      <div class="image-preview"></div>
       <div class="image-size-label">
         Resize image
       </div>
-      <input type="range" class="image-zoom-level" name="zoom-level" min="0" max="1" value="0" step="0.01">
+      <input type="range" class="image-zoom-level" name="zoom-level" min="0" max="1" step="0.01">
     </div>
 
     <script>
       $(function() {
         $('.image-editor').cropit({
-          exportZoom: 1.25,
-          imageBackground: true,
-          imageBackgroundBorderSize: 10,
           imageState: {
             src: 'http://lorempixel.com/500/400/'
           }
