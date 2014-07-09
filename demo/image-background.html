@@ -6,7 +6,7 @@
     <script src="../dist/jquery.cropit.js"></script>
 
     <style>
-      .image-preview {
+      .cropit-image-preview {
         background-position: 0 0;
         background-repeat: no-repeat;
         background-color: #f8f8f8;
@@ -19,25 +19,13 @@
         cursor: move;
       }
 
-      .image-background {
+      .cropit-image-background {
         opacity: .2;
         cursor: auto;
       }
 
-      .file-upload {
-        text-align: left;
-      }
-
       .image-size-label {
         margin-top: 0.6rem;
-      }
-
-      .image-size {
-        width: 250px;
-      }
-
-      .optional-fields {
-        display: block;
       }
 
       input {
@@ -48,15 +36,15 @@
   </head>
   <body>
     <div class="image-editor">
-      <input type="file" name="image">
-      <!-- .image-preview needs a container for image-background to work -->
-      <div class="image-preview-container">
-        <div class="image-preview"></div>
+      <input type="file" class="cropit-image-input">
+      <!-- .cropit-image-preview-container is needed for background image to work -->
+      <div class="cropit-image-preview-container">
+        <div class="cropit-image-preview"></div>
       </div>
       <div class="image-size-label">
         Resize image
       </div>
-      <input type="range" class="image-zoom-level" name="zoom-level" min="0" max="1" step="0.01">
+      <input type="range" class="cropit-image-zoom-input" min="0" max="1" step="0.01">
     </div>
 
     <script>
