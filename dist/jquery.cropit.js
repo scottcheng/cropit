@@ -148,24 +148,23 @@
             if (typeof (_base = this.options).onImageLoading === "function") {
                 _base.onImageLoading();
             }
-            return this.$hiddenImage.load(function(_this) {
-                return function() {
-                    var _base1;
-                    if (_this.options.imageBackground) {
-                        _this.$imageBg.attr("src", _this.imageSrc);
-                    }
-                    _this.imageSize = {
-                        w: _this.$hiddenImage.width(),
-                        h: _this.$hiddenImage.height()
-                    };
-                    _this.zoomer.setup(_this.imageSize, _this.previewSize, _this.options.exportZoom, _this.options);
-                    _this.$imageZoomInput.val(_this.sliderPos);
-                    _this.zoom = _this.zoomer.getZoom(_this.sliderPos);
-                    _this.updateImageZoom();
-                    _this.disabled = false;
-                    return typeof (_base1 = _this.options).onImageLoaded === "function" ? _base1.onImageLoaded() : void 0;
-                };
-            }(this));
+            return this.$hiddenImage.load(this.onImageLoaded.bind(this));
+        };
+        Cropit.prototype.onImageLoaded = function() {
+            var _base;
+            if (this.options.imageBackground) {
+                this.$imageBg.attr("src", this.imageSrc);
+            }
+            this.imageSize = {
+                w: this.$hiddenImage.width(),
+                h: this.$hiddenImage.height()
+            };
+            this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
+            this.$imageZoomInput.val(this.sliderPos);
+            this.zoom = this.zoomer.getZoom(this.sliderPos);
+            this.updateImageZoom();
+            this.disabled = false;
+            return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
         };
         Cropit.prototype.handlePreviewEvent = function(e) {
             if (this.disabled) {
@@ -201,8 +200,12 @@
             return false;
         };
         Cropit.prototype.updateImageOffset = function(position) {
+            var _ref, _ref1;
+            if (!(((_ref = this.imageSize) != null ? _ref.w : void 0) && ((_ref1 = this.imageSize) != null ? _ref1.h : void 0))) {
+                return;
+            }
             this.offset = this.fixOffset(position);
-            this.$preview.css("background-position", "" + position.x + "px " + position.y + "px");
+            this.$preview.css("background-position", "" + this.offset.x + "px " + this.offset.y + "px");
             if (this.options.imageBackground) {
                 return this.$imageBg.css({
                     left: this.offset.x + this.imageBgPreviewOffset.x,
@@ -211,23 +214,28 @@
             }
         };
         Cropit.prototype.fixOffset = function(offset) {
+            var ret;
+            ret = {
+                x: offset.x,
+                y: offset.y
+            };
             if (this.imageSize.w * this.zoom <= this.previewSize.w) {
-                offset.x = 0;
-            } else if (offset.x > 0) {
-                offset.x = 0;
-            } else if (offset.x + this.imageSize.w * this.zoom < this.previewSize.w) {
-                offset.x = this.previewSize.w - this.imageSize.w * this.zoom;
+                ret.x = 0;
+            } else if (ret.x > 0) {
+                ret.x = 0;
+            } else if (ret.x + this.imageSize.w * this.zoom < this.previewSize.w) {
+                ret.x = this.previewSize.w - this.imageSize.w * this.zoom;
             }
             if (this.imageSize.h * this.zoom <= this.previewSize.h) {
-                offset.y = 0;
-            } else if (offset.y > 0) {
-                offset.y = 0;
-            } else if (offset.y + this.imageSize.h * this.zoom < this.previewSize.h) {
-                offset.y = this.previewSize.h - this.imageSize.h * this.zoom;
+                ret.y = 0;
+            } else if (ret.y > 0) {
+                ret.y = 0;
+            } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
+                ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
             }
-            offset.x = Math.round(offset.x);
-            offset.y = Math.round(offset.y);
-            return offset;
+            ret.x = Math.round(ret.x);
+            ret.y = Math.round(ret.y);
+            return ret;
         };
         Cropit.prototype.updateImageZoom = function() {
             var newX, newY, newZoom, oldZoom, updatedHeight, updatedWidth, _ref, _ref1;
@@ -239,20 +247,20 @@
             updatedWidth = Math.round(this.imageSize.w * newZoom);
             updatedHeight = Math.round(this.imageSize.h * newZoom);
             oldZoom = this.zoom;
-            newX = this.offset.x / oldZoom * newZoom + this.previewSize.w / 2 - this.previewSize.w / 2 / oldZoom * newZoom;
-            newY = this.offset.y / oldZoom * newZoom + this.previewSize.h / 2 - this.previewSize.h / 2 / oldZoom * newZoom;
+            newX = this.imageSize.w * oldZoom / 2 + this.offset.x - updatedWidth / 2;
+            newY = this.imageSize.h * oldZoom / 2 + this.offset.y - updatedHeight / 2;
+            this.zoom = newZoom;
             this.updateImageOffset({
                 x: newX,
                 y: newY
             });
             this.$preview.css("background-size", "" + updatedWidth + "px " + updatedHeight + "px");
             if (this.options.imageBackground) {
-                this.$imageBg.css({
+                return this.$imageBg.css({
                     width: updatedWidth,
                     height: updatedHeight
                 });
             }
-            return this.zoom = newZoom;
         };
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();

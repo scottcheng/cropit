@@ -101,21 +101,24 @@ class Cropit
 
     @options.onImageLoading?()
 
-    @$hiddenImage.load =>
-      @$imageBg.attr 'src', @imageSrc if @options.imageBackground
-      @imageSize =
-        w: @$hiddenImage.width()
-        h: @$hiddenImage.height()
+    @$hiddenImage.load @onImageLoaded.bind @
 
-      @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
+  onImageLoaded: ->
+    @$imageBg.attr 'src', @imageSrc if @options.imageBackground
 
-      @$imageZoomInput.val @sliderPos
-      @zoom = @zoomer.getZoom @sliderPos
-      @updateImageZoom()
+    @imageSize =
+      w: @$hiddenImage.width()
+      h: @$hiddenImage.height()
 
-      @disabled = false
+    @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
 
-      @options.onImageLoaded?()
+    @$imageZoomInput.val @sliderPos
+    @zoom = @zoomer.getZoom @sliderPos
+    @updateImageZoom()
+
+    @disabled = false
+
+    @options.onImageLoaded?()
 
   handlePreviewEvent: (e) ->
     return if @disabled
@@ -147,32 +150,36 @@ class Cropit
     false
 
   updateImageOffset: (position) ->
+    return unless @imageSize?.w and @imageSize?.h
+
     @offset = @fixOffset position
-    @$preview.css 'background-position', "#{position.x}px #{position.y}px"
+    @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
       @$imageBg.css
         left: @offset.x + @imageBgPreviewOffset.x
         top: @offset.y + @imageBgPreviewOffset.y
 
   fixOffset: (offset) ->
+    ret = x: offset.x, y: offset.y
+
     if @imageSize.w * @zoom <= @previewSize.w
-      offset.x = 0
-    else if offset.x > 0
-      offset.x = 0
-    else if offset.x + @imageSize.w * @zoom < @previewSize.w
-      offset.x = @previewSize.w - @imageSize.w * @zoom
+      ret.x = 0
+    else if ret.x > 0
+      ret.x = 0
+    else if ret.x + @imageSize.w * @zoom < @previewSize.w
+      ret.x = @previewSize.w - @imageSize.w * @zoom
 
     if @imageSize.h * @zoom <= @previewSize.h
-      offset.y = 0
-    else if offset.y > 0
-      offset.y = 0
-    else if offset.y + @imageSize.h * @zoom < @previewSize.h
-      offset.y = @previewSize.h - @imageSize.h * @zoom
+      ret.y = 0
+    else if ret.y > 0
+      ret.y = 0
+    else if ret.y + @imageSize.h * @zoom < @previewSize.h
+      ret.y = @previewSize.h - @imageSize.h * @zoom
 
-    offset.x = Math.round(offset.x)
-    offset.y = Math.round(offset.y)
+    ret.x = Math.round(ret.x)
+    ret.y = Math.round(ret.y)
 
-    offset
+    ret
 
   updateImageZoom: ->
     return unless @imageSize?.w and @imageSize?.h
@@ -184,17 +191,17 @@ class Cropit
 
     oldZoom = @zoom
 
-    newX = (@offset.x / oldZoom * newZoom + @previewSize.w / 2) - @previewSize.w / 2 / oldZoom * newZoom
-    newY = (@offset.y / oldZoom * newZoom + @previewSize.h / 2) - @previewSize.h / 2 / oldZoom * newZoom
+    newX = @imageSize.w * oldZoom / 2 + @offset.x - updatedWidth / 2
+    newY = @imageSize.h * oldZoom / 2 + @offset.y - updatedHeight / 2
 
+    @zoom = newZoom
     @updateImageOffset x: newX, y: newY
+
     @$preview.css 'background-size', "#{updatedWidth}px #{updatedHeight}px"
     if @options.imageBackground
       @$imageBg.css
         width: updatedWidth
         height: updatedHeight
-
-    @zoom = newZoom
 
   isZoomable: ->
     @zoomer.isZoomable()

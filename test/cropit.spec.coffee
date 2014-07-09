@@ -1,6 +1,7 @@
-describe 'Cropit', ->
+imageUrl = 'http://example.com/image.jpg'
+imageData = 'data:image/png;base64,image-data...'
 
-  imageSrc = 'http://example.com/image.jpg'
+describe 'Cropit', ->
 
   cropit = null
 
@@ -24,22 +25,48 @@ describe 'Cropit', ->
     it 'restores imageState', ->
       cropit = new Cropit null,
         imageState:
-          src: imageSrc
+          src: imageUrl
           offset: x: -1, y: -1
           zoom: .5
           sliderPos: .75
-      expect(cropit.imageSrc).toBe imageSrc
+      expect(cropit.imageSrc).toBe imageUrl
       expect(cropit.sliderPos).toBe .75
       expect(cropit.zoom).toBe .5
       expect(cropit.offset).toEqual x: -1, y: -1
 
-    it 'calls loadImage if image source is present', ->
+    it 'calls loadImage() if image source is present', ->
       cropit = new Cropit null,
         imageState:
-          src: imageSrc
+          src: imageUrl
       spyOn cropit, 'loadImage'
+
       cropit.init()
       expect(cropit.loadImage).toHaveBeenCalled()
+
+  describe 'onFileReaderLoaded()', ->
+
+    beforeEach ->
+      cropit = new Cropit
+
+    it 'calls loadImage()', ->
+      spyOn cropit, 'loadImage'
+
+      cropit.onFileReaderLoaded target: result: imageData
+      expect(cropit.loadImage).toHaveBeenCalled()
+
+    it 'resets zoom slider', ->
+      cropit.sliderPos = 1
+      expect(cropit.sliderPos).not.toBe 0
+
+      cropit.onFileReaderLoaded target: result: imageData
+      expect(cropit.sliderPos).toBe 0
+
+    it 'resets offset', ->
+      cropit.offset = x: 1, y: 1
+      expect(cropit.offset).not.toEqual x: 0, y: 0
+
+      cropit.onFileReaderLoaded target: result: imageData
+      expect(cropit.offset).toEqual x: 0, y: 0
 
   describe 'handlePreviewEvent()', ->
 
@@ -59,7 +86,7 @@ describe 'Cropit', ->
       cropit.handlePreviewEvent previewEvent
       expect(cropit.origin).toEqual x: 1, y: 1
 
-    it 'calls stopPropagation', ->
+    it 'calls stopPropagation()', ->
       spyOn previewEvent, 'stopPropagation'
       cropit.disabled = false
       cropit.handlePreviewEvent previewEvent
@@ -151,12 +178,12 @@ describe 'Cropit', ->
 
     it 'returns image state', ->
       cropit = new Cropit
-      cropit.imageSrc = imageSrc
+      cropit.imageSrc = imageData
       cropit.offset = x: -1, y: -1
       cropit.zoom = .5
       cropit.sliderPos = .75
       imageState = cropit.getImageState()
-      expect(imageState.src).toBe imageSrc
+      expect(imageState.src).toBe imageData
       expect(imageState.offset).toEqual x: -1, y: -1
       expect(imageState.zoom).toBe .5
       expect(imageState.sliderPos).toBe .75
