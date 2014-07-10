@@ -4,7 +4,7 @@ $splash.cropit
   imageState:
     src: 'http://scottcheng.github.io/cropit/images/0.jpg'
     offset:
-      x: -103
+      x: -112
       y: 0
 
 $splash.on 'click', '.select-image-btn', ->
