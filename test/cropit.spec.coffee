@@ -82,17 +82,17 @@ describe 'Cropit', ->
     it 'sets origin coordinates on mousedown', ->
       expect(cropit.origin).not.toEqual x: 1, y: 1
 
-      cropit.disabled = false
+      cropit.imageLoaded = true
       cropit.handlePreviewEvent previewEvent
       expect(cropit.origin).toEqual x: 1, y: 1
 
     it 'calls stopPropagation()', ->
       spyOn previewEvent, 'stopPropagation'
-      cropit.disabled = false
+      cropit.imageLoaded = true
       cropit.handlePreviewEvent previewEvent
       expect(previewEvent.stopPropagation).toHaveBeenCalled()
 
-    it 'does nothing when disabled', ->
+    it 'does nothing before loading image', ->
       spyOn previewEvent, 'stopPropagation'
       cropit.handlePreviewEvent previewEvent
       expect(cropit.origin).not.toEqual x: 1, y: 1
@@ -199,3 +199,30 @@ describe 'Cropit', ->
 
     it 'returns null when imageSize is absent', ->
       expect(cropit.getImageSize()).toBe null
+
+  describe 'getPreviewSize()', ->
+
+    beforeEach ->
+      cropit = new Cropit
+
+    it 'returns preview size', ->
+      cropit.previewSize = w: 1, h: 1
+      expect(cropit.getPreviewSize()).toEqual width: 1, height: 1
+
+  describe 'setPreviewSize()', ->
+
+    beforeEach ->
+      cropit = new Cropit
+
+    it 'sets preview size', ->
+      cropit.previewSize = w: 1, h: 1
+      expect(cropit.previewSize).not.toEqual w: 2, h: 2
+
+      cropit.setPreviewSize width: 2, height: 2
+      expect(cropit.previewSize).toEqual w: 2, h: 2
+
+    it 'updates zoomer if image is loaded', ->
+      cropit.imageLoaded = true
+      spyOn cropit.zoomer, 'setup'
+      cropit.setPreviewSize width: 1, height: 1
+      expect(cropit.zoomer.setup).toHaveBeenCalled()

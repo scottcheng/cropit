@@ -66,7 +66,7 @@
             this.init();
         }
         Cropit.prototype.init = function() {
-            var $imageBgContainer, $previewContainer, imageBgBorderSize, _ref, _ref1, _ref2, _ref3, _ref4;
+            var $previewContainer, imageBgBorderSize, _ref, _ref1, _ref2, _ref3, _ref4;
             this.$fileInput = this.options.$fileInput;
             this.$preview = this.options.$preview.css({
                 backgroundRepeat: "no-repeat"
@@ -80,21 +80,21 @@
                 alt: "",
                 style: "display: none;"
             }).appendTo(this.$el);
-            if (this.options.width) {
-                this.$preview.width(this.options.width);
-            }
-            if (this.options.height) {
-                this.$preview.height(this.options.height);
-            }
             this.previewSize = {
                 w: this.options.width || this.$preview.width(),
                 h: this.options.height || this.$preview.height()
             };
+            if (this.options.width) {
+                this.$preview.width(this.previewSize.w);
+            }
+            if (this.options.height) {
+                this.$preview.height(this.previewSize.h);
+            }
             if (this.options.imageBackground) {
                 imageBgBorderSize = this.options.imageBackgroundBorderSize;
                 $previewContainer = this.options.$previewContainer;
                 this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
-                $imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
+                this.$imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
                     position: "absolute",
                     zIndex: 0,
                     top: -imageBgBorderSize,
@@ -102,7 +102,7 @@
                     width: this.previewSize.w + imageBgBorderSize * 2,
                     height: this.previewSize.h + imageBgBorderSize * 2
                 }).append(this.$imageBg);
-                $previewContainer.css("position", "relative").prepend($imageBgContainer);
+                $previewContainer.css("position", "relative").prepend(this.$imageBgContainer);
                 this.$preview.css("position", "relative");
                 this.imageBgPreviewOffset = {
                     x: imageBgBorderSize + window.parseInt(this.$preview.css("border-left-width")),
@@ -110,7 +110,7 @@
                 };
             }
             this.initialZoomSliderPos = 0;
-            this.disabled = true;
+            this.imageLoaded = false;
             this.imageSrc = ((_ref = this.options.imageState) != null ? _ref.src : void 0) || null;
             this.offset = ((_ref1 = this.options.imageState) != null ? _ref1.offset : void 0) || {
                 x: 0,
@@ -169,11 +169,11 @@
             this.$imageZoomInput.val(this.sliderPos);
             this.zoom = this.zoomer.getZoom(this.sliderPos);
             this.updateImageZoom();
-            this.disabled = false;
+            this.imageLoaded = true;
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
         };
         Cropit.prototype.handlePreviewEvent = function(e) {
-            if (this.disabled) {
+            if (!this.imageLoaded) {
                 return;
             }
             this.moveContinue = false;
@@ -311,6 +311,36 @@
                 height: this.imageSize.h
             };
         };
+        Cropit.prototype.getPreviewSize = function() {
+            return {
+                width: this.previewSize.w,
+                height: this.previewSize.h
+            };
+        };
+        Cropit.prototype.setPreviewSize = function(size) {
+            if (!((size != null ? size.width : void 0) > 0 && (size != null ? size.height : void 0) > 0)) {
+                return;
+            }
+            this.previewSize = {
+                w: size.width,
+                h: size.height
+            };
+            this.$preview.css({
+                width: this.previewSize.w,
+                height: this.previewSize.h
+            });
+            if (this.options.imageBackground) {
+                this.$imageBgContainer.css({
+                    width: this.previewSize.w + this.options.imageBackgroundBorderSize * 2,
+                    height: this.previewSize.h + this.options.imageBackgroundBorderSize * 2
+                });
+            }
+            if (this.imageLoaded) {
+                this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
+                this.zoom = this.zoomer.getZoom(this.sliderPos);
+                return this.updateImageZoom();
+            }
+        };
         Cropit.prototype.$ = function(selector) {
             if (!this.$el) {
                 return null;
@@ -334,20 +364,33 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.isZoomable() : void 0;
         },
-        getCroppedImageData: function() {
+        croppedImageData: function() {
             var cropit;
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getCroppedImageData() : void 0;
         },
-        getImageState: function() {
+        imageState: function() {
             var cropit;
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getImageState() : void 0;
         },
-        getImageSize: function() {
+        imageSize: function() {
             var cropit;
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getImageSize() : void 0;
+        },
+        previewSize: function(newSize) {
+            var cropit;
+            if (arguments.length) {
+                return this.each(function() {
+                    var cropit;
+                    cropit = $.data(this, dataKey);
+                    return cropit != null ? cropit.setPreviewSize(newSize) : void 0;
+                });
+            } else {
+                cropit = this.first().data(dataKey);
+                return cropit != null ? cropit.getPreviewSize() : void 0;
+            }
         }
     };
     $.fn.cropit = function(method) {

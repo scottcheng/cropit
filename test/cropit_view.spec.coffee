@@ -172,7 +172,7 @@ describe 'Cropit View', ->
       it 'binds onMove() on mousedown', ->
         $el.cropit()
         cropit = $el.data dataKey
-        cropit.disabled = false
+        cropit.imageLoaded = true
         cropit.imageSize = w: 8, h: 6
         cropit.previewSize = w: 2, h: 2
 
@@ -189,7 +189,7 @@ describe 'Cropit View', ->
       it 'moves image by dragging', ->
         $el.cropit()
         cropit = $el.data dataKey
-        cropit.disabled = false
+        cropit.imageLoaded = true
         cropit.imageSize = w: 8, h: 6
         cropit.previewSize = w: 2, h: 2
         cropit.updateImageOffset x: 0, y: 0

@@ -11,17 +11,26 @@ methods =
     cropit = @first().data dataKey
     cropit?.isZoomable()
 
-  getCroppedImageData: ->
+  croppedImageData: ->
     cropit = @first().data dataKey
     cropit?.getCroppedImageData()
 
-  getImageState: ->
+  imageState: ->
     cropit = @first().data dataKey
     cropit?.getImageState()
 
-  getImageSize: ->
+  imageSize: ->
     cropit = @first().data dataKey
     cropit?.getImageSize()
+
+  previewSize: (newSize) ->
+    if arguments.length
+      @each ->
+        cropit = $.data @, dataKey
+        cropit?.setPreviewSize newSize
+    else
+      cropit = @first().data dataKey
+      cropit?.getPreviewSize()
 
 $.fn.cropit = (method) ->
   if methods[method]

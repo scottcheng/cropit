@@ -35,11 +35,11 @@ class Cropit
         style: 'display: none;'
       .appendTo @$el
 
-    @$preview.width @options.width if @options.width
-    @$preview.height @options.height if @options.height
     @previewSize =
       w: @options.width or @$preview.width()
       h: @options.height or @$preview.height()
+    @$preview.width @previewSize.w if @options.width
+    @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
       imageBgBorderSize = @options.imageBackgroundBorderSize
@@ -48,7 +48,7 @@ class Cropit
         .addClass 'cropit-image-background'
         .attr 'alt', ''
         .css 'position', 'absolute'
-      $imageBgContainer = $ '<div />'
+      @$imageBgContainer = $ '<div />'
         .addClass 'cropit-image-background-container'
         .css
           position: 'absolute'
@@ -60,14 +60,14 @@ class Cropit
         .append @$imageBg
       $previewContainer
         .css 'position', 'relative'
-        .prepend $imageBgContainer
+        .prepend @$imageBgContainer
       @$preview.css 'position', 'relative'
       @imageBgPreviewOffset =
         x: imageBgBorderSize + window.parseInt @$preview.css 'border-left-width'
         y: imageBgBorderSize + window.parseInt @$preview.css 'border-top-width'
 
     @initialZoomSliderPos = 0
-    @disabled = true
+    @imageLoaded = false
 
     @imageSrc = @options.imageState?.src or null
     @offset = @options.imageState?.offset or x: 0, y: 0
@@ -122,12 +122,12 @@ class Cropit
     @zoom = @zoomer.getZoom @sliderPos
     @updateImageZoom()
 
-    @disabled = false
+    @imageLoaded = true
 
     @options.onImageLoaded?()
 
   handlePreviewEvent: (e) ->
-    return if @disabled
+    return unless @imageLoaded
     @moveContinue = false
     @$preview.off 'mousemove'
 
@@ -252,6 +252,30 @@ class Cropit
     return null unless @imageSize
     width: @imageSize.w
     height: @imageSize.h
+
+  getPreviewSize: ->
+    width: @previewSize.w
+    height: @previewSize.h
+
+  setPreviewSize: (size) ->
+    return unless size?.width > 0 and size?.height > 0
+
+    @previewSize =
+      w: size.width
+      h: size.height
+    @$preview.css
+      width: @previewSize.w
+      height: @previewSize.h
+
+    if @options.imageBackground
+      @$imageBgContainer.css
+        width: @previewSize.w + @options.imageBackgroundBorderSize * 2
+        height: @previewSize.h + @options.imageBackgroundBorderSize * 2
+
+    if @imageLoaded
+      @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
+      @zoom = @zoomer.getZoom @sliderPos
+      @updateImageZoom()
 
   $: (selector) ->
     return null unless @$el
