@@ -33,6 +33,29 @@ describe 'Cropit View', ->
         expect($preview.width()).toBe 2
         expect($preview.height()).toBe 2
 
+      it 'sets preview background-repeat to no-repeat', ->
+        $preview = $el.find '.cropit-image-preview'
+        $preview.css backgroundRepeat: 'repeat'
+        expect($preview.css('background-repeat')).not.toBe 'no-repeat'
+
+        $el.cropit()
+        expect($preview.css('background-repeat')).toBe 'no-repeat'
+
+      it 'sets min, max and step attributes on zoom slider', ->
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+        $imageZoomInput.attr
+          min: 2
+          max: 3
+          step: .5
+        expect($imageZoomInput.attr 'min').not.toBe '0'
+        expect($imageZoomInput.attr 'max').not.toBe '1'
+        expect($imageZoomInput.attr 'step').not.toBe '0.01'
+
+        $el.cropit()
+        expect($imageZoomInput.attr 'min').toBe '0'
+        expect($imageZoomInput.attr 'max').toBe '1'
+        expect($imageZoomInput.attr 'step').toBe '0.01'
+
       it 'sets zoom slider to 0', ->
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         $imageZoomInput.val 1
