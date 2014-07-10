@@ -1,1 +1,1 @@
-(function(){console.log("ciao!")}).call(this);
+(function(){var a;a=$(".splash"),a.cropit({imageBackground:!0,imageState:{src:"http://scottcheng.github.io/cropit/images/0.jpg",offset:{x:-103,y:0}}}),a.on("click",".select-image-btn",function(){return a.find("input.cropit-image-input").click()}),a.on("click",".download-btn",function(){var b;return b=a.cropit("getCroppedImageData"),window.open(b)})}).call(this);

@@ -1,2 +1,120 @@
+gray-dark = #555
+gray = #888
+gray-light = #bbb
+gray-lighter = #eee
+gray-bg = #fcfcfc
+
+blue = #52a0c7
+blue-dark = shade(blue, 20%)
+orange = #cf754f
+
+btn(background = blue)
+  shadow-height = 2px
+  background background
+  color #fff
+  padding 5px 10px
+  text-align center
+  user-select none
+  cursor pointer
+  display inline-block
+  position relative
+  box-shadow 0 shadow-height darken(background, 20%)
+  &:active
+    box-shadow none
+    transform translateY(shadow-height)
+
 *
   box-sizing border-box
+
+html, body
+  height 100%
+
+body
+  color gray-dark
+  font-size 16px
+  font-family Lato, sans-serif
+
+a
+  color blue
+  transition color .25s
+  text-decoration none
+  &:hover
+    color blue-dark
+
+.splash
+  title-height = 70px
+  controls-height = 70px
+  min-preview-height = 450px
+
+  height 100%
+  min-height title-height + min-preview-height + 50px + controls-height
+  padding-top title-height
+  padding-bottom controls-height
+  position relative
+
+  .title-wrapper
+    absolute top left
+    size 100% title-height
+    background gray-bg
+    border-bottom 1px solid gray-lighter
+    text-align center
+    line-height title-height
+    .title, .tagline
+      display inline
+    .title
+      font-size 40px
+      margin 0
+      font-style italic
+    .tagline
+      margin-left 20px
+      font-size 20px
+      font-weight 300
+    .download-link, .github-link
+      margin-left 20px
+
+  .demo-wrapper
+    height 100%
+    position relative
+    overflow hidden
+    > .content
+      absolute top 50% left 50%
+      transform translate(-50%, -50%)
+      .cropit-image-preview
+        size min-preview-height
+        cursor move
+        border 1px solid gray-lighter
+        background-size cover
+      .cropit-image-background
+        opacity .2
+      .slider-wrapper
+        margin-top 20px
+        text-align center
+        *
+          vertical-align middle
+        .small-image
+          font-size 16px
+        .large-image
+          font-size 24px
+        .cropit-image-zoom-input
+          margin 0 20px
+
+  .controls-wrapper
+    absolute bottom left
+    size 100% controls-height
+    background gray-bg
+    border-top 1px solid gray-lighter
+    text-align center
+    padding ((controls-height - 30px) / 2)
+    .btns
+      .cropit-image-input
+        visibility hidden
+        absolute top left
+        size 1px 1px
+      .btn
+        .icon
+          margin-right 10px
+      .select-image-btn
+        btn(blue)
+      .download-btn
+        btn(orange)
+        margin-left 20px

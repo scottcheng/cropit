@@ -13,7 +13,7 @@ module.exports = (grunt) ->
         tasks: ['stylus']
       coffee:
         files: ['src/scripts/*.coffee']
-        tasks: ['coffee']
+        tasks: ['coffee', 'uglify:compile']
 
     jade:
       compile:
@@ -28,6 +28,7 @@ module.exports = (grunt) ->
           import: [
             'nib'
             'normalize.css'
+            'iconfont.css'
           ]
         files:
           'styles/index.css': 'src/styles/index.styl'
@@ -41,6 +42,7 @@ module.exports = (grunt) ->
       vendor:
         src: [
           'bower_components/jquery/dist/jquery.js'
+          'bower_components/cropit/dist/jquery.cropit.js'
         ]
         dest: 'scripts/vendor.js'
       compile:
@@ -60,6 +62,15 @@ module.exports = (grunt) ->
       options:
         max_line_length: level: 'ignore'
         indentation: level: 'ignore'
+
+    copy:
+      font:
+        files: [
+          expand: true
+          cwd: 'src/styles/fonts'
+          src: ['*']
+          dest: 'styles/fonts'
+        ]
 
     clean:
       tmp: '.tmp'

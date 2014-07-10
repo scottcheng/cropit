@@ -3,14 +3,41 @@ html
   head
     title cropit
 
-    meta(name='description', content='Easy crop and zoom')
+    meta(name='description', content='Customizable crop and zoom.')
     meta(charset='utf-8')
+
+    link(rel='stylesheet' href='//brick.a.ssl.fastly.net/Lato:300,300i,400,400i,700')
 
     link(rel='stylesheet', href='styles/index.css')
 
   body
 
-    h1 cropit
+    .splash
+
+      .title-wrapper
+        span.title cropit
+        span.tagline customizable crop and zoom
+        span.github-link: a(href='https://github.com/scottcheng/cropit') GitHub
+
+      .demo-wrapper
+        .content
+          .preview-wrapper
+            .cropit-image-preview-container
+              .cropit-image-preview
+          .slider-wrapper
+            span.icon.icon-image.small-image
+            input.cropit-image-zoom-input(type='range')
+            span.icon.icon-image.large-image
+
+      .controls-wrapper
+        .btns
+          input.cropit-image-input(type='file')
+          .btn.select-image-btn
+            span.icon.icon-image
+            | Select new image
+          .btn.download-btn
+            span.icon.icon-box-add
+            | Download cropped image
 
     script(src='scripts/vendor.js')
     script(src='scripts/index.js')
