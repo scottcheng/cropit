@@ -1,4 +1,4 @@
-$splash = $('.splash')
+$splash = $ '.splash'
 $splash.cropit
   imageBackground: true
   imageState:
@@ -11,5 +11,5 @@ $splash.on 'click', '.select-image-btn', ->
   $splash.find('input.cropit-image-input').click()
 
 $splash.on 'click', '.download-btn', ->
-  imageData = $splash.cropit 'getCroppedImageData'
+  imageData = $splash.cropit 'croppedImageData'
   window.open imageData
