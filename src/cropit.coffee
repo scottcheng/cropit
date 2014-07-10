@@ -21,7 +21,13 @@ class Cropit
   init: ->
     @$fileInput = @options.$fileInput
     @$preview = @options.$preview
+      .css
+        backgroundRepeat: 'no-repeat'
     @$imageZoomInput = @options.$imageZoomInput
+      .attr
+        min: 0
+        max: 1
+        step: .01
     @$hiddenImage = $ '<img />'
       .addClass 'cropit-image-hidden-preview'
       .attr

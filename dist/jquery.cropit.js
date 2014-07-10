@@ -68,8 +68,14 @@
         Cropit.prototype.init = function() {
             var $imageBgContainer, $previewContainer, imageBgBorderSize, _ref, _ref1, _ref2, _ref3, _ref4;
             this.$fileInput = this.options.$fileInput;
-            this.$preview = this.options.$preview;
-            this.$imageZoomInput = this.options.$imageZoomInput;
+            this.$preview = this.options.$preview.css({
+                backgroundRepeat: "no-repeat"
+            });
+            this.$imageZoomInput = this.options.$imageZoomInput.attr({
+                min: 0,
+                max: 1,
+                step: .01
+            });
             this.$hiddenImage = $("<img />").addClass("cropit-image-hidden-preview").attr({
                 alt: "",
                 style: "display: none;"

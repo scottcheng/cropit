@@ -7,8 +7,6 @@
 
     <style>
       .cropit-image-preview {
-        background-position: 0 0;
-        background-repeat: no-repeat;
         background-color: #f8f8f8;
         background-size: cover;
         border: 1px solid #ccc;
@@ -29,6 +27,7 @@
       }
 
       input {
+        /* Use relative position to prevent from being covered by image background */
         position: relative;
         z-index: 10;
       }
@@ -44,7 +43,7 @@
       <div class="image-size-label">
         Resize image
       </div>
-      <input type="range" class="cropit-image-zoom-input" min="0" max="1" step="0.01">
+      <input type="range" class="cropit-image-zoom-input">
     </div>
 
     <script>
