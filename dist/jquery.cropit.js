@@ -117,6 +117,11 @@
                     width: this.previewSize.w + imageBgBorderSize * 2,
                     height: this.previewSize.h + imageBgBorderSize * 2
                 }).append(this.$imageBg);
+                if (imageBgBorderSize > 0) {
+                    this.$imageBgContainer.css({
+                        overflow: "hidden"
+                    });
+                }
                 $previewContainer.css("position", "relative").prepend(this.$imageBgContainer);
                 this.$preview.css("position", "relative");
                 this.imageBgPreviewOffset = {

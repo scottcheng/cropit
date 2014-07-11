@@ -58,6 +58,7 @@ class Cropit
           width: @previewSize.w + imageBgBorderSize * 2
           height: @previewSize.h + imageBgBorderSize * 2
         .append @$imageBg
+      @$imageBgContainer.css overflow: 'hidden' if imageBgBorderSize > 0
       $previewContainer
         .css 'position', 'relative'
         .prepend @$imageBgContainer
