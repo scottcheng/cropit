@@ -90,13 +90,6 @@ describe 'Cropit View', ->
         cropit = $el.data dataKey
         cropit.imageSrc = imageData
 
-      it 'sets preview background', ->
-        $preview = $el.find '.cropit-image-preview'
-        expect($preview).not.toHaveCss backgroundImage: "url(#{imageData})"
-
-        cropit.loadImage()
-        expect($preview).toHaveCss backgroundImage: "url(#{imageData})"
-
       it 'sets hidden image source', ->
         $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
         expect($hiddenImage).not.toHaveAttr 'src', imageData
@@ -118,6 +111,14 @@ describe 'Cropit View', ->
       beforeEach ->
         $el.cropit()
         cropit = $el.data dataKey
+        cropit.imageSrc = imageData
+
+      it 'sets preview background', ->
+        $preview = $el.find '.cropit-image-preview'
+        expect($preview).not.toHaveCss backgroundImage: "url(#{imageData})"
+
+        cropit.onImageLoaded()
+        expect($preview).toHaveCss backgroundImage: "url(#{imageData})"
 
       it 'sets up zoomer', ->
         spyOn cropit.zoomer, 'setup'

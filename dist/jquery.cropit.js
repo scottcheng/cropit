@@ -158,6 +158,7 @@
             oFReader = new FileReader();
             file = this.$fileInput.get(0).files[0];
             if (file != null ? file.type.match("image") : void 0) {
+                this.setImageLoadingClass();
                 oFReader.readAsDataURL(file);
                 return oFReader.onload = this.onFileReaderLoaded.bind(this);
             }
@@ -171,14 +172,16 @@
         Cropit.prototype.loadImage = function() {
             var _base;
             this.$hiddenImage.attr("src", this.imageSrc);
-            this.$preview.css("background-image", "url(" + this.imageSrc + ")");
             if (typeof (_base = this.options).onImageLoading === "function") {
                 _base.onImageLoading();
             }
+            this.setImageLoadingClass();
             return this.$hiddenImage.load(this.onImageLoaded.bind(this));
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
+            this.setImageLoadedClass();
+            this.$preview.css("background-image", "url(" + this.imageSrc + ")");
             if (this.options.imageBackground) {
                 this.$imageBg.attr("src", this.imageSrc);
             }
@@ -296,6 +299,12 @@
         };
         Cropit.prototype.fixZoom = function(zoom) {
             return this.zoomer.fixZoom(zoom);
+        };
+        Cropit.prototype.setImageLoadingClass = function() {
+            return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");
+        };
+        Cropit.prototype.setImageLoadedClass = function() {
+            return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
         };
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();

@@ -95,6 +95,8 @@ class Cropit
     oFReader = new FileReader()
     file = @$fileInput.get(0).files[0]
     if file?.type.match 'image'
+      @setImageLoadingClass()
+
       oFReader.readAsDataURL file
       oFReader.onload = @onFileReaderLoaded.bind @
 
@@ -107,13 +109,15 @@ class Cropit
   loadImage: ->
     @$hiddenImage.attr 'src', @imageSrc
 
-    @$preview.css 'background-image', "url(#{@imageSrc})"
-
     @options.onImageLoading?()
+    @setImageLoadingClass()
 
     @$hiddenImage.load @onImageLoaded.bind @
 
   onImageLoaded: ->
+    @setImageLoadedClass()
+
+    @$preview.css 'background-image', "url(#{@imageSrc})"
     @$imageBg.attr 'src', @imageSrc if @options.imageBackground
 
     @imageSize =
@@ -222,6 +226,16 @@ class Cropit
 
   fixZoom: (zoom) ->
     @zoomer.fixZoom zoom
+
+  setImageLoadingClass: ->
+    @$preview
+      .removeClass 'cropit-image-loaded'
+      .addClass 'cropit-image-loading'
+
+  setImageLoadedClass: ->
+    @$preview
+      .removeClass 'cropit-image-loading'
+      .addClass 'cropit-image-loaded'
 
   isZoomable: ->
     @zoomer.isZoomable()
