@@ -14,9 +14,9 @@ describe 'Cropit', ->
 
   describe 'init()', ->
 
-    it 'sets default sliderPos', ->
+    it 'sets default zoom', ->
       cropit = new Cropit
-      expect(cropit.sliderPos).toBe cropit.initialZoomSliderPos
+      expect(cropit.zoom).toBe 0
 
     it 'sets default offset', ->
       cropit = new Cropit
@@ -28,9 +28,7 @@ describe 'Cropit', ->
           src: imageUrl
           offset: x: -1, y: -1
           zoom: .5
-          sliderPos: .75
       expect(cropit.imageSrc).toBe imageUrl
-      expect(cropit.sliderPos).toBe .75
       expect(cropit.zoom).toBe .5
       expect(cropit.offset).toEqual x: -1, y: -1
 
@@ -54,12 +52,19 @@ describe 'Cropit', ->
       cropit.onFileReaderLoaded target: result: imageData
       expect(cropit.loadImage).toHaveBeenCalled()
 
-    it 'resets zoom slider', ->
-      cropit.sliderPos = 1
-      expect(cropit.sliderPos).not.toBe 0
+    it 'sets imageSrc', ->
+      cropit.imageSrc = imageUrl
+      expect(cropit.imageSrc).not.toBe imageData
 
       cropit.onFileReaderLoaded target: result: imageData
-      expect(cropit.sliderPos).toBe 0
+      expect(cropit.imageSrc).toBe imageData
+
+    it 'resets zoom', ->
+      cropit.zoom = 1
+      expect(cropit.zoom).not.toBe 0
+
+      cropit.onFileReaderLoaded target: result: imageData
+      expect(cropit.zoom).toBe 0
 
     it 'resets offset', ->
       cropit.offset = x: 1, y: 1
@@ -102,6 +107,7 @@ describe 'Cropit', ->
 
     beforeEach ->
       cropit = new Cropit
+      cropit.imageLoaded = true
 
     describe 'fixes x', ->
 
@@ -163,6 +169,20 @@ describe 'Cropit', ->
         offset = cropit.fixOffset y: -.25
         expect(offset.y).toBe 0
 
+  describe 'fixZoom()', ->
+
+    it 'returns zoomer.fixZoom()', ->
+      cropit = new Cropit
+
+      cropit.zoomer = fixZoom: -> .1
+      expect(cropit.fixZoom()).toBe .1
+
+      cropit.zoomer = fixZoom: -> .5
+      expect(cropit.fixZoom()).toBe .5
+
+      cropit.zoomer = fixZoom: -> 1
+      expect(cropit.fixZoom()).toBe 1
+
   describe 'isZoomable()', ->
 
     it 'returns zoomer.isZoomable', ->
@@ -181,12 +201,10 @@ describe 'Cropit', ->
       cropit.imageSrc = imageData
       cropit.offset = x: -1, y: -1
       cropit.zoom = .5
-      cropit.sliderPos = .75
       imageState = cropit.getImageState()
       expect(imageState.src).toBe imageData
       expect(imageState.offset).toEqual x: -1, y: -1
       expect(imageState.zoom).toBe .5
-      expect(imageState.sliderPos).toBe .75
 
   describe 'getImageSrc()', ->
 
@@ -244,6 +262,7 @@ describe 'Cropit', ->
 
     it 'updates zoomer if image is loaded', ->
       cropit.imageLoaded = true
+      cropit.imageSize = w: 2, h: 2
       spyOn cropit.zoomer, 'setup'
       cropit.setPreviewSize width: 1, height: 1
       expect(cropit.zoomer.setup).toHaveBeenCalled()

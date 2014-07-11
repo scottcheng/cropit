@@ -18,6 +18,15 @@ class Zoomer
     return null unless @minZoom and @maxZoom
     sliderPos * (@maxZoom - @minZoom) + @minZoom
 
+  getSliderPos: (zoom) ->
+    return null unless @minZoom and @maxZoom
+    (zoom - @minZoom) / (@maxZoom - @minZoom)
+
   isZoomable: ->
     return null unless @minZoom and @maxZoom
     @minZoom isnt @maxZoom
+
+  fixZoom: (zoom) ->
+    return @minZoom if zoom < @minZoom
+    return @maxZoom if zoom > @maxZoom
+    zoom

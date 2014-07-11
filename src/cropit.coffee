@@ -66,15 +66,17 @@ class Cropit
         x: imageBgBorderSize + window.parseInt @$preview.css 'border-left-width'
         y: imageBgBorderSize + window.parseInt @$preview.css 'border-top-width'
 
-    @initialZoomSliderPos = 0
+    @initialOffset = x: 0, y: 0
+    @initialZoom = 0
+    @initialSliderPos = 0
     @imageLoaded = false
 
     @imageSrc = @options.imageState?.src or null
-    @offset = @options.imageState?.offset or x: 0, y: 0
-    @zoom = @options.imageState?.zoom or null
-    @sliderPos = @options.imageState?.sliderPos or @initialZoomSliderPos
+    offset = @options.imageState?.offset or @initialOffset
+    @setOffset @options.imageState?.offset or @initialOffset
+    @zoom = @options.imageState?.zoom or @initialZoom
 
-    @$imageZoomInput.val @sliderPos
+    @$imageZoomInput.val @initialSliderPos
 
     @moveContinue = false
 
@@ -82,7 +84,7 @@ class Cropit
 
     @$preview.on 'mousedown mouseup mouseleave', @handlePreviewEvent.bind @
     @$fileInput.on 'change', @onFileChange.bind @
-    @$imageZoomInput.on 'change mousemove', @updateImageZoom.bind @
+    @$imageZoomInput.on 'mousemove', @updateSliderPos.bind @
 
     @loadImage() if @options.imageState?.src
 
@@ -96,8 +98,8 @@ class Cropit
 
   onFileReaderLoaded: (e) ->
     @imageSrc = e.target.result
-    @sliderPos = @initialZoomSliderPos
-    @offset = x: 0, y: 0
+    @zoom = @initialZoom
+    @setOffset @initialOffset
     @loadImage()
 
   loadImage: ->
@@ -118,9 +120,8 @@ class Cropit
 
     @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
 
-    @$imageZoomInput.val @sliderPos
-    @zoom = @zoomer.getZoom @sliderPos
-    @updateImageZoom()
+    @zoom = @fixZoom @zoom
+    @setZoom @zoom
 
     @imageLoaded = true
 
@@ -144,7 +145,7 @@ class Cropit
 
   onMove: (e) ->
     if @moveContinue
-      @updateImageOffset
+      @setOffset
         x: @offset.x + e.clientX - @origin.x
         y: @offset.y + e.clientY - @origin.y
 
@@ -155,9 +156,7 @@ class Cropit
     e.stopPropagation()
     false
 
-  updateImageOffset: (position) ->
-    return unless @imageSize?.w and @imageSize?.h
-
+  setOffset: (position) ->
     @offset = @fixOffset position
     @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
@@ -166,6 +165,8 @@ class Cropit
         top: @offset.y + @imageBgPreviewOffset.y
 
   fixOffset: (offset) ->
+    return offset unless @imageLoaded
+
     ret = x: offset.x, y: offset.y
 
     if @imageSize.w * @zoom <= @previewSize.w
@@ -187,11 +188,16 @@ class Cropit
 
     ret
 
-  updateImageZoom: ->
-    return unless @imageSize?.w and @imageSize?.h
+  updateSliderPos: ->
+    return unless @imageLoaded
 
     @sliderPos = Number @$imageZoomInput.val()
     newZoom = @zoomer.getZoom @sliderPos
+    @setZoom newZoom
+
+  setZoom: (newZoom) ->
+    newZoom = @fixZoom newZoom
+
     updatedWidth = Math.round @imageSize.w * newZoom
     updatedHeight = Math.round @imageSize.h * newZoom
 
@@ -201,13 +207,19 @@ class Cropit
     newY = @imageSize.h * oldZoom / 2 + @offset.y - updatedHeight / 2
 
     @zoom = newZoom
-    @updateImageOffset x: newX, y: newY
+    @setOffset x: newX, y: newY
+
+    @sliderPos = @zoomer.getSliderPos @zoom
+    @$imageZoomInput.val @sliderPos
 
     @$preview.css 'background-size', "#{updatedWidth}px #{updatedHeight}px"
     if @options.imageBackground
       @$imageBg.css
         width: updatedWidth
         height: updatedHeight
+
+  fixZoom: (zoom) ->
+    @zoomer.fixZoom zoom
 
   isZoomable: ->
     @zoomer.isZoomable()
@@ -246,7 +258,6 @@ class Cropit
     src: @imageSrc
     offset: @offset
     zoom: @zoom
-    sliderPos: @sliderPos
 
   getImageSrc: ->
     @imageSrc
@@ -283,8 +294,8 @@ class Cropit
 
     if @imageLoaded
       @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
-      @zoom = @zoomer.getZoom @sliderPos
-      @updateImageZoom()
+      @zoom = @fixZoom @zoom
+      @setZoom @zoom
 
   $: (selector) ->
     return null unless @$el

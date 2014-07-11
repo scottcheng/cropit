@@ -82,7 +82,7 @@ describe 'Zoomer', ->
 
   describe 'getZoom()', ->
 
-    it 'returns null when before set up', ->
+    it 'returns null before set up', ->
       expect(zoomer.getZoom()).toBe null
 
     it 'returns proper zoom level', ->
@@ -92,6 +92,28 @@ describe 'Zoomer', ->
       expect(zoomer.getZoom(0)).toBe .5
       expect(zoomer.getZoom(.5)).toBe .75
       expect(zoomer.getZoom(1)).toBe 1
+
+  describe 'getSliderPos()', ->
+
+    it 'returns null before set up', ->
+      expect(zoomer.getSliderPos()).toBe null
+
+    it 'returns proper slider pos', ->
+      zoomer.minZoom = .5
+      zoomer.maxZoom = 1
+
+      expect(zoomer.getSliderPos(.5)).toBe 0
+      expect(zoomer.getSliderPos(.75)).toBe .5
+      expect(zoomer.getSliderPos(1)).toBe 1
+
+    it 'is inverse to getZoom()', ->
+      zoomer.minZoom = Math.random()
+      zoomer.maxZoom = Math.random() + zoomer.minZoom
+      for sliderPos in ([0..10].map (x) -> x / 10)
+        zoom = zoomer.getZoom sliderPos
+        calculatedSliderPos = zoomer.getSliderPos zoom
+        expect(calculatedSliderPos).toBeGreaterThan sliderPos - .0001
+        expect(calculatedSliderPos).toBeLessThan sliderPos + .0001
 
   describe 'isZoomable()', ->
 
@@ -127,3 +149,23 @@ describe 'Zoomer', ->
         w: 1, h: 1
       , w: 2, h: 2
       expect(zoomer.isZoomable()).toBe false
+
+  describe 'fixZoom()', ->
+
+    beforeEach ->
+      zoomer.minZoom = .5
+      zoomer.maxZoom = 1
+
+    it 'fixes zoom when it is too small', ->
+      expect(zoomer.fixZoom(0)).toBe .5
+      expect(zoomer.fixZoom(.25)).toBe .5
+      expect(zoomer.fixZoom(.49)).toBe .5
+
+    it 'fixes zoom when it is too large', ->
+      expect(zoomer.fixZoom(1.5)).toBe 1
+      expect(zoomer.fixZoom(1.1)).toBe 1
+
+    it 'keeps zoom when it is right', ->
+      expect(zoomer.fixZoom(.5)).toBe .5
+      expect(zoomer.fixZoom(.75)).toBe .75
+      expect(zoomer.fixZoom(1)).toBe 1
