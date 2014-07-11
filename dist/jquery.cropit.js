@@ -157,8 +157,10 @@
             }
             oFReader = new FileReader();
             file = this.$fileInput.get(0).files[0];
-            oFReader.readAsDataURL(file);
-            return oFReader.onload = this.onFileReaderLoaded.bind(this);
+            if (file != null ? file.type.match("image") : void 0) {
+                oFReader.readAsDataURL(file);
+                return oFReader.onload = this.onFileReaderLoaded.bind(this);
+            }
         };
         Cropit.prototype.onFileReaderLoaded = function(e) {
             this.imageSrc = e.target.result;

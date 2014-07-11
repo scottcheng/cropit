@@ -94,8 +94,9 @@ class Cropit
 
     oFReader = new FileReader()
     file = @$fileInput.get(0).files[0]
-    oFReader.readAsDataURL file
-    oFReader.onload = @onFileReaderLoaded.bind @
+    if file?.type.match 'image'
+      oFReader.readAsDataURL file
+      oFReader.onload = @onFileReaderLoaded.bind @
 
   onFileReaderLoaded: (e) ->
     @imageSrc = e.target.result
