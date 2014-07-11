@@ -126,10 +126,10 @@ describe 'Cropit View', ->
         cropit.onImageLoaded()
         expect(cropit.zoomer.setup).toHaveBeenCalled()
 
-      it 'updates zoomer slider', ->
+      it 'updates zoom slider', ->
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
         $imageZoomInput.val 1
-        cropit.sliderPos = .5
+        cropit.zoomer.getSliderPos = -> .5
         expect(Number($imageZoomInput.val())).not.toBe .5
 
         cropit.onImageLoaded()

@@ -39,7 +39,11 @@
             if (!(this.minZoom && this.maxZoom)) {
                 return null;
             }
-            return (zoom - this.minZoom) / (this.maxZoom - this.minZoom);
+            if (this.minZoom === this.maxZoom) {
+                return 0;
+            } else {
+                return (zoom - this.minZoom) / (this.maxZoom - this.minZoom);
+            }
         };
         Zoomer.prototype.isZoomable = function() {
             if (!(this.minZoom && this.maxZoom)) {
@@ -189,11 +193,15 @@
                 w: this.$hiddenImage.width(),
                 h: this.$hiddenImage.height()
             };
-            this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
-            this.zoom = this.fixZoom(this.zoom);
-            this.setZoom(this.zoom);
+            this.setupZoomer();
             this.imageLoaded = true;
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
+        };
+        Cropit.prototype.setImageLoadingClass = function() {
+            return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");
+        };
+        Cropit.prototype.setImageLoadedClass = function() {
+            return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
         };
         Cropit.prototype.handlePreviewEvent = function(e) {
             if (!this.imageLoaded) {
@@ -274,6 +282,19 @@
             newZoom = this.zoomer.getZoom(this.sliderPos);
             return this.setZoom(newZoom);
         };
+        Cropit.prototype.setupZoomer = function() {
+            var _base, _base1;
+            this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
+            this.zoom = this.fixZoom(this.zoom);
+            this.setZoom(this.zoom);
+            if (this.isZoomable()) {
+                this.$imageZoomInput.removeAttr("disabled");
+                return typeof (_base = this.options).onZoomEnabled === "function" ? _base.onZoomEnabled() : void 0;
+            } else {
+                this.$imageZoomInput.attr("disabled", true);
+                return typeof (_base1 = this.options).onZoomDisabled === "function" ? _base1.onZoomDisabled() : void 0;
+            }
+        };
         Cropit.prototype.setZoom = function(newZoom) {
             var newX, newY, oldZoom, updatedHeight, updatedWidth;
             newZoom = this.fixZoom(newZoom);
@@ -299,12 +320,6 @@
         };
         Cropit.prototype.fixZoom = function(zoom) {
             return this.zoomer.fixZoom(zoom);
-        };
-        Cropit.prototype.setImageLoadingClass = function() {
-            return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");
-        };
-        Cropit.prototype.setImageLoadedClass = function() {
-            return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
         };
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();
@@ -382,9 +397,7 @@
                 });
             }
             if (this.imageLoaded) {
-                this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
-                this.zoom = this.fixZoom(this.zoom);
-                return this.setZoom(this.zoom);
+                return this.setupZoomer();
             }
         };
         Cropit.prototype.$ = function(selector) {

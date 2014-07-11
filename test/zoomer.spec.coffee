@@ -106,6 +106,14 @@ describe 'Zoomer', ->
       expect(zoomer.getSliderPos(.75)).toBe .5
       expect(zoomer.getSliderPos(1)).toBe 1
 
+    it 'returns 0 when minZoom and maxZoom are the same', ->
+      zoomer.minZoom = 2
+      zoomer.maxZoom = 2
+
+      expect(zoomer.getSliderPos(1)).toBe 0
+      expect(zoomer.getSliderPos(2)).toBe 0
+      expect(zoomer.getSliderPos(3)).toBe 0
+
     it 'is inverse to getZoom()', ->
       zoomer.minZoom = Math.random()
       zoomer.maxZoom = Math.random() + zoomer.minZoom

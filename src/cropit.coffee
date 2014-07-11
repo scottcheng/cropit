@@ -124,14 +124,21 @@ class Cropit
       w: @$hiddenImage.width()
       h: @$hiddenImage.height()
 
-    @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
-
-    @zoom = @fixZoom @zoom
-    @setZoom @zoom
+    @setupZoomer()
 
     @imageLoaded = true
 
     @options.onImageLoaded?()
+
+  setImageLoadingClass: ->
+    @$preview
+      .removeClass 'cropit-image-loaded'
+      .addClass 'cropit-image-loading'
+
+  setImageLoadedClass: ->
+    @$preview
+      .removeClass 'cropit-image-loading'
+      .addClass 'cropit-image-loaded'
 
   handlePreviewEvent: (e) ->
     return unless @imageLoaded
@@ -201,6 +208,18 @@ class Cropit
     newZoom = @zoomer.getZoom @sliderPos
     @setZoom newZoom
 
+  setupZoomer: ->
+    @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
+    @zoom = @fixZoom @zoom
+    @setZoom @zoom
+
+    if @isZoomable()
+      @$imageZoomInput.removeAttr 'disabled'
+      @options.onZoomEnabled?()
+    else
+      @$imageZoomInput.attr 'disabled', true
+      @options.onZoomDisabled?()
+
   setZoom: (newZoom) ->
     newZoom = @fixZoom newZoom
 
@@ -226,16 +245,6 @@ class Cropit
 
   fixZoom: (zoom) ->
     @zoomer.fixZoom zoom
-
-  setImageLoadingClass: ->
-    @$preview
-      .removeClass 'cropit-image-loaded'
-      .addClass 'cropit-image-loading'
-
-  setImageLoadedClass: ->
-    @$preview
-      .removeClass 'cropit-image-loading'
-      .addClass 'cropit-image-loaded'
 
   isZoomable: ->
     @zoomer.isZoomable()
@@ -309,9 +318,7 @@ class Cropit
         height: @previewSize.h + @options.imageBackgroundBorderSize * 2
 
     if @imageLoaded
-      @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
-      @zoom = @fixZoom @zoom
-      @setZoom @zoom
+      @setupZoomer()
 
   $: (selector) ->
     return null unless @$el
