@@ -237,6 +237,22 @@ describe 'Cropit View', ->
         cropit.imageLoaded = true
         cropit.setZoom = ->
 
+      it 'is invoked mousedown on zoom slider', ->
+        spyOn Cropit.prototype, 'updateSliderPos'
+        $el.cropit()
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+
+        $imageZoomInput.trigger 'mousedown'
+        expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
+
+      it 'is invoked mouseup on zoom slider', ->
+        spyOn Cropit.prototype, 'updateSliderPos'
+        $el.cropit()
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+
+        $imageZoomInput.trigger 'mouseup'
+        expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
+
       it 'is invoked mousemove on zoom slider', ->
         spyOn Cropit.prototype, 'updateSliderPos'
         $el.cropit()

@@ -85,7 +85,7 @@ class Cropit
 
     @$preview.on 'mousedown mouseup mouseleave', @handlePreviewEvent.bind @
     @$fileInput.on 'change', @onFileChange.bind @
-    @$imageZoomInput.on 'mousemove', @updateSliderPos.bind @
+    @$imageZoomInput.on 'mousedown mouseup mousemove', @updateSliderPos.bind @
 
     @loadImage() if @options.imageState?.src
 

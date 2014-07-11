@@ -145,7 +145,7 @@
             this.zoomer = new Zoomer();
             this.$preview.on("mousedown mouseup mouseleave", this.handlePreviewEvent.bind(this));
             this.$fileInput.on("change", this.onFileChange.bind(this));
-            this.$imageZoomInput.on("mousemove", this.updateSliderPos.bind(this));
+            this.$imageZoomInput.on("mousedown mouseup mousemove", this.updateSliderPos.bind(this));
             if ((_ref4 = this.options.imageState) != null ? _ref4.src : void 0) {
                 return this.loadImage();
             }
