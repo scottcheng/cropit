@@ -17,6 +17,28 @@ module.exports = (grunt) ->
 
     jade:
       compile:
+        options:
+          filters:
+            htmlsrc: (block) ->
+              # Escape HTML code block
+              escapeMap =
+                '&': '&amp;'
+                '<': '&lt;'
+                '>': '&gt;'
+                '"': '&quot;'
+                "'": '&#039;'
+
+              block = block.replace /[&<>"']/g, (char) ->
+                escapeMap[char]
+
+              "<pre><code class=\"html\">#{block}</code></pre>"
+
+            jssrc: (block) ->
+              "<pre><code class=\"javascript\">#{block}</code></pre>"
+
+            csssrc: (block) ->
+              "<pre><code class=\"css\">#{block}</code></pre>"
+
         files:
           'index.html': 'src/views/index.jade'
 

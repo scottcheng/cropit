@@ -23,6 +23,11 @@ btn(background = blue)
     box-shadow none
     transform translateY(shadow-height)
 
+gray-section()
+  background gray-bg
+  border-top 1px solid gray-lighter
+  border-bottom 1px solid gray-lighter
+
 *
   box-sizing border-box
 
@@ -40,6 +45,62 @@ a
   text-decoration none
   &:hover
     color blue-dark
+
+pre
+  padding 5px 10px
+  border 1px solid gray-lighter
+  code
+    background transparent !important
+
+.splash, .demos .demo-wrapper
+  .cropit-image-background
+    opacity .2
+  .slider-wrapper
+    *
+      vertical-align middle
+    .small-image
+      font-size 16px
+    .large-image
+      font-size 24px
+    .cropit-image-zoom-input
+      width 130px
+      margin 0 20px
+      position relative
+      &.custom
+        slider()
+          appearance none
+          height 5px
+          background gray-lighter
+          border-radius 5px
+          outline none
+        slider-thumb()
+          appearance none
+          size 15px
+          background gray
+          border-radius 50%
+          transition background .25s
+          &:active
+            background gray-light
+        slider()
+        &::-moz-range-track
+          slider()
+        &::-webkit-slider-thumb
+          slider-thumb()
+        &::-moz-range-thumb
+          slider-thumb()
+  .btns
+    .cropit-image-input
+      &.custom
+        visibility hidden
+        absolute top left
+        size 1px 1px
+    .btn
+      .icon
+        margin-right 10px
+    .select-image-btn
+      btn(blue)
+    .download-btn
+      btn(orange)
 
 .splash
   title-height = 70px
@@ -59,18 +120,18 @@ a
     border-bottom 1px solid gray-lighter
     text-align center
     line-height title-height
-    .title, .tagline
+    .title, .tagline, .github-link
       display inline
+      &:nth-child(n+2)
+        margin-left 20px
     .title
       font-size 40px
       margin 0
       font-style italic
     .tagline
-      margin-left 20px
       font-size 20px
       font-weight 300
     .github-link
-      margin-left 20px
       .icon
         margin-right 5px
 
@@ -78,7 +139,7 @@ a
     height 100%
     position relative
     overflow hidden
-    > .content
+    .preview-wrapper
       absolute top 50% left 50%
       transform translate(-50%, -50%)
       .cropit-image-preview
@@ -86,38 +147,72 @@ a
         cursor move
         border 1px solid gray-lighter
         background-size cover
-      .cropit-image-background
-        opacity .2
       .slider-wrapper
         margin-top 20px
         text-align center
-        *
-          vertical-align middle
-        .small-image
-          font-size 16px
-        .large-image
-          font-size 24px
-        .cropit-image-zoom-input
-          margin 0 20px
-          position relative
 
-  .controls-wrapper
+  .btns-wrapper
     absolute bottom left
     size 100% controls-height
-    background gray-bg
-    border-top 1px solid gray-lighter
+    gray-section()
     text-align center
     padding ((controls-height - 30px) / 2)
-    .btns
-      .cropit-image-input
-        visibility hidden
-        absolute top left
-        size 1px 1px
-      .btn
-        .icon
-          margin-right 10px
-      .select-image-btn
-        btn(blue)
-      .download-btn
-        btn(orange)
-        margin-left 20px
+    .download-btn
+      margin-left 20px
+
+section
+  padding 40px 0
+  h3
+    font-style italic
+  .container
+    width 840px
+    margin 0 auto
+    > .title
+      margin 0 0 20px
+    > .content
+      p, ul
+        line-height 1.5
+      p:last-child, ul:last-child
+        margin-bottom 0
+
+section.getting-started
+  gray-section()
+
+section.demos
+  padding-bottom 0
+  .demo-wrapper
+    padding-bottom 40px
+    overflow hidden
+    &:nth-child(n+3)
+      padding 40px 0
+      border-top 1px solid gray-lighter
+    > .container
+      .demo
+        clearfix()
+        .column
+          float left
+          &:nth-child(1)
+            width 600px
+            padding-right 40px
+            .cropit-image-preview
+              size 560px 176px
+              border 1px solid gray-lighter
+              cursor move
+            .slider-wrapper
+              margin-top 20px
+              text-align center
+          &:nth-child(2)
+            width 240px
+            .cropit-image-input:not(.custom)
+              display block
+              width 100%
+            .btn
+              display block
+              &.download-btn
+                margin-top 10px
+      .code
+        > .html, > .js, > .css
+          margin-top 20px
+          pre
+            background #fff
+            position relative

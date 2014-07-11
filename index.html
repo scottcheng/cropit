@@ -1,1 +1,86 @@
-<!DOCTYPE html><html><head><title>cropit</title><meta name="description" content="Customizable crop and zoom."><meta charset="utf-8"><link rel="stylesheet" href="//brick.a.ssl.fastly.net/Lato:300,300i,400,400i,700"><link rel="stylesheet" href="styles/index.css"></head><body><div class="splash"><div class="title-wrapper"><span class="title">cropit</span><span class="tagline">a "customizable crop and zoom" jQuery plugin</span><span class="github-link"><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>GitHub</a></span></div><div class="demo-wrapper"><div class="content"><div class="preview-wrapper"><div class="cropit-image-preview-container"><div class="cropit-image-preview"></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input"><span class="icon icon-image large-image"></span></div></div></div><div class="controls-wrapper"><div class="btns"><input type="file" class="cropit-image-input"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><script src="scripts/vendor.js"></script><script src="scripts/index.js"></script></body></html>
+<!DOCTYPE html><html><head><title>cropit | a "customizable crop and zoom" jQuery plugin</title><meta name="description" content="A &quot;customizable crop and zoom&quot; jQuery plugin."><meta charset="utf-8"><link rel="stylesheet" href="//brick.a.ssl.fastly.net/Lato:300,300i,400,400i,700"><link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/tomorrow.min.css"><link rel="stylesheet" href="styles/index.css"></head><body><div class="splash"><div class="title-wrapper"><h1 class="title">cropit</h1><div class="tagline">a "customizable crop and zoom" jQuery plugin</div><div class="github-link"><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>GitHub</a></div></div><div class="demo-wrapper"><div class="preview-wrapper"><div class="cropit-image-preview-container"><div class="cropit-image-preview"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div></div><div class="btns-wrapper"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><section class="what-it-is"><div class="container"><h2 class="title">What it is</h2><div class="content"><ul><li>A jQuery plugin for image cropping and zooming.</li><li>Loads images locally via <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" target="_blank">FileReader</a>, and does cropping using <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Canvas" target="_blank">canvas</a>.</li><li>Designed to be extremely customizable via CSS.</li><li>Best for the cases where you want users to upload images of a specific size and ratio.</li></ul></div></div></section><section class="getting-started"><div class="container"><h2 class="title">Getting started</h2><div class="content"><p>Install using <a href="http://bower.io/" target="_blank">Bower</a>:</p><pre><code>bower install cropit</code></pre></div></div></section><section class="demos"><div class="title-wrapper"><div class="container"><h2 class="title">Demos</h2></div></div><div class="demo-wrapper basic"><div class="container"><h3 class="title">Basic image cropper</h3><div class="demo"><div class="column"><div class="cropit-image-preview"></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input"><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;!-- This wraps the whole cropper --&gt;
+&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;!-- This is where the preview image is displayed --&gt;
+  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  
+  &lt;!-- This range input controls zoom --&gt;
+  &lt;!-- You can add additional elements here, for example the image icons --&gt;
+  &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
+  
+  &lt;!-- This is where user selects new image --&gt;
+  &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
+  
+  &lt;!-- The cropit- classes above are needed so cropit can find these elements --&gt;
+&lt;/div&gt;
+</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit();
+
+// In the demos I'm passing in an imageState option
+// so it renders an image by default:
+// $('.image-cropper').cropit({ imageState: { src: { imageSrc } } });
+</code></pre></div><div class="css"><pre><code class="css">.cropit-image-preview {
+  /* You can specify preview size in CSS */
+  width: 960px;
+  height: 540px;
+}
+</code></pre></div></div></div></div><div class="demo-wrapper custom-button"><div class="container"><h3 class="title">Custom select image button and zoom slider</h3><div class="demo"><div class="column"><div class="cropit-image-preview"></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  
+  &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
+  
+  &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
+  &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
+&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit();
+
+// When user clicks select image button,
+// open select file dialog programmatically
+$('.select-image-btn').click(function() {
+  $('.cropit-image-input').click();
+});</code></pre></div><div class="css"><pre><code class="css">/* Hide file input */
+input.cropit-image-input {
+  visibility: hidden;
+}
+
+/*
+ * See http://www.htmllion.com/html5-range-input-with-css.html
+ * for styling range input
+ */
+ </code></pre></div></div></div></div><div class="demo-wrapper image-background"><div class="container"><h3 class="title">Image cropper with background</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;!-- .cropit-image-preview-container is needed for background image to work --&gt;
+  &lt;div class=&quot;cropit-image-preview-container&quot;&gt;
+    &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
+  
+  &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
+  &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
+&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">.cropit-image-background {
+  opacity: .2;
+}
+
+/*
+ * If the slider or anything else is covered by the background image,
+ * use relative or absolute position on it
+ */
+input.cropit-image-zoom-input {
+  position: relative;
+}
+
+/* Limit the background image by adding overflow: hidden */
+.image-cropper {
+  overflow: hidden;
+}
+</code></pre></div></div></div></div><div class="demo-wrapper image-background-border"><div class="container"><h3 class="title">Image cropper with thin background border</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;div class=&quot;cropit-image-preview-container&quot;&gt;
+    &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
+  
+  &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
+  &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
+&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit({
+  imageBackground: true,
+  imageBackgroundBorderSize: 20 // Width of background border
+});
+</code></pre></div></div></div></div></section><script src="scripts/vendor.js"></script><script src="scripts/index.js"></script><script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
