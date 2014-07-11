@@ -248,6 +248,15 @@ class Cropit
     zoom: @zoom
     sliderPos: @sliderPos
 
+  getImageSrc: ->
+    @imageSrc
+
+  getOffset: ->
+    @offset
+
+  getZoom: ->
+    @zoom
+
   getImageSize: ->
     return null unless @imageSize
     width: @imageSize.w

@@ -19,6 +19,18 @@ methods =
     cropit = @first().data dataKey
     cropit?.getImageState()
 
+  imageSrc: ->
+    cropit = @first().data dataKey
+    cropit?.getImageSrc()
+
+  offset: ->
+    cropit = @first().data dataKey
+    cropit?.getOffset()
+
+  zoom: ->
+    cropit = @first().data dataKey
+    cropit?.getZoom()
+
   imageSize: ->
     cropit = @first().data dataKey
     cropit?.getImageSize()

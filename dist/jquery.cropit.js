@@ -302,6 +302,15 @@
                 sliderPos: this.sliderPos
             };
         };
+        Cropit.prototype.getImageSrc = function() {
+            return this.imageSrc;
+        };
+        Cropit.prototype.getOffset = function() {
+            return this.offset;
+        };
+        Cropit.prototype.getZoom = function() {
+            return this.zoom;
+        };
         Cropit.prototype.getImageSize = function() {
             if (!this.imageSize) {
                 return null;
@@ -373,6 +382,21 @@
             var cropit;
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getImageState() : void 0;
+        },
+        imageSrc: function() {
+            var cropit;
+            cropit = this.first().data(dataKey);
+            return cropit != null ? cropit.getImageSrc() : void 0;
+        },
+        offset: function() {
+            var cropit;
+            cropit = this.first().data(dataKey);
+            return cropit != null ? cropit.getOffset() : void 0;
+        },
+        zoom: function() {
+            var cropit;
+            cropit = this.first().data(dataKey);
+            return cropit != null ? cropit.getZoom() : void 0;
         },
         imageSize: function() {
             var cropit;

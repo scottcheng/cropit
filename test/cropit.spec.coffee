@@ -188,6 +188,27 @@ describe 'Cropit', ->
       expect(imageState.zoom).toBe .5
       expect(imageState.sliderPos).toBe .75
 
+  describe 'getImageSrc()', ->
+
+    it 'returns image source', ->
+      cropit = new Cropit
+      cropit.imageSrc = imageUrl
+      expect(cropit.getImageSrc()).toBe imageUrl
+
+  describe 'getOffset()', ->
+
+    it 'returns offset', ->
+      cropit = new Cropit
+      cropit.offset = x: -2, y: -2
+      expect(cropit.getOffset()).toEqual x: -2, y: -2
+
+  describe 'getZoom()', ->
+
+    it 'returns zoom', ->
+      cropit = new Cropit
+      cropit.zoom = .75
+      expect(cropit.getZoom()).toBe .75
+
   describe 'getImageSize()', ->
 
     beforeEach ->
