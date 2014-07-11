@@ -63,7 +63,7 @@ do ->
   $demo = $ '.demo-wrapper.image-background-border'
   $demo.cropit
     imageBackground: true
-    imageBackgroundBorderSize: 20
+    imageBackgroundBorderSize: 15
     imageState:
       src: 'http://scottcheng.github.io/cropit/images/4-960.jpg'
       offset:
