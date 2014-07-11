@@ -1,9 +1,12 @@
 openFileInput = ->
-  $(@).find('input.cropit-image-input').click()
+  @find('input.cropit-image-input').click()
 downloadCroppedImage = ->
   imageData = @cropit 'croppedImageData'
   window.open imageData
-
+onZoomEnabled = ->
+  @find('.slider-wrapper').removeClass 'disabled'
+onZoomDisabled = ->
+  @find('.slider-wrapper').addClass 'disabled'
 
 # Splash demo
 do ->
@@ -15,6 +18,8 @@ do ->
       offset:
         x: -112
         y: 0
+    onZoomEnabled: onZoomEnabled.bind $splash
+    onZoomDisabled: onZoomDisabled.bind $splash
 
   $splash.on 'click', '.select-image-btn', openFileInput.bind $splash
   $splash.on 'click', '.download-btn', downloadCroppedImage.bind $splash
@@ -28,6 +33,8 @@ do ->
       offset:
         x: 0
         y: -125
+    onZoomEnabled: onZoomEnabled.bind $demo
+    onZoomDisabled: onZoomDisabled.bind $demo
 
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
 
@@ -40,6 +47,8 @@ do ->
       offset:
         x: 0
         y: -94
+    onZoomEnabled: onZoomEnabled.bind $demo
+    onZoomDisabled: onZoomDisabled.bind $demo
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
@@ -54,6 +63,8 @@ do ->
       offset:
         x: 0
         y: -86
+    onZoomEnabled: onZoomEnabled.bind $demo
+    onZoomDisabled: onZoomDisabled.bind $demo
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
@@ -69,6 +80,8 @@ do ->
       offset:
         x: 0
         y: -140
+    onZoomEnabled: onZoomEnabled.bind $demo
+    onZoomDisabled: onZoomDisabled.bind $demo
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
