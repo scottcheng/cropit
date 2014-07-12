@@ -85,7 +85,7 @@
             this.init();
         }
         Cropit.prototype.init = function() {
-            var $previewContainer, imageBgBorderSize, offset, _ref, _ref1, _ref2, _ref3, _ref4;
+            var $previewContainer, imageBgBorderSize, _ref, _ref1, _ref2, _ref3;
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
@@ -143,16 +143,15 @@
             this.initialSliderPos = 0;
             this.imageLoaded = false;
             this.imageSrc = ((_ref = this.options.imageState) != null ? _ref.src : void 0) || null;
-            offset = ((_ref1 = this.options.imageState) != null ? _ref1.offset : void 0) || this.initialOffset;
-            this.setOffset(((_ref2 = this.options.imageState) != null ? _ref2.offset : void 0) || this.initialOffset);
-            this.zoom = ((_ref3 = this.options.imageState) != null ? _ref3.zoom : void 0) || this.initialZoom;
+            this.setOffset(((_ref1 = this.options.imageState) != null ? _ref1.offset : void 0) || this.initialOffset);
+            this.zoom = ((_ref2 = this.options.imageState) != null ? _ref2.zoom : void 0) || this.initialZoom;
             this.$imageZoomInput.val(this.initialSliderPos);
             this.moveContinue = false;
             this.zoomer = new Zoomer();
             this.$preview.on("mousedown mouseup mouseleave", this.handlePreviewEvent.bind(this));
             this.$fileInput.on("change", this.onFileChange.bind(this));
             this.$imageZoomInput.on("mousedown mouseup mousemove", this.updateSliderPos.bind(this));
-            if ((_ref4 = this.options.imageState) != null ? _ref4.src : void 0) {
+            if ((_ref3 = this.options.imageState) != null ? _ref3.src : void 0) {
                 return this.loadImage();
             }
         };

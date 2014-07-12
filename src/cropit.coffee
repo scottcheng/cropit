@@ -75,7 +75,6 @@ class Cropit
     @imageLoaded = false
 
     @imageSrc = @options.imageState?.src or null
-    offset = @options.imageState?.offset or @initialOffset
     @setOffset @options.imageState?.offset or @initialOffset
     @zoom = @options.imageState?.zoom or @initialZoom
 
