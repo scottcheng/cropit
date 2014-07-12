@@ -4,9 +4,9 @@ gray-light = #bbb
 gray-lighter = #eee
 gray-bg = #fcfcfc
 
-blue-dark = shade(blue, 20%)
 blue = #52a0c7
 blue-light = tint(blue, 20%)
+blue-dark = shade(blue, 20%)
 orange = #cf754f
 
 btn(background = blue)
@@ -54,6 +54,25 @@ pre
     margin-bottom 0
   code
     background transparent !important
+    language-tag(language)
+      position relative
+      &:after
+        content language
+        absolute top 8px right 8px
+        color gray-lighter
+        font-style italic
+        font-family Lato, sans-serif
+        line-height 1
+        transition color .25s
+      &:hover
+        &:after
+          color gray
+    &.html
+      language-tag('HTML')
+    &.css
+      language-tag('CSS')
+    &.javascript
+      language-tag('JavaScript')
 
 @keyframes bounce
   0%, 80%, 100%
@@ -249,7 +268,7 @@ section.demos
               &.download-btn
                 margin-top 10px
       .code
-        > .html, > .js, > .css
+        > .html, > .javascript, > .css
           margin-top 20px
           pre
             background #fff

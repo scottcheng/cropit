@@ -10,9 +10,10 @@
   &lt;!-- This is where user selects new image --&gt;
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   
-  &lt;!-- The cropit- classes above are needed so cropit can identify these elements --&gt;
+  &lt;!-- The cropit- classes above are needed
+       so cropit can identify these elements --&gt;
 &lt;/div&gt;
-</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit();
+</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit();
 
 // In the demos I'm passing in an imageState option
 // so it renders an image by default:
@@ -31,7 +32,7 @@
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;!-- And clicking on this button will open up select file dialog --&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit();
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit();
 
 // When user clicks select image button,
 // open select file dialog programmatically
@@ -47,7 +48,7 @@ input.cropit-image-input {
  * for styling range input
  */
  </code></pre></div></div></div></div><div class="sub-section demo-wrapper image-background"><div class="container"><h3 class="title">Image cropper with background</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
-  &lt;!-- .cropit-image-preview-container is needed for background image to work --&gt;
+  &lt;!-- The preview container is needed for background image to work --&gt;
   &lt;div class=&quot;cropit-image-preview-container&quot;&gt;
     &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
@@ -56,7 +57,7 @@ input.cropit-image-input {
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">.cropit-image-background {
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">.cropit-image-background {
   opacity: .2;
 }
 
@@ -81,7 +82,7 @@ input.cropit-image-zoom-input {
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="js"><pre><code class="javascript">$('.image-cropper').cropit({
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({
   imageBackground: true,
   imageBackgroundBorderSize: 20 // Width of background border
 });

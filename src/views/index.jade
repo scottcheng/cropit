@@ -118,10 +118,11 @@ html
                   <!-- This is where user selects new image -->
                   <input type="file" class="cropit-image-input" />
 
-                  <!-- The cropit- classes above are needed so cropit can identify these elements -->
+                  <!-- The cropit- classes above are needed
+                       so cropit can identify these elements -->
                 </div>
 
-            .js
+            .javascript
               :jssrc
                 $('.image-cropper').cropit();
 
@@ -170,7 +171,7 @@ html
                   <!-- And clicking on this button will open up select file dialog -->
                   <div class="select-image-btn">Select new image</div>
                 </div>
-            .js
+            .javascript
               :jssrc
                 $('.image-cropper').cropit();
 
@@ -216,7 +217,7 @@ html
             .html
               :htmlsrc
                 <div id="image-cropper">
-                  <!-- .cropit-image-preview-container is needed for background image to work -->
+                  <!-- The preview container is needed for background image to work -->
                   <div class="cropit-image-preview-container">
                     <div class="cropit-image-preview"></div>
                   </div>
@@ -226,7 +227,7 @@ html
                   <input type="file" class="cropit-image-input" />
                   <div class="select-image-btn">Select new image</div>
                 </div>
-            .js
+            .javascript
               :jssrc
                 $('.image-cropper').cropit({ imageBackground: true });
             .css
@@ -282,7 +283,7 @@ html
                   <input type="file" class="cropit-image-input" />
                   <div class="select-image-btn">Select new image</div>
                 </div>
-            .js
+            .javascript
               :jssrc
                 $('.image-cropper').cropit({
                   imageBackground: true,
