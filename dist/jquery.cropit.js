@@ -86,7 +86,9 @@
         }
         Cropit.prototype.init = function() {
             var $previewContainer, imageBgBorderSize, offset, _ref, _ref1, _ref2, _ref3, _ref4;
-            this.$fileInput = this.options.$fileInput;
+            this.$fileInput = this.options.$fileInput.attr({
+                accept: "image/*"
+            });
             this.$preview = this.options.$preview.css({
                 backgroundRepeat: "no-repeat"
             });

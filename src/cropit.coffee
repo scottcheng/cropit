@@ -20,6 +20,8 @@ class Cropit
 
   init: ->
     @$fileInput = @options.$fileInput
+      .attr
+        accept: 'image/*'
     @$preview = @options.$preview
       .css
         backgroundRepeat: 'no-repeat'
