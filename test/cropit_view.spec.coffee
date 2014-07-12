@@ -374,7 +374,7 @@ describe 'Cropit View', ->
       it 'adds background image border size to background image offset', ->
         $el.cropit
           imageBackground: true
-          imageBackgroundBorderSize: 2
+          imageBackgroundBorderWidth: 2
         cropit = $el.data dataKey
         cropit.imageSize = w: 8, h: 6
         cropit.previewSize = w: 2, h: 2

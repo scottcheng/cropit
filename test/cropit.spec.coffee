@@ -9,7 +9,7 @@ describe 'Cropit', ->
     cropit = new Cropit
     expect(cropit.options.exportZoom).toBe 1
     expect(cropit.options.imageBackground).toBe false
-    expect(cropit.options.imageBackgroundBorderSize).toBe 0
+    expect(cropit.options.imageBackgroundBorderWidth).toBe 0
     expect(cropit.options.imageState).toBe null
 
   describe 'init()', ->

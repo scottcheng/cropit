@@ -66,7 +66,7 @@
     defaults = {
         exportZoom: 1,
         imageBackground: false,
-        imageBackgroundBorderSize: 0,
+        imageBackgroundBorderWidth: 0,
         imageState: null
     };
     Cropit = function() {
@@ -112,7 +112,7 @@
                 this.$preview.height(this.previewSize.h);
             }
             if (this.options.imageBackground) {
-                imageBgBorderSize = this.options.imageBackgroundBorderSize;
+                imageBgBorderSize = this.options.imageBackgroundBorderWidth;
                 $previewContainer = this.options.$previewContainer;
                 this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
                 this.$imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
@@ -394,8 +394,8 @@
             });
             if (this.options.imageBackground) {
                 this.$imageBgContainer.css({
-                    width: this.previewSize.w + this.options.imageBackgroundBorderSize * 2,
-                    height: this.previewSize.h + this.options.imageBackgroundBorderSize * 2
+                    width: this.previewSize.w + this.options.imageBackgroundBorderWidth * 2,
+                    height: this.previewSize.h + this.options.imageBackgroundBorderWidth * 2
                 });
             }
             if (this.imageLoaded) {

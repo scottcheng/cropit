@@ -1,7 +1,7 @@
 defaults =
   exportZoom: 1
   imageBackground: false
-  imageBackgroundBorderSize: 0
+  imageBackgroundBorderWidth: 0
   imageState: null
 
 class Cropit
@@ -44,7 +44,7 @@ class Cropit
     @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
-      imageBgBorderSize = @options.imageBackgroundBorderSize
+      imageBgBorderSize = @options.imageBackgroundBorderWidth
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
         .addClass 'cropit-image-background'
@@ -316,8 +316,8 @@ class Cropit
 
     if @options.imageBackground
       @$imageBgContainer.css
-        width: @previewSize.w + @options.imageBackgroundBorderSize * 2
-        height: @previewSize.h + @options.imageBackgroundBorderSize * 2
+        width: @previewSize.w + @options.imageBackgroundBorderWidth * 2
+        height: @previewSize.h + @options.imageBackgroundBorderWidth * 2
 
     if @imageLoaded
       @setupZoomer()
