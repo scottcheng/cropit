@@ -4,8 +4,9 @@ gray-light = #bbb
 gray-lighter = #eee
 gray-bg = #fcfcfc
 
-blue = #52a0c7
 blue-dark = shade(blue, 20%)
+blue = #52a0c7
+blue-light = tint(blue, 20%)
 orange = #cf754f
 
 btn(background = blue)
@@ -281,3 +282,16 @@ section.docs
           margin-right 10px
           color gray
           font-style italic
+
+footer
+  padding 60px 0
+  text-align center
+  a
+    margin 0 10px
+    .icon
+      margin-right 5px
+  &, a
+    color gray-light
+  &:hover
+    &, a
+      color gray
