@@ -42,7 +42,7 @@ html
 
       .btns-wrapper
         .btns
-          input.cropit-image-input.custom(type='file' accept='image/*')
+          input.cropit-image-input.custom(type='file')
           .btn.select-image-btn
             span.icon.icon-image
             | Select new image
@@ -52,7 +52,6 @@ html
 
     section.what-it-is
       .container
-
         h2.title What it is
 
         .content
@@ -72,7 +71,6 @@ html
 
     section.getting-started
       .container
-
         h2.title Getting started
 
         .content
@@ -86,10 +84,9 @@ html
 
       .title-wrapper
         .container
-
           h2.title Demos
 
-      .demo-wrapper.basic
+      .sub-section.demo-wrapper.basic
         .container
           h3.title Basic image cropper
           .demo
@@ -102,7 +99,7 @@ html
                 span.icon.icon-image.large-image
             .column
               .btns
-                input.cropit-image-input(type='file' accept='image/*')
+                input.cropit-image-input(type='file')
                 .btn.download-btn
                   span.icon.icon-box-add
                   | Download cropped image
@@ -115,11 +112,11 @@ html
                   <div class="cropit-image-preview"></div>
 
                   <!-- This range input controls zoom -->
-                  <!-- You can add additional elements here, for example the image icons -->
+                  <!-- You can add additional elements here, e.g. the image icons -->
                   <input type="range" class="cropit-image-zoom-input" />
 
                   <!-- This is where user selects new image -->
-                  <input type="file" class="cropit-image-input" accept="image/*" />
+                  <input type="file" class="cropit-image-input" />
 
                   <!-- The cropit- classes above are needed so cropit can identify these elements -->
                 </div>
@@ -140,7 +137,7 @@ html
                   height: 540px;
                 }
 
-      .demo-wrapper.custom-button
+      .sub-section.demo-wrapper.custom-button
         .container
           h3.title Custom select image button and zoom slider
           .demo
@@ -153,7 +150,7 @@ html
                 span.icon.icon-image.large-image
             .column
               .btns
-                input.cropit-image-input.custom(type='file' accept='image/*')
+                input.cropit-image-input.custom(type='file')
                 .btn.select-image-btn
                   span.icon.icon-image
                   | Select new image
@@ -169,7 +166,7 @@ html
                   <input type="range" class="cropit-image-zoom-input" />
 
                   <!-- The actual file input will be hidden -->
-                  <input type="file" class="cropit-image-input" accept="image/*" />
+                  <input type="file" class="cropit-image-input" />
                   <!-- And clicking on this button will open up select file dialog -->
                   <div class="select-image-btn">Select new image</div>
                 </div>
@@ -194,7 +191,7 @@ html
                  * for styling range input
                  */
 
-      .demo-wrapper.image-background
+      .sub-section.demo-wrapper.image-background
         .container
           h3.title Image cropper with background
           .demo
@@ -208,7 +205,7 @@ html
                 span.icon.icon-image.large-image
             .column
               .btns
-                input.cropit-image-input.custom(type='file' accept='image/*')
+                input.cropit-image-input.custom(type='file')
                 .btn.select-image-btn
                   span.icon.icon-image
                   | Select new image
@@ -226,7 +223,7 @@ html
 
                   <input type="range" class="cropit-image-zoom-input" />
 
-                  <input type="file" class="cropit-image-input" accept="image/*" />
+                  <input type="file" class="cropit-image-input" />
                   <div class="select-image-btn">Select new image</div>
                 </div>
             .js
@@ -251,7 +248,7 @@ html
                   overflow: hidden;
                 }
 
-      .demo-wrapper.image-background-border
+      .sub-section.demo-wrapper.image-background-border
         .container
           h3.title Image cropper with thin background border
           .demo
@@ -265,7 +262,7 @@ html
                 span.icon.icon-image.large-image
             .column
               .btns
-                input.cropit-image-input.custom(type='file' accept='image/*')
+                input.cropit-image-input.custom(type='file')
                 .btn.select-image-btn
                   span.icon.icon-image
                   | Select new image
@@ -282,7 +279,7 @@ html
 
                   <input type="range" class="cropit-image-zoom-input" />
 
-                  <input type="file" class="cropit-image-input" accept="image/*" />
+                  <input type="file" class="cropit-image-input" />
                   <div class="select-image-btn">Select new image</div>
                 </div>
             .js
@@ -291,6 +288,145 @@ html
                   imageBackground: true,
                   imageBackgroundBorderSize: 20 // Width of background border
                 });
+
+    section.docs
+
+      .title-wrapper
+        .container
+          h2.title Documentation
+
+      .sub-section.doc-wrapper.options
+        .container
+          h3.title Initialization options
+
+          :jssrc
+            $imageCropper.cropit(options);
+
+          //- Elements
+          .option
+            .name $preview
+            .type jQuery element
+            .description The HTML element that displays image preview.
+            .default: code $imageCropper.find('.cropit-image-preview')
+          .option
+            .name $fileInput
+            .type jQuery element
+            .description File input element.
+            .default: code $imageCropper.find('input.cropit-image-input')
+          .option
+            .name $imageZoomInput
+            .type jQuery element
+            .description Range input element that controls image zoom.
+            .default: code $imageCropper.find('input.cropit-image-zoom-input')
+          .option
+            .name $previewContainer
+            .type jQuery element
+            .description
+              | Preview container. Only needed when 
+              code imageBackground
+              |  is true.
+            .default: code $imageCropper.find('.cropit-image-preview-container')
+
+          //- Values
+          .option
+            .name width
+            .type number
+            .description Width of image preview in pixels. If set, it will override the CSS property.
+            .default: code null
+          .option
+            .name height
+            .type number
+            .description Height of image preview in pixels. If set, it will override the CSS property.
+            .default: code null
+          .option
+            .name imageBackground
+            .type boolean
+            .description Whether or not to display the background image beyond the preview area.
+            .default: code false
+          .option
+            .name imageBackgroundBorderWidth
+            .type number
+            .description
+              | Width of background image border in pixels. 
+              | If greater than 
+              code 0
+              | , the background image beyond the width will be hidden.
+            .default: code 0
+          .option
+            .name exportZoom
+            .type number
+            .description
+              | The ratio between the desired image size to export and the preview size. 
+              | For example, if the preview size is 
+              code 300px * 200px
+              | , and 
+              code exportZoom = 2
+              | , then the exported image size will be 
+              code 600px * 400px
+              | . This also affects the maximum zoom level, since the exported image cannot be zoomed to larger than its original size.
+            .default: code 1
+
+          //- Callbacks
+          .option
+            .name onFileChange
+            .type function
+            .description
+              | Called when user selects a file in the select file input.
+          .option
+            .name onImageLoading
+            .type function
+            .description
+              | Called when image starts to be loaded.
+          .option
+            .name onImageLoaded
+            .type function
+            .description
+              | Called when image is loaded.
+          .option
+            .name onZoomEnabled
+            .type function
+            .description
+              | Called when image the zoom slider is enabled.
+          .option
+            .name onZoomDisabled
+            .type function
+            .description
+              | Called when image the zoom slider is disabled.
+
+      .sub-section.doc-wrapper.methods
+        .container
+          h3.title APIs
+
+          :jssrc
+            // Returns the cropped image in Data URI format.
+            $imageCropper.cropit('croppedImageData');
+
+            // Returns whether the current image is big enough to be zoomable.
+            // Note that an image cannot be zoomed to larger than its original size.
+            $imageCropper.cropit('isZoomable');
+
+            // Returns the source of current image.
+            // If the image is loaded through the file input, the image source will be
+            // in Data URI format.
+            $imageCropper.cropit('imageSrc');
+
+            // Returns the image offset of the current cropping
+            // E.g. { x: -10, y: -15 }
+            $imageCropper.cropit('offset');
+
+            // Returns the current zoom.
+            $imageCropper.cropit('zoom');
+
+            // Returns the current image size.
+            // E.g. { width: 1920, height: 1080 }
+            $imageCropper.cropit('imageSize');
+
+            // Returns the current preview area size.
+            // E.g. { width: 600, height: 400 }
+            $imageCropper.cropit('previewSize');
+
+            // Sets preview area size.
+            $imageCropper.cropit('previewSize', { width: 800, height: 450 });
 
     script(src='scripts/vendor.js')
     script(src='scripts/index.js')

@@ -49,6 +49,8 @@ a
 pre
   padding 5px 10px
   border 1px solid gray-lighter
+  &:last-child
+    margin-bottom 0
   code
     background transparent !important
 
@@ -193,7 +195,7 @@ pre
       margin-left 20px
 
 section
-  padding 40px 0
+  padding 60px 0
   h3
     font-style italic
   .container
@@ -206,18 +208,22 @@ section
         line-height 1.5
       p:last-child, ul:last-child
         margin-bottom 0
+  .sub-section
+    padding 40px 0
+    overflow hidden
+    border-bottom 1px solid gray-lighter
+    &:nth-child(2)
+      padding-top 0
+    &:last-child
+      padding-bottom 0
+      border-bottom none
 
 section.getting-started
   gray-section()
 
 section.demos
-  padding-bottom 0
   .demo-wrapper
-    padding-bottom 40px
     overflow hidden
-    &:nth-child(n+3)
-      padding 40px 0
-      border-top 1px solid gray-lighter
     > .container
       .demo
         clearfix()
@@ -247,3 +253,31 @@ section.demos
           pre
             background #fff
             position relative
+
+section.docs
+  gray-section()
+
+  .options
+    .option
+      margin 30px 0
+      &:last-child
+        margin-bottom 0
+      .name, .type
+        display inline-block
+      .name
+        color orange
+        font-family monospace
+        font-size 20px
+      .type
+        margin-left 20px
+        color gray
+        font-style italic
+      .description, .default
+        margin-top 10px
+        line-height 1.5
+      .default
+        &:before
+          content 'Default:'
+          margin-right 10px
+          color gray
+          font-style italic
