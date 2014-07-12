@@ -52,9 +52,40 @@ pre
   code
     background transparent !important
 
+@keyframes bounce
+  0%, 80%, 100%
+    transform scale(0)
+  40%
+    transform scale(1)
+
+.spinner
+  absolute top 50% left 50%
+  transform translate(-50%, -50%)
+  > .spinner-dot
+    size 15px
+    background rgba(gray-dark, .5)
+    border-radius 50%
+    display inline-block
+    margin 0 5px
+    animation bounce 1.4s infinite ease-in-out
+    animation-fill-mode both
+    &:nth-child(1)
+      animation-delay -.32s
+    &:nth-child(2)
+      animation-delay -.16s
+
 .splash, .demos .demo-wrapper
   .cropit-image-background
     opacity .2
+  .cropit-image-preview
+    position relative
+    .spinner
+      display none
+    &.cropit-image-loading
+      .spinner
+        display block
+    &.cropit-image-loaded
+      cursor move
   .slider-wrapper
     transition opacity .25s
     &.disabled
@@ -147,9 +178,7 @@ pre
       transform translate(-50%, -50%)
       .cropit-image-preview
         size min-preview-height
-        cursor move
         border 1px solid gray-lighter
-        background-size cover
       .slider-wrapper
         margin-top 20px
         text-align center
@@ -200,7 +229,6 @@ section.demos
             .cropit-image-preview
               size 560px 176px
               border 1px solid gray-lighter
-              cursor move
             .slider-wrapper
               margin-top 20px
               text-align center

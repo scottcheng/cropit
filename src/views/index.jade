@@ -1,3 +1,9 @@
+mixin spinner
+  .spinner
+    .spinner-dot
+    .spinner-dot
+    .spinner-dot
+
 doctype html
 html
   head
@@ -28,6 +34,7 @@ html
         .preview-wrapper
           .cropit-image-preview-container
             .cropit-image-preview
+              +spinner
           .slider-wrapper
             span.icon.icon-image.small-image
             input.cropit-image-zoom-input.custom(type='range')
@@ -88,6 +95,7 @@ html
           .demo
             .column
               .cropit-image-preview
+                +spinner
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input(type='range')
@@ -113,7 +121,7 @@ html
                   <!-- This is where user selects new image -->
                   <input type="file" class="cropit-image-input" />
 
-                  <!-- The cropit- classes above are needed so cropit can find these elements -->
+                  <!-- The cropit- classes above are needed so cropit can identify these elements -->
                 </div>
 
             .js
@@ -138,6 +146,7 @@ html
           .demo
             .column
               .cropit-image-preview
+                +spinner
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')
@@ -190,6 +199,7 @@ html
             .column
               .cropit-image-preview-container
                 .cropit-image-preview
+                  +spinner
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')
@@ -246,6 +256,7 @@ html
             .column
               .cropit-image-preview-container
                 .cropit-image-preview
+                  +spinner
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')
