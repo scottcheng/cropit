@@ -144,6 +144,22 @@ describe 'Cropit View', ->
         cropit.onImageLoaded()
         expect(onImageLoadedCallback).toHaveBeenCalled()
 
+    describe 'onImageError()', ->
+
+      beforeEach ->
+        $el.cropit()
+        cropit = $el.data dataKey
+        cropit.imageSrc = imageData
+
+      it 'calls options.onImageError()', ->
+        onImageError = jasmine.createSpy 'onImageLoaded callback'
+        $el.cropit
+          onImageError: onImageError
+        cropit = $el.data dataKey
+
+        cropit.onImageError()
+        expect(onImageError).toHaveBeenCalled()
+
     describe 'handlePreviewEvent()', ->
 
       it 'is invoked on mousedown on preview', ->

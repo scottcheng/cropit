@@ -177,7 +177,8 @@
                 _base.onImageLoading();
             }
             this.setImageLoadingClass();
-            return this.$hiddenImage.load(this.onImageLoaded.bind(this));
+            this.$hiddenImage.load(this.onImageLoaded.bind(this));
+            return this.$hiddenImage.error(this.onImageError.bind(this));
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
@@ -193,6 +194,10 @@
             this.setupZoomer();
             this.imageLoaded = true;
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
+        };
+        Cropit.prototype.onImageError = function() {
+            var _base;
+            return typeof (_base = this.options).onImageError === "function" ? _base.onImageError() : void 0;
         };
         Cropit.prototype.setImageLoadingClass = function() {
             return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");

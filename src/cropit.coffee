@@ -111,6 +111,7 @@ class Cropit
     @setImageLoadingClass()
 
     @$hiddenImage.load @onImageLoaded.bind @
+    @$hiddenImage.error @onImageError.bind @
 
   onImageLoaded: ->
     @setImageLoadedClass()
@@ -127,6 +128,9 @@ class Cropit
     @imageLoaded = true
 
     @options.onImageLoaded?()
+
+  onImageError: ->
+    @options.onImageError?()
 
   setImageLoadingClass: ->
     @$preview
