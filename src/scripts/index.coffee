@@ -79,7 +79,7 @@ do ->
       src: 'http://scottcheng.github.io/cropit/images/4-960.jpg'
       offset:
         x: 0
-        y: -140
+        y: -71
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
 
