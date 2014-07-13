@@ -232,6 +232,7 @@ html
                 $('.image-cropper').cropit({ imageBackground: true });
             .css
               :csssrc
+                /* Translucent background image */
                 .cropit-image-background {
                   opacity: .2;
                 }
@@ -287,7 +288,7 @@ html
               :jssrc
                 $('.image-cropper').cropit({
                   imageBackground: true,
-                  imageBackgroundBorderSize: 20 // Width of background border
+                  imageBackgroundBorderSize: 15 // Width of background border
                 });
 
     section.docs
@@ -428,6 +429,77 @@ html
 
             // Sets preview area size.
             $imageCropper.cropit('previewSize', { width: 800, height: 450 });
+
+      .sub-section.doc-wrapper.styles
+        .container
+          h3.title Styling with CSS
+
+          :htmlsrc
+            <!-- Cropper preview without background image -->
+            <!-- Preview image is displayed using background-image on preview -->
+            <div class="cropit-image-preview"></div>
+
+            <!-- Cropper preview with background image -->
+            <!-- Preview container is relative positioned -->
+            <!-- Add a wrapper if you need to absolute position it -->
+            <div class="cropit-image-preview-container">
+              <!-- Background image container is absolute positioned -->
+              <div class="cropit-image-background-container">
+                <!-- Background image is absolute positioned -->
+                <img class="cropit-image-background" />
+              </div>
+              <div class="cropit-image-preview"></div>
+            </div>
+
+            <!-- Zoom slider -->
+            <input type="range" class="cropit-image-zoom-input" />
+
+            <!-- File selector ->
+            <!-- cropit will add accept="image/*" attribute to it -->
+            <input type="file" class="cropit-image-input" />
+
+          :csssrc
+            /* Show spinner when image is being loaded */
+            .cropit-image-preview.cropit-image-loading {
+              .spinner {
+                opacity: 1;
+              }
+            }
+
+            /* Show move cursor when image has been loaded */
+            .cropit-image-preview.cropit-image-loaded {
+              cursor: move;
+            }
+
+            /* Gray out zoom slider when the image cannot be zoomed */
+            .cropit-image-zoom-input[disabled] {
+              opacity: .2;
+            }
+
+            /* Hide default file input button if you want to use a custom button */
+            input.cropit-image-input {
+              visibility: hidden;
+            }
+
+            /* The following styles are only relevant to when background image is enabled */
+
+            /* Translucent background image */
+            .cropit-image-background {
+              opacity: .2;
+            }
+
+            /*
+             * If the slider or anything else is covered by the background image,
+             * use relative or absolute position on it
+             */
+            input.cropit-image-zoom-input {
+              position: relative;
+            }
+
+            /* Limit the background image by adding overflow: hidden */
+            .image-cropper {
+              overflow: hidden;
+            }
 
     footer
       a(href='https://github.com/scottcheng/cropit')

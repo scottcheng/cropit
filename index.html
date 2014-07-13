@@ -57,7 +57,8 @@ input.cropit-image-input {
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">.cropit-image-background {
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">/* Translucent background image */
+.cropit-image-background {
   opacity: .2;
 }
 
@@ -84,7 +85,7 @@ input.cropit-image-zoom-input {
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
 &lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({
   imageBackground: true,
-  imageBackgroundBorderSize: 20 // Width of background border
+  imageBackgroundBorderSize: 15 // Width of background border
 });
 </code></pre></div></div></div></div></section><section class="docs"><div class="title-wrapper"><div class="container"><h2 class="title">Documentation</h2></div></div><div class="sub-section doc-wrapper options"><div class="container"><h3 class="title">Initialization options</h3><pre><code class="javascript">$imageCropper.cropit(options);
 </code></pre><div class="option"><div class="name">$preview</div><div class="type">jQuery element</div><div class="description">The HTML element that displays image preview.</div><div class="default"><code>$imageCropper.find('.cropit-image-preview')</code></div></div><div class="option"><div class="name">$fileInput</div><div class="type">jQuery element</div><div class="description">File input element.</div><div class="default"><code>$imageCropper.find('input.cropit-image-input')</code></div></div><div class="option"><div class="name">$imageZoomInput</div><div class="type">jQuery element</div><div class="description">Range input element that controls image zoom.</div><div class="default"><code>$imageCropper.find('input.cropit-image-zoom-input')</code></div></div><div class="option"><div class="name">$previewContainer</div><div class="type">jQuery element</div><div class="description">Preview container. Only needed when <code>imageBackground</code> is true.</div><div class="default"><code>$imageCropper.find('.cropit-image-preview-container')</code></div></div><div class="option"><div class="name">width</div><div class="type">number</div><div class="description">Width of image preview in pixels. If set, it will override the CSS property.</div><div class="default"><code>null</code></div></div><div class="option"><div class="name">height</div><div class="type">number</div><div class="description">Height of image preview in pixels. If set, it will override the CSS property.</div><div class="default"><code>null</code></div></div><div class="option"><div class="name">imageBackground</div><div class="type">boolean</div><div class="description">Whether or not to display the background image beyond the preview area.</div><div class="default"><code>false</code></div></div><div class="option"><div class="name">imageBackgroundBorderWidth</div><div class="type">number</div><div class="description">Width of background image border in pixels. 
@@ -118,4 +119,67 @@ $imageCropper.cropit('previewSize');
 
 // Sets preview area size.
 $imageCropper.cropit('previewSize', { width: 800, height: 450 });
+</code></pre></div></div><div class="sub-section doc-wrapper styles"><div class="container"><h3 class="title">Styling with CSS</h3><pre><code class="html">&lt;!-- Cropper preview without background image --&gt;
+&lt;!-- Preview image is displayed using background-image on preview --&gt;
+&lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Cropper preview with background image --&gt;
+&lt;!-- Preview container is relative positioned --&gt;
+&lt;!-- Add a wrapper if you need to absolute position it --&gt;
+&lt;div class=&quot;cropit-image-preview-container&quot;&gt;
+  &lt;!-- Background image container is absolute positioned --&gt;
+  &lt;div class=&quot;cropit-image-background-container&quot;&gt;
+    &lt;!-- Background image is absolute positioned --&gt;
+    &lt;img class=&quot;cropit-image-background&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Zoom slider --&gt;
+&lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
+
+&lt;!-- File selector -&gt;
+&lt;!-- cropit will add accept=&quot;image/*&quot; attribute to it --&gt;
+&lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
+</code></pre><pre><code class="css">/* Show spinner when image is being loaded */
+.cropit-image-preview.cropit-image-loading {
+  .spinner {
+    opacity: 1;
+  }
+}
+
+/* Show move cursor when image has been loaded */
+.cropit-image-preview.cropit-image-loaded {
+  cursor: move;
+}
+
+/* Gray out zoom slider when the image cannot be zoomed */
+.cropit-image-zoom-input[disabled] {
+  opacity: .2;
+}
+
+/* Hide default file input button if you want to use a custom button */
+input.cropit-image-input {
+  visibility: hidden;
+}
+
+/* The following styles are only relevant to when background image is enabled */
+
+/* Translucent background image */
+.cropit-image-background {
+  opacity: .2;
+}
+
+/*
+ * If the slider or anything else is covered by the background image,
+ * use relative or absolute position on it
+ */
+input.cropit-image-zoom-input {
+  position: relative;
+}
+
+/* Limit the background image by adding overflow: hidden */
+.image-cropper {
+  overflow: hidden;
+}
 </code></pre></div></div></section><footer><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>GitHub</a>|<a href="http://scottcheng.com/" target="_blank">Scott Cheng</a></footer><script src="scripts/vendor.js"></script><script src="scripts/index.js"></script><script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

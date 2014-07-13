@@ -109,10 +109,11 @@ pre
   .cropit-image-preview
     position relative
     .spinner
-      display none
+      opacity 0
+      transition opacity 1s
     &.cropit-image-loading
       .spinner
-        display block
+        opacity 1
     &.cropit-image-loaded
       cursor move
   .slider-wrapper
