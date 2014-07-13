@@ -44,7 +44,7 @@ class Cropit
     @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
-      imageBgBorderSize = @options.imageBackgroundBorderWidth
+      imageBgBorderWidth = @options.imageBackgroundBorderWidth
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
         .addClass 'cropit-image-background'
@@ -55,19 +55,16 @@ class Cropit
         .css
           position: 'absolute'
           zIndex: 0
-          top: -imageBgBorderSize
-          left: -imageBgBorderSize
-          width: @previewSize.w + imageBgBorderSize * 2
-          height: @previewSize.h + imageBgBorderSize * 2
+          left: -imageBgBorderWidth + window.parseInt @$preview.css 'border-left-width'
+          top: -imageBgBorderWidth + window.parseInt @$preview.css 'border-top-width'
+          width: @previewSize.w + imageBgBorderWidth * 2
+          height: @previewSize.h + imageBgBorderWidth * 2
         .append @$imageBg
-      @$imageBgContainer.css overflow: 'hidden' if imageBgBorderSize > 0
+      @$imageBgContainer.css overflow: 'hidden' if imageBgBorderWidth > 0
       $previewContainer
         .css 'position', 'relative'
         .prepend @$imageBgContainer
       @$preview.css 'position', 'relative'
-      @imageBgPreviewOffset =
-        x: imageBgBorderSize + window.parseInt @$preview.css 'border-left-width'
-        y: imageBgBorderSize + window.parseInt @$preview.css 'border-top-width'
 
     @initialOffset = x: 0, y: 0
     @initialZoom = 0
@@ -175,8 +172,8 @@ class Cropit
     @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
       @$imageBg.css
-        left: @offset.x + @imageBgPreviewOffset.x
-        top: @offset.y + @imageBgPreviewOffset.y
+        left: @offset.x + @options.imageBackgroundBorderWidth
+        top: @offset.y + @options.imageBackgroundBorderWidth
 
   fixOffset: (offset) ->
     return offset unless @imageLoaded

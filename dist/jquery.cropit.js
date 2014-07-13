@@ -85,7 +85,7 @@
             this.init();
         }
         Cropit.prototype.init = function() {
-            var $previewContainer, imageBgBorderSize, _ref, _ref1, _ref2, _ref3;
+            var $previewContainer, imageBgBorderWidth, _ref, _ref1, _ref2, _ref3;
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
@@ -112,28 +112,24 @@
                 this.$preview.height(this.previewSize.h);
             }
             if (this.options.imageBackground) {
-                imageBgBorderSize = this.options.imageBackgroundBorderWidth;
+                imageBgBorderWidth = this.options.imageBackgroundBorderWidth;
                 $previewContainer = this.options.$previewContainer;
                 this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
                 this.$imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
                     position: "absolute",
                     zIndex: 0,
-                    top: -imageBgBorderSize,
-                    left: -imageBgBorderSize,
-                    width: this.previewSize.w + imageBgBorderSize * 2,
-                    height: this.previewSize.h + imageBgBorderSize * 2
+                    left: -imageBgBorderWidth + window.parseInt(this.$preview.css("border-left-width")),
+                    top: -imageBgBorderWidth + window.parseInt(this.$preview.css("border-top-width")),
+                    width: this.previewSize.w + imageBgBorderWidth * 2,
+                    height: this.previewSize.h + imageBgBorderWidth * 2
                 }).append(this.$imageBg);
-                if (imageBgBorderSize > 0) {
+                if (imageBgBorderWidth > 0) {
                     this.$imageBgContainer.css({
                         overflow: "hidden"
                     });
                 }
                 $previewContainer.css("position", "relative").prepend(this.$imageBgContainer);
                 this.$preview.css("position", "relative");
-                this.imageBgPreviewOffset = {
-                    x: imageBgBorderSize + window.parseInt(this.$preview.css("border-left-width")),
-                    y: imageBgBorderSize + window.parseInt(this.$preview.css("border-top-width"))
-                };
             }
             this.initialOffset = {
                 x: 0,
@@ -242,8 +238,8 @@
             this.$preview.css("background-position", "" + this.offset.x + "px " + this.offset.y + "px");
             if (this.options.imageBackground) {
                 return this.$imageBg.css({
-                    left: this.offset.x + this.imageBgPreviewOffset.x,
-                    top: this.offset.y + this.imageBgPreviewOffset.y
+                    left: this.offset.x + this.options.imageBackgroundBorderWidth,
+                    top: this.offset.y + this.options.imageBackgroundBorderWidth
                 });
             }
         };
