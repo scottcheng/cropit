@@ -375,6 +375,13 @@ html
             .description
               | Called when user selects a file in the select file input.
           .option
+            .name onFileReaderError
+            .type function
+            .description
+              | Called when 
+              code FileReader
+              |  encounters an error while loading the image file.
+          .option
             .name onImageLoading
             .type function
             .description
@@ -384,6 +391,11 @@ html
             .type function
             .description
               | Called when image is loaded.
+          .option
+            .name onImageError
+            .type function
+            .description
+              | Called when image cannot be loaded.
           .option
             .name onZoomEnabled
             .type function
