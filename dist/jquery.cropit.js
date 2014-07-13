@@ -152,23 +152,28 @@
             }
         };
         Cropit.prototype.onFileChange = function() {
-            var file, oFReader, _base;
+            var file, fileReader, _base;
             if (typeof (_base = this.options).onFileChange === "function") {
                 _base.onFileChange();
             }
-            oFReader = new FileReader();
+            fileReader = new FileReader();
             file = this.$fileInput.get(0).files[0];
             if (file != null ? file.type.match("image") : void 0) {
                 this.setImageLoadingClass();
-                oFReader.readAsDataURL(file);
-                return oFReader.onload = this.onFileReaderLoaded.bind(this);
+                fileReader.readAsDataURL(file);
+                fileReader.onload = this.onFileReaderLoaded.bind(this);
+                return fileReader.onerror = this.onFileReaderError.bind(this);
             }
         };
         Cropit.prototype.onFileReaderLoaded = function(e) {
             this.imageSrc = e.target.result;
             this.zoom = this.initialZoom;
-            this.setOffset(this.initialOffset);
+            this.offset = this.initialOffset;
             return this.loadImage();
+        };
+        Cropit.prototype.onFileReaderError = function() {
+            var _base;
+            return typeof (_base = this.options).onFileReaderError === "function" ? _base.onFileReaderError() : void 0;
         };
         Cropit.prototype.loadImage = function() {
             var _base;
@@ -177,12 +182,13 @@
                 _base.onImageLoading();
             }
             this.setImageLoadingClass();
-            this.$hiddenImage.load(this.onImageLoaded.bind(this));
-            return this.$hiddenImage.error(this.onImageError.bind(this));
+            this.$hiddenImage.one("load", this.onImageLoaded.bind(this));
+            return this.$hiddenImage.one("error", this.onImageError.bind(this));
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
             this.setImageLoadedClass();
+            this.setOffset(this.offset);
             this.$preview.css("background-image", "url(" + this.imageSrc + ")");
             if (this.options.imageBackground) {
                 this.$imageBg.attr("src", this.imageSrc);

@@ -102,7 +102,7 @@ class Cropit
   onFileReaderLoaded: (e) ->
     @imageSrc = e.target.result
     @zoom = @initialZoom
-    @setOffset @initialOffset
+    @offset = @initialOffset
     @loadImage()
 
   onFileReaderError: ->
@@ -120,6 +120,7 @@ class Cropit
   onImageLoaded: ->
     @setImageLoadedClass()
 
+    @setOffset @offset
     @$preview.css 'background-image', "url(#{@imageSrc})"
     @$imageBg.attr 'src', @imageSrc if @options.imageBackground
 
