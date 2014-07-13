@@ -90,19 +90,23 @@ class Cropit
   onFileChange: ->
     @options.onFileChange?()
 
-    oFReader = new FileReader()
+    fileReader = new FileReader()
     file = @$fileInput.get(0).files[0]
     if file?.type.match 'image'
       @setImageLoadingClass()
 
-      oFReader.readAsDataURL file
-      oFReader.onload = @onFileReaderLoaded.bind @
+      fileReader.readAsDataURL file
+      fileReader.onload = @onFileReaderLoaded.bind @
+      fileReader.onerror = @onFileReaderError.bind @
 
   onFileReaderLoaded: (e) ->
     @imageSrc = e.target.result
     @zoom = @initialZoom
     @setOffset @initialOffset
     @loadImage()
+
+  onFileReaderError: ->
+    @options.onFileReaderError?()
 
   loadImage: ->
     @$hiddenImage.attr 'src', @imageSrc
