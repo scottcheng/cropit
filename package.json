@@ -4,7 +4,7 @@
   "description": "Customizable crop and zoom.",
   "author": "Scott Cheng <me@scottcheng.com>",
   "homepage": "https://github.com/scottcheng/cropit/",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",

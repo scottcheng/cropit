@@ -1,5 +1,5 @@
 /*
- *  cropit - v0.0.6
+ *  cropit - v0.0.7
  *  Customizable crop and zoom.
  *  https://github.com/scottcheng/cropit
  *
