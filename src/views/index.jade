@@ -75,10 +75,15 @@ html
 
         .content
           p
-            | Install using 
+            | Install with 
             a(href='http://bower.io/' target='_blank') Bower
             | :
-          pre: code bower install cropit
+          pre: code.bash $ bower install cropit
+          p
+            | Or with 
+            a(href='https://www.npmjs.org/', target='_blank') npm
+            | :
+          pre: code.bash $ npm install cropit
 
     section.demos
 
