@@ -9,5 +9,17 @@ Built on top of [Yufei Liu's Image Editor](https://github.com/yufeiliu/simple_im
 ## Installation
 
 ```bash
-bower install cropit
+# Install cropit with bower
+$ bower install cropit
+
+# or with npm
+$ npm install cropit
 ```
+
+## Development
+
+Run `grunt build` to build, and `grunt test` to test.
+
+## License
+
+MIT
