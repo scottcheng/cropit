@@ -259,6 +259,12 @@ class Cropit
   getCroppedImageData: (options) ->
     return null unless @imageSrc
 
+    exportDefaults =
+      type: 'image/png'
+      quality: .75
+      originalSize: false
+    options = $.extend {}, exportDefaults, options
+
     croppedSize =
       w: @previewSize.w
       h: @previewSize.h
@@ -270,7 +276,7 @@ class Cropit
         @imageSize.h * @zoom < @previewSize.h
       croppedSize.h = @imageSize.h * @zoom
 
-    exportZoom = if options?.lossless then 1 / @zoom else @options.exportZoom
+    exportZoom = if options.originalSize then 1 / @zoom else @options.exportZoom
 
     $canvas = $ '<canvas />'
       .attr
@@ -286,7 +292,7 @@ class Cropit
       @zoom * exportZoom * @imageSize.w,
       @zoom * exportZoom * @imageSize.h
 
-    $canvas[0].toDataURL()
+    $canvas[0].toDataURL options.type, options.quality
 
   getImageState: ->
     src: @imageSrc

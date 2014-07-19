@@ -333,10 +333,16 @@
             return this.zoomer.isZoomable();
         };
         Cropit.prototype.getCroppedImageData = function(options) {
-            var $canvas, canvasContext, croppedSize, exportZoom;
+            var $canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
                 return null;
             }
+            exportDefaults = {
+                type: "image/png",
+                quality: .75,
+                originalSize: false
+            };
+            options = $.extend({}, exportDefaults, options);
             croppedSize = {
                 w: this.previewSize.w,
                 h: this.previewSize.h
@@ -346,7 +352,7 @@
             } else if (this.options.fitWidth && !this.options.fitHeight && this.imageSize.h * this.zoom < this.previewSize.h) {
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
-            exportZoom = (options != null ? options.lossless : void 0) ? 1 / this.zoom : this.options.exportZoom;
+            exportZoom = options.originalSize ? 1 / this.zoom : this.options.exportZoom;
             $canvas = $("<canvas />").attr({
                 style: "display: none;",
                 width: croppedSize.w * exportZoom,
@@ -354,7 +360,7 @@
             }).appendTo(this.$el);
             canvasContext = $canvas[0].getContext("2d");
             canvasContext.drawImage(this.$hiddenImage[0], this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
-            return $canvas[0].toDataURL();
+            return $canvas[0].toDataURL(options.type, options.quality);
         };
         Cropit.prototype.getImageState = function() {
             return {
