@@ -85,17 +85,19 @@ describe 'Cropit View', ->
 
     describe 'loadImage()', ->
 
-      beforeEach ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageSrc = imageData
+      describe 'with imageSrc', ->
 
-      it 'sets hidden image source', ->
-        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
-        expect($hiddenImage).not.toHaveAttr 'src', imageData
+        beforeEach ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageSrc = imageData
 
-        cropit.loadImage()
-        expect($hiddenImage).toHaveAttr 'src', imageData
+        it 'sets hidden image source', ->
+          $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
+          expect($hiddenImage).not.toHaveAttr 'src', imageData
+
+          cropit.loadImage()
+          expect($hiddenImage).toHaveAttr 'src', imageData
 
       it 'calls options.onImageLoading()', ->
         onImageLoadingCallback = jasmine.createSpy 'onImageLoading callback'
@@ -108,32 +110,34 @@ describe 'Cropit View', ->
 
     describe 'onImageLoaded()', ->
 
-      beforeEach ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageSrc = imageData
+      describe 'with imageSrc', ->
 
-      it 'sets preview background', ->
-        $preview = $el.find '.cropit-image-preview'
-        expect($preview).not.toHaveCss backgroundImage: "url(#{imageData})"
+        beforeEach ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageSrc = imageData
 
-        cropit.onImageLoaded()
-        expect($preview).toHaveCss backgroundImage: "url(#{imageData})"
+        it 'sets preview background', ->
+          $preview = $el.find '.cropit-image-preview'
+          expect($preview).not.toHaveCss backgroundImage: "url(#{imageData})"
 
-      it 'sets up zoomer', ->
-        spyOn cropit.zoomer, 'setup'
+          cropit.onImageLoaded()
+          expect($preview).toHaveCss backgroundImage: "url(#{imageData})"
 
-        cropit.onImageLoaded()
-        expect(cropit.zoomer.setup).toHaveBeenCalled()
+        it 'sets up zoomer', ->
+          spyOn cropit.zoomer, 'setup'
 
-      it 'updates zoom slider', ->
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-        $imageZoomInput.val 1
-        cropit.zoomer.getSliderPos = -> .5
-        expect(Number($imageZoomInput.val())).not.toBe .5
+          cropit.onImageLoaded()
+          expect(cropit.zoomer.setup).toHaveBeenCalled()
 
-        cropit.onImageLoaded()
-        expect(Number($imageZoomInput.val())).toBe .5
+        it 'updates zoom slider', ->
+          $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+          $imageZoomInput.val 1
+          cropit.zoomer.getSliderPos = -> .5
+          expect(Number($imageZoomInput.val())).not.toBe .5
+
+          cropit.onImageLoaded()
+          expect(Number($imageZoomInput.val())).toBe .5
 
       it 'calls options.onImageLoaded()', ->
         onImageLoadedCallback = jasmine.createSpy 'onImageLoaded callback'
@@ -145,11 +149,6 @@ describe 'Cropit View', ->
         expect(onImageLoadedCallback).toHaveBeenCalled()
 
     describe 'onImageError()', ->
-
-      beforeEach ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageSrc = imageData
 
       it 'calls options.onImageError()', ->
         onImageError = jasmine.createSpy 'onImageLoaded callback'
@@ -245,15 +244,6 @@ describe 'Cropit View', ->
 
     describe 'updateSliderPos()', ->
 
-      beforeEach ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageSize = w: 8, h: 6
-        cropit.previewSize = w: 2, h: 2
-        cropit.zoom = 1
-        cropit.imageLoaded = true
-        cropit.setZoom = ->
-
       it 'is invoked mousedown on zoom slider', ->
         spyOn Cropit.prototype, 'updateSliderPos'
         $el.cropit()
@@ -278,19 +268,30 @@ describe 'Cropit View', ->
         $imageZoomInput.trigger 'mousemove'
         expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
 
-      it 'updates sliderPos', ->
-        cropit.sliderPos = 0
-        expect(cropit.sliderPos).not.toBe 1
+      describe 'when invoked', ->
 
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-        $imageZoomInput.val 1
-        cropit.updateSliderPos()
-        expect(cropit.sliderPos).toBe 1
+        beforeEach ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageSize = w: 8, h: 6
+          cropit.previewSize = w: 2, h: 2
+          cropit.zoom = 1
+          cropit.imageLoaded = true
+          cropit.setZoom = ->
 
-      it 'calls setZoom', ->
-        spyOn cropit, 'setZoom'
-        cropit.updateSliderPos()
-        expect(cropit.setZoom).toHaveBeenCalled()
+        it 'updates sliderPos', ->
+          cropit.sliderPos = 0
+          expect(cropit.sliderPos).not.toBe 1
+
+          $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+          $imageZoomInput.val 1
+          cropit.updateSliderPos()
+          expect(cropit.sliderPos).toBe 1
+
+        it 'calls setZoom', ->
+          spyOn cropit, 'setZoom'
+          cropit.updateSliderPos()
+          expect(cropit.setZoom).toHaveBeenCalled()
 
     describe 'setZoom()', ->
 

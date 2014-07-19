@@ -429,8 +429,10 @@
         init: function(options) {
             return this.each(function() {
                 var cropit;
-                cropit = new Cropit(this, options);
-                return $.data(this, dataKey, cropit);
+                if (!$.data(this, dataKey)) {
+                    cropit = new Cropit(this, options);
+                    return $.data(this, dataKey, cropit);
+                }
             });
         },
         isZoomable: function() {

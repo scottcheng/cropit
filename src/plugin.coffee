@@ -4,8 +4,10 @@ methods =
 
   init: (options) ->
     @each ->
-      cropit = new Cropit @, options
-      $.data @, dataKey, cropit
+      # Only instantiate once per element
+      unless $.data @, dataKey
+        cropit = new Cropit @, options
+        $.data @, dataKey, cropit
 
   isZoomable: ->
     cropit = @first().data dataKey
