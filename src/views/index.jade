@@ -418,7 +418,17 @@ html
 
           :jssrc
             // Returns the cropped image in Data URI format.
-            $imageCropper.cropit('croppedImageData');
+            // The second argument `options` takes the following keys:
+            // - [type='image/png'] exported image type.
+            // - [quality=.75] exported image quality, only works when type is
+            //   'image/jpeg' or 'image/webp'.
+            // - [originalSize=false] when set to true, export cropped part in
+            //   original size, overriding exportZoom.
+            $imageCropper.cropit('export', {
+              type: 'image/jpeg',
+              quality: .9,
+              originalSize: true
+            });
 
             // Returns whether the current image is big enough to be zoomable.
             // Note that an image cannot be zoomed to larger than its original size.
@@ -428,13 +438,6 @@ html
             // If the image is loaded through the file input, the image source will be
             // in Data URI format.
             $imageCropper.cropit('imageSrc');
-
-            // Returns the image offset of the current cropping
-            // E.g. { x: -10, y: -15 }
-            $imageCropper.cropit('offset');
-
-            // Returns the current zoom.
-            $imageCropper.cropit('zoom');
 
             // Returns the current image size.
             // E.g. { width: 1920, height: 1080 }
@@ -446,6 +449,19 @@ html
 
             // Sets preview area size.
             $imageCropper.cropit('previewSize', { width: 800, height: 450 });
+
+            // Returns the image offset of the current cropping.
+            // E.g. { x: -10, y: -15 }
+            $imageCropper.cropit('offset');
+
+            // Sets image offset.
+            $imageCropper.cropit('offset', { x: -18, y: -54 });
+
+            // Returns the current zoom.
+            $imageCropper.cropit('zoom');
+
+            // Sets image zoom.
+            $imageCropper.cropit('zoom', .75);
 
       .sub-section.doc-wrapper.styles
         .container

@@ -1,7 +1,7 @@
 openFileInput = ->
   @find('input.cropit-image-input').click()
 downloadCroppedImage = ->
-  imageData = @cropit 'croppedImageData'
+  imageData = @cropit 'export'
   window.open imageData
 onZoomEnabled = ->
   @find('.slider-wrapper').removeClass 'disabled'
