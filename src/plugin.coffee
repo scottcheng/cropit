@@ -11,7 +11,7 @@ methods =
     cropit = @first().data dataKey
     cropit?.isZoomable()
 
-  croppedImageData: (options) ->
+  export: (options) ->
     cropit = @first().data dataKey
     cropit?.getCroppedImageData(options)
 

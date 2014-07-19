@@ -432,7 +432,7 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.isZoomable() : void 0;
         },
-        croppedImageData: function(options) {
+        "export": function(options) {
             var cropit;
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getCroppedImageData(options) : void 0;
