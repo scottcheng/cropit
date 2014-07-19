@@ -11,9 +11,9 @@ methods =
     cropit = @first().data dataKey
     cropit?.isZoomable()
 
-  croppedImageData: ->
+  croppedImageData: (options) ->
     cropit = @first().data dataKey
-    cropit?.getCroppedImageData()
+    cropit?.getCroppedImageData(options)
 
   imageState: ->
     cropit = @first().data dataKey

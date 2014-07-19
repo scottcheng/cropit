@@ -256,7 +256,7 @@ class Cropit
   isZoomable: ->
     @zoomer.isZoomable()
 
-  getCroppedImageData: ->
+  getCroppedImageData: (options) ->
     return null unless @imageSrc
 
     croppedSize =
@@ -270,19 +270,21 @@ class Cropit
         @imageSize.h * @zoom < @previewSize.h
       croppedSize.h = @imageSize.h * @zoom
 
+    exportZoom = if options?.lossless then 1 / @zoom else @options.exportZoom
+
     $canvas = $ '<canvas />'
       .attr
         style: 'display: none;'
-        width: croppedSize.w * @options.exportZoom
-        height: croppedSize.h * @options.exportZoom
+        width: croppedSize.w * exportZoom
+        height: croppedSize.h * exportZoom
       .appendTo @$el
     canvasContext = $canvas[0].getContext '2d'
 
     canvasContext.drawImage @$hiddenImage[0],
-      @offset.x * @options.exportZoom,
-      @offset.y * @options.exportZoom,
-      @zoom * @options.exportZoom * @imageSize.w,
-      @zoom * @options.exportZoom * @imageSize.h
+      @offset.x * exportZoom,
+      @offset.y * exportZoom,
+      @zoom * exportZoom * @imageSize.w,
+      @zoom * exportZoom * @imageSize.h
 
     $canvas[0].toDataURL()
 

@@ -332,8 +332,8 @@
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();
         };
-        Cropit.prototype.getCroppedImageData = function() {
-            var $canvas, canvasContext, croppedSize;
+        Cropit.prototype.getCroppedImageData = function(options) {
+            var $canvas, canvasContext, croppedSize, exportZoom;
             if (!this.imageSrc) {
                 return null;
             }
@@ -346,13 +346,14 @@
             } else if (this.options.fitWidth && !this.options.fitHeight && this.imageSize.h * this.zoom < this.previewSize.h) {
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
+            exportZoom = (options != null ? options.lossless : void 0) ? 1 / this.zoom : this.options.exportZoom;
             $canvas = $("<canvas />").attr({
                 style: "display: none;",
-                width: croppedSize.w * this.options.exportZoom,
-                height: croppedSize.h * this.options.exportZoom
+                width: croppedSize.w * exportZoom,
+                height: croppedSize.h * exportZoom
             }).appendTo(this.$el);
             canvasContext = $canvas[0].getContext("2d");
-            canvasContext.drawImage(this.$hiddenImage[0], this.offset.x * this.options.exportZoom, this.offset.y * this.options.exportZoom, this.zoom * this.options.exportZoom * this.imageSize.w, this.zoom * this.options.exportZoom * this.imageSize.h);
+            canvasContext.drawImage(this.$hiddenImage[0], this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
             return $canvas[0].toDataURL();
         };
         Cropit.prototype.getImageState = function() {
@@ -431,10 +432,10 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.isZoomable() : void 0;
         },
-        croppedImageData: function() {
+        croppedImageData: function(options) {
             var cropit;
             cropit = this.first().data(dataKey);
-            return cropit != null ? cropit.getCroppedImageData() : void 0;
+            return cropit != null ? cropit.getCroppedImageData(options) : void 0;
         },
         imageState: function() {
             var cropit;
