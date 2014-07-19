@@ -451,10 +451,18 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getOffset() : void 0;
         },
-        zoom: function() {
+        zoom: function(newZoom) {
             var cropit;
-            cropit = this.first().data(dataKey);
-            return cropit != null ? cropit.getZoom() : void 0;
+            if (arguments.length) {
+                return this.each(function() {
+                    var cropit;
+                    cropit = $.data(this, dataKey);
+                    return cropit != null ? cropit.setZoom(newZoom) : void 0;
+                });
+            } else {
+                cropit = this.first().data(dataKey);
+                return cropit != null ? cropit.getZoom() : void 0;
+            }
         },
         imageSize: function() {
             var cropit;

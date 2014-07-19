@@ -27,9 +27,14 @@ methods =
     cropit = @first().data dataKey
     cropit?.getOffset()
 
-  zoom: ->
-    cropit = @first().data dataKey
-    cropit?.getZoom()
+  zoom: (newZoom) ->
+    if arguments.length
+      @each ->
+        cropit = $.data @, dataKey
+        cropit?.setZoom newZoom
+    else
+      cropit = @first().data dataKey
+      cropit?.getZoom()
 
   imageSize: ->
     cropit = @first().data dataKey
