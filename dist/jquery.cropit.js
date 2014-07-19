@@ -453,14 +453,22 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getImageSrc() : void 0;
         },
-        offset: function() {
+        offset: function(newOffset) {
             var cropit;
-            cropit = this.first().data(dataKey);
-            return cropit != null ? cropit.getOffset() : void 0;
+            if (newOffset != null && newOffset.x != null && newOffset.y != null) {
+                return this.each(function() {
+                    var cropit;
+                    cropit = $.data(this, dataKey);
+                    return cropit != null ? cropit.setOffset(newOffset) : void 0;
+                });
+            } else {
+                cropit = this.first().data(dataKey);
+                return cropit != null ? cropit.getOffset() : void 0;
+            }
         },
         zoom: function(newZoom) {
             var cropit;
-            if (arguments.length) {
+            if (newZoom != null) {
                 return this.each(function() {
                     var cropit;
                     cropit = $.data(this, dataKey);
@@ -478,7 +486,7 @@
         },
         previewSize: function(newSize) {
             var cropit;
-            if (arguments.length) {
+            if (newSize != null) {
                 return this.each(function() {
                     var cropit;
                     cropit = $.data(this, dataKey);
