@@ -13,7 +13,7 @@ methods =
 
   export: (options) ->
     cropit = @first().data dataKey
-    cropit?.getCroppedImageData(options)
+    cropit?.getCroppedImageData options
 
   imageState: ->
     cropit = @first().data dataKey
