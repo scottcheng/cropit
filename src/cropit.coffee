@@ -203,6 +203,9 @@ class Cropit
     else if ret.y + @imageSize.h * @zoom < @previewSize.h
       ret.y = @previewSize.h - @imageSize.h * @zoom
 
+    ret.x = @round ret.x
+    ret.y = @round ret.y
+
     ret
 
   updateSliderPos: ->
@@ -227,8 +230,8 @@ class Cropit
   setZoom: (newZoom) ->
     newZoom = @fixZoom newZoom
 
-    updatedWidth = @imageSize.w * newZoom
-    updatedHeight = @imageSize.h * newZoom
+    updatedWidth = @round @imageSize.w * newZoom
+    updatedHeight = @round @imageSize.h * newZoom
 
     oldZoom = @zoom
 
@@ -331,6 +334,8 @@ class Cropit
 
     if @imageLoaded
       @setupZoomer()
+
+  round: (x) -> Math.round(x * 1e5) / 1e5
 
   $: (selector) ->
     return null unless @$el

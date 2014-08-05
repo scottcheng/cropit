@@ -277,6 +277,8 @@
             } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
                 ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
             }
+            ret.x = this.round(ret.x);
+            ret.y = this.round(ret.y);
             return ret;
         };
         Cropit.prototype.updateSliderPos = function() {
@@ -304,8 +306,8 @@
         Cropit.prototype.setZoom = function(newZoom) {
             var newX, newY, oldZoom, updatedHeight, updatedWidth;
             newZoom = this.fixZoom(newZoom);
-            updatedWidth = this.imageSize.w * newZoom;
-            updatedHeight = this.imageSize.h * newZoom;
+            updatedWidth = this.round(this.imageSize.w * newZoom);
+            updatedHeight = this.round(this.imageSize.h * newZoom);
             oldZoom = this.zoom;
             newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
             newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
@@ -412,6 +414,9 @@
             if (this.imageLoaded) {
                 return this.setupZoomer();
             }
+        };
+        Cropit.prototype.round = function(x) {
+            return Math.round(x * 1e5) / 1e5;
         };
         Cropit.prototype.$ = function(selector) {
             if (!this.$el) {

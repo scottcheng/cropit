@@ -132,6 +132,13 @@ describe 'Cropit', ->
         offset = cropit.fixOffset x: -2
         expect(offset.x).toBe -1
 
+      it 'rounds x', ->
+        cropit.imageSize = w: 4
+        cropit.zoom = .5
+        cropit.previewSize = w: 1
+        offset = cropit.fixOffset x: -.1212121
+        expect(offset.x).toBe -.12121
+
     describe 'fixes y', ->
 
       it 'fits image to top if image height is less than preview', ->
@@ -154,6 +161,13 @@ describe 'Cropit', ->
         cropit.previewSize = h: 1
         offset = cropit.fixOffset y: -2
         expect(offset.y).toBe -1
+
+      it 'rounds y', ->
+        cropit.imageSize = h: 4
+        cropit.zoom = .5
+        cropit.previewSize = h: 1
+        offset = cropit.fixOffset y: -.1212121
+        expect(offset.y).toBe -.12121
 
   describe 'fixZoom()', ->
 
