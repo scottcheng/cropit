@@ -277,8 +277,6 @@
             } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
                 ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
             }
-            ret.x = Math.round(ret.x);
-            ret.y = Math.round(ret.y);
             return ret;
         };
         Cropit.prototype.updateSliderPos = function() {
@@ -306,8 +304,8 @@
         Cropit.prototype.setZoom = function(newZoom) {
             var newX, newY, oldZoom, updatedHeight, updatedWidth;
             newZoom = this.fixZoom(newZoom);
-            updatedWidth = Math.round(this.imageSize.w * newZoom);
-            updatedHeight = Math.round(this.imageSize.h * newZoom);
+            updatedWidth = this.imageSize.w * newZoom;
+            updatedHeight = this.imageSize.h * newZoom;
             oldZoom = this.zoom;
             newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
             newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
