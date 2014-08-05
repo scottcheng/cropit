@@ -319,26 +319,26 @@ describe 'Cropit View', ->
 
       it 'zooms preview image', ->
         expect(cropit.zoom).not.toBe 1
-        expect(cropit.offset).not.toEqual x: -2, y: -3
-        expect($preview).not.toHaveCss backgroundPosition: '-2px -3px'
+        expect(cropit.offset).not.toEqual x: -1, y: -1
+        expect($preview).not.toHaveCss backgroundPosition: '-1px -1px'
         expect($preview).not.toHaveCss backgroundSize: '8px 12px'
 
         cropit.setZoom 1
         expect(cropit.zoom).toBe 1
-        expect(cropit.offset).toEqual x: -2, y: -3
-        expect($preview).toHaveCss backgroundPosition: '-2px -3px'
+        expect(cropit.offset).toEqual x: -1, y: -1
+        expect($preview).toHaveCss backgroundPosition: '-1px -1px'
         expect($preview).toHaveCss backgroundSize: '8px 12px'
 
       it 'keeps zoom in proper range', ->
         expect(cropit.zoom).not.toBe 1
-        expect(cropit.offset).not.toEqual x: -2, y: -3
-        expect($preview).not.toHaveCss backgroundPosition: '-2px -3px'
+        expect(cropit.offset).not.toEqual x: -1, y: -1
+        expect($preview).not.toHaveCss backgroundPosition: '-1px -1px'
         expect($preview).not.toHaveCss backgroundSize: '8px 12px'
 
         cropit.setZoom 1.5
         expect(cropit.zoom).toBe 1
-        expect(cropit.offset).toEqual x: -2, y: -3
-        expect($preview).toHaveCss backgroundPosition: '-2px -3px'
+        expect(cropit.offset).toEqual x: -1, y: -1
+        expect($preview).toHaveCss backgroundPosition: '-1px -1px'
         expect($preview).toHaveCss backgroundSize: '8px 12px'
 
   describe 'with background image', ->

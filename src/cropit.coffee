@@ -235,8 +235,8 @@ class Cropit
 
     oldZoom = @zoom
 
-    newX = @imageSize.w * oldZoom / 2 + @offset.x - updatedWidth / 2
-    newY = @imageSize.h * oldZoom / 2 + @offset.y - updatedHeight / 2
+    newX = @previewSize.w / 2 - (@previewSize.w / 2 - @offset.x) * newZoom / oldZoom
+    newY = @previewSize.h / 2 - (@previewSize.h / 2 - @offset.y) * newZoom / oldZoom
 
     @zoom = newZoom
     @setOffset x: newX, y: newY

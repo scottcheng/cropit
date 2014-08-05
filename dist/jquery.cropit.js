@@ -309,8 +309,8 @@
             updatedWidth = Math.round(this.imageSize.w * newZoom);
             updatedHeight = Math.round(this.imageSize.h * newZoom);
             oldZoom = this.zoom;
-            newX = this.imageSize.w * oldZoom / 2 + this.offset.x - updatedWidth / 2;
-            newY = this.imageSize.h * oldZoom / 2 + this.offset.y - updatedHeight / 2;
+            newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
+            newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
             this.zoom = newZoom;
             this.setOffset({
                 x: newX,
