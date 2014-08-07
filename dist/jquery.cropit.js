@@ -140,9 +140,9 @@
             this.imageLoaded = false;
             this.moveContinue = false;
             this.zoomer = new Zoomer();
-            this.$preview.on("mousedown mouseup mouseleave", this.handlePreviewEvent.bind(this));
+            this.$preview.on("mousedown mouseup mouseleave", this.onPreviewMouseEvent.bind(this));
             this.$fileInput.on("change", this.onFileChange.bind(this));
-            this.$imageZoomInput.on("mousedown mouseup mousemove", this.updateSliderPos.bind(this));
+            this.$imageZoomInput.on("mousedown mouseup mousemove", this.onSliderChange.bind(this));
             this.$imageZoomInput.val(this.initialSliderPos);
             this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
             this.zoom = ((_ref1 = this.options.imageState) != null ? _ref1.zoom : void 0) || this.initialZoom;
@@ -214,7 +214,7 @@
         Cropit.prototype.setImageLoadedClass = function() {
             return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
         };
-        Cropit.prototype.handlePreviewEvent = function(e) {
+        Cropit.prototype.onPreviewMouseEvent = function(e) {
             if (!this.imageLoaded) {
                 return;
             }
@@ -284,7 +284,7 @@
             ret.y = this.round(ret.y);
             return ret;
         };
-        Cropit.prototype.updateSliderPos = function() {
+        Cropit.prototype.onSliderChange = function() {
             var newZoom;
             if (!this.imageLoaded) {
                 return;

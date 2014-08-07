@@ -75,9 +75,9 @@ class Cropit
 
     @zoomer = new Zoomer
 
-    @$preview.on 'mousedown mouseup mouseleave', @handlePreviewEvent.bind @
+    @$preview.on 'mousedown mouseup mouseleave', @onPreviewMouseEvent.bind @
     @$fileInput.on 'change', @onFileChange.bind @
-    @$imageZoomInput.on 'mousedown mouseup mousemove', @updateSliderPos.bind @
+    @$imageZoomInput.on 'mousedown mouseup mousemove', @onSliderChange.bind @
 
     @$imageZoomInput.val @initialSliderPos
     @setOffset @options.imageState?.offset or @initialOffset
@@ -149,7 +149,7 @@ class Cropit
       .removeClass 'cropit-image-loading'
       .addClass 'cropit-image-loaded'
 
-  handlePreviewEvent: (e) ->
+  onPreviewMouseEvent: (e) ->
     return unless @imageLoaded
     @moveContinue = false
     @$preview.off 'mousemove'
@@ -210,7 +210,7 @@ class Cropit
 
     ret
 
-  updateSliderPos: ->
+  onSliderChange: ->
     return unless @imageLoaded
 
     @sliderPos = Number @$imageZoomInput.val()

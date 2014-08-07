@@ -73,7 +73,7 @@ describe 'Cropit', ->
       cropit.onFileReaderLoaded target: result: imageData
       expect(cropit.offset).toEqual x: 0, y: 0
 
-  describe 'handlePreviewEvent()', ->
+  describe 'onPreviewMouseEvent()', ->
 
     previewEvent =
       type: 'mousedown'
@@ -88,18 +88,18 @@ describe 'Cropit', ->
       expect(cropit.origin).not.toEqual x: 1, y: 1
 
       cropit.imageLoaded = true
-      cropit.handlePreviewEvent previewEvent
+      cropit.onPreviewMouseEvent previewEvent
       expect(cropit.origin).toEqual x: 1, y: 1
 
     it 'calls stopPropagation()', ->
       spyOn previewEvent, 'stopPropagation'
       cropit.imageLoaded = true
-      cropit.handlePreviewEvent previewEvent
+      cropit.onPreviewMouseEvent previewEvent
       expect(previewEvent.stopPropagation).toHaveBeenCalled()
 
     it 'does nothing before loading image', ->
       spyOn previewEvent, 'stopPropagation'
-      cropit.handlePreviewEvent previewEvent
+      cropit.onPreviewMouseEvent previewEvent
       expect(cropit.origin).not.toEqual x: 1, y: 1
       expect(previewEvent.stopPropagation).not.toHaveBeenCalled()
 

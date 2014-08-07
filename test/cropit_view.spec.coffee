@@ -154,31 +154,31 @@ describe 'Cropit View', ->
         cropit.onImageError()
         expect(onImageError).toHaveBeenCalled()
 
-    describe 'handlePreviewEvent()', ->
+    describe 'onPreviewMouseEvent()', ->
 
       it 'is invoked on mousedown on preview', ->
-        spyOn Cropit.prototype, 'handlePreviewEvent'
+        spyOn Cropit.prototype, 'onPreviewMouseEvent'
         $el.cropit()
         $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mousedown'
-        expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
+        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
 
       it 'is invoked on mouseup on preview', ->
-        spyOn Cropit.prototype, 'handlePreviewEvent'
+        spyOn Cropit.prototype, 'onPreviewMouseEvent'
         $el.cropit()
         $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mouseup'
-        expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
+        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
 
       it 'is invoked on mouseleave on preview', ->
-        spyOn Cropit.prototype, 'handlePreviewEvent'
+        spyOn Cropit.prototype, 'onPreviewMouseEvent'
         $el.cropit()
         $preview = $el.find '.cropit-image-preview'
 
         $preview.trigger 'mouseleave'
-        expect(Cropit.prototype.handlePreviewEvent).toHaveBeenCalled()
+        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
 
       it 'binds onMove() on mousedown', ->
         $el.cropit()
@@ -190,7 +190,7 @@ describe 'Cropit View', ->
         $preview = $el.find '.cropit-image-preview'
 
         spyOn Cropit.prototype, 'onMove'
-        cropit.handlePreviewEvent
+        cropit.onPreviewMouseEvent
           type: 'mousedown'
           stopPropagation: ->
 
@@ -206,7 +206,7 @@ describe 'Cropit View', ->
         cropit.setOffset x: 0, y: 0
         spyOn cropit, 'setOffset'
 
-        cropit.handlePreviewEvent
+        cropit.onPreviewMouseEvent
           type: 'mousedown'
           clientX: -1
           clientY: -1
@@ -237,31 +237,31 @@ describe 'Cropit View', ->
         cropit.setOffset x: -1, y: -1
         expect($preview).toHaveCss backgroundPosition: '-1px -1px'
 
-    describe 'updateSliderPos()', ->
+    describe 'onSliderChange()', ->
 
       it 'is invoked mousedown on zoom slider', ->
-        spyOn Cropit.prototype, 'updateSliderPos'
+        spyOn Cropit.prototype, 'onSliderChange'
         $el.cropit()
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'mousedown'
-        expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
+        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
 
       it 'is invoked mouseup on zoom slider', ->
-        spyOn Cropit.prototype, 'updateSliderPos'
+        spyOn Cropit.prototype, 'onSliderChange'
         $el.cropit()
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'mouseup'
-        expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
+        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
 
       it 'is invoked mousemove on zoom slider', ->
-        spyOn Cropit.prototype, 'updateSliderPos'
+        spyOn Cropit.prototype, 'onSliderChange'
         $el.cropit()
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'mousemove'
-        expect(Cropit.prototype.updateSliderPos).toHaveBeenCalled()
+        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
 
       describe 'when invoked', ->
 
@@ -280,12 +280,12 @@ describe 'Cropit View', ->
 
           $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
           $imageZoomInput.val 1
-          cropit.updateSliderPos()
+          cropit.onSliderChange()
           expect(cropit.sliderPos).toBe 1
 
         it 'calls setZoom', ->
           spyOn cropit, 'setZoom'
-          cropit.updateSliderPos()
+          cropit.onSliderChange()
           expect(cropit.setZoom).toHaveBeenCalled()
 
     describe 'setZoom()', ->
