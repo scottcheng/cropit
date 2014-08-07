@@ -71,12 +71,6 @@ class Cropit
     @initialSliderPos = 0
     @imageLoaded = false
 
-    @imageSrc = @options.imageState?.src or null
-    @setOffset @options.imageState?.offset or @initialOffset
-    @zoom = @options.imageState?.zoom or @initialZoom
-
-    @$imageZoomInput.val @initialSliderPos
-
     @moveContinue = false
 
     @zoomer = new Zoomer
@@ -85,7 +79,14 @@ class Cropit
     @$fileInput.on 'change', @onFileChange.bind @
     @$imageZoomInput.on 'mousedown mouseup mousemove', @updateSliderPos.bind @
 
-    @loadImage() if @options.imageState?.src
+    @$imageZoomInput.val @initialSliderPos
+    @setOffset @options.imageState?.offset or @initialOffset
+    @zoom = @options.imageState?.zoom or @initialZoom
+    @loadImage @options.imageState?.src or null
+
+  reset: ->
+    @zoom = @initialZoom
+    @offset = @initialOffset
 
   onFileChange: ->
     @options.onFileChange?()
@@ -100,15 +101,16 @@ class Cropit
       fileReader.onerror = @onFileReaderError.bind @
 
   onFileReaderLoaded: (e) ->
-    @imageSrc = e.target.result
-    @zoom = @initialZoom
-    @offset = @initialOffset
-    @loadImage()
+    @reset()
+    @loadImage e.target.result
 
   onFileReaderError: ->
     @options.onFileReaderError?()
 
-  loadImage: ->
+  loadImage: (imageSrc) ->
+    @imageSrc = imageSrc
+    return unless @imageSrc
+
     @$hiddenImage.attr 'src', @imageSrc
 
     @options.onImageLoading?()

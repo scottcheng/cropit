@@ -21,9 +21,15 @@ methods =
     cropit = @first().data dataKey
     cropit?.getImageState()
 
-  imageSrc: ->
-    cropit = @first().data dataKey
-    cropit?.getImageSrc()
+  imageSrc: (newImageSrc) ->
+    if newImageSrc?
+      @each ->
+        cropit = $.data @, dataKey
+        cropit?.reset()
+        cropit?.loadImage newImageSrc
+    else
+      cropit = @first().data dataKey
+      cropit?.getImageSrc()
 
   offset: (newOffset) ->
     if newOffset? and newOffset.x? and newOffset.y?

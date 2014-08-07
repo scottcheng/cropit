@@ -85,7 +85,7 @@
             this.init();
         }
         Cropit.prototype.init = function() {
-            var $previewContainer, imageBgBorderWidth, _ref, _ref1, _ref2, _ref3;
+            var $previewContainer, imageBgBorderWidth, _ref, _ref1, _ref2;
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
@@ -138,18 +138,19 @@
             this.initialZoom = 0;
             this.initialSliderPos = 0;
             this.imageLoaded = false;
-            this.imageSrc = ((_ref = this.options.imageState) != null ? _ref.src : void 0) || null;
-            this.setOffset(((_ref1 = this.options.imageState) != null ? _ref1.offset : void 0) || this.initialOffset);
-            this.zoom = ((_ref2 = this.options.imageState) != null ? _ref2.zoom : void 0) || this.initialZoom;
-            this.$imageZoomInput.val(this.initialSliderPos);
             this.moveContinue = false;
             this.zoomer = new Zoomer();
             this.$preview.on("mousedown mouseup mouseleave", this.handlePreviewEvent.bind(this));
             this.$fileInput.on("change", this.onFileChange.bind(this));
             this.$imageZoomInput.on("mousedown mouseup mousemove", this.updateSliderPos.bind(this));
-            if ((_ref3 = this.options.imageState) != null ? _ref3.src : void 0) {
-                return this.loadImage();
-            }
+            this.$imageZoomInput.val(this.initialSliderPos);
+            this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
+            this.zoom = ((_ref1 = this.options.imageState) != null ? _ref1.zoom : void 0) || this.initialZoom;
+            return this.loadImage(((_ref2 = this.options.imageState) != null ? _ref2.src : void 0) || null);
+        };
+        Cropit.prototype.reset = function() {
+            this.zoom = this.initialZoom;
+            return this.offset = this.initialOffset;
         };
         Cropit.prototype.onFileChange = function() {
             var file, fileReader, _base;
@@ -166,17 +167,19 @@
             }
         };
         Cropit.prototype.onFileReaderLoaded = function(e) {
-            this.imageSrc = e.target.result;
-            this.zoom = this.initialZoom;
-            this.offset = this.initialOffset;
-            return this.loadImage();
+            this.reset();
+            return this.loadImage(e.target.result);
         };
         Cropit.prototype.onFileReaderError = function() {
             var _base;
             return typeof (_base = this.options).onFileReaderError === "function" ? _base.onFileReaderError() : void 0;
         };
-        Cropit.prototype.loadImage = function() {
+        Cropit.prototype.loadImage = function(imageSrc) {
             var _base;
+            this.imageSrc = imageSrc;
+            if (!this.imageSrc) {
+                return;
+            }
             this.$hiddenImage.attr("src", this.imageSrc);
             if (typeof (_base = this.options).onImageLoading === "function") {
                 _base.onImageLoading();
@@ -453,10 +456,21 @@
             cropit = this.first().data(dataKey);
             return cropit != null ? cropit.getImageState() : void 0;
         },
-        imageSrc: function() {
+        imageSrc: function(newImageSrc) {
             var cropit;
-            cropit = this.first().data(dataKey);
-            return cropit != null ? cropit.getImageSrc() : void 0;
+            if (newImageSrc != null) {
+                return this.each(function() {
+                    var cropit;
+                    cropit = $.data(this, dataKey);
+                    if (cropit != null) {
+                        cropit.reset();
+                    }
+                    return cropit != null ? cropit.loadImage(newImageSrc) : void 0;
+                });
+            } else {
+                cropit = this.first().data(dataKey);
+                return cropit != null ? cropit.getImageSrc() : void 0;
+            }
         },
         offset: function(newOffset) {
             var cropit;

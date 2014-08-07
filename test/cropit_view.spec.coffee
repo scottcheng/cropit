@@ -85,19 +85,14 @@ describe 'Cropit View', ->
 
     describe 'loadImage()', ->
 
-      describe 'with imageSrc', ->
+      it 'sets hidden image source', ->
+        $el.cropit()
+        cropit = $el.data dataKey
+        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
+        expect($hiddenImage).not.toHaveAttr 'src', imageData
 
-        beforeEach ->
-          $el.cropit()
-          cropit = $el.data dataKey
-          cropit.imageSrc = imageData
-
-        it 'sets hidden image source', ->
-          $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
-          expect($hiddenImage).not.toHaveAttr 'src', imageData
-
-          cropit.loadImage()
-          expect($hiddenImage).toHaveAttr 'src', imageData
+        cropit.loadImage imageData
+        expect($hiddenImage).toHaveAttr 'src', imageData
 
       it 'calls options.onImageLoading()', ->
         onImageLoadingCallback = jasmine.createSpy 'onImageLoading callback'
@@ -105,7 +100,7 @@ describe 'Cropit View', ->
           onImageLoading: onImageLoadingCallback
         cropit = $el.data dataKey
 
-        cropit.loadImage()
+        cropit.loadImage imageData
         expect(onImageLoadingCallback).toHaveBeenCalled()
 
     describe 'onImageLoaded()', ->
