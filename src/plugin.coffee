@@ -9,6 +9,10 @@ methods =
         cropit = new Cropit @, options
         $.data @, dataKey, cropit
 
+  destroy: ->
+    @each ->
+      $.removeData @, dataKey
+
   isZoomable: ->
     cropit = @first().data dataKey
     cropit?.isZoomable()

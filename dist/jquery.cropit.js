@@ -441,6 +441,11 @@
                 }
             });
         },
+        destroy: function() {
+            return this.each(function() {
+                return $.removeData(this, dataKey);
+            });
+        },
         isZoomable: function() {
             var cropit;
             cropit = this.first().data(dataKey);
