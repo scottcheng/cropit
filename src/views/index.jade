@@ -492,11 +492,9 @@ html
             <input type="file" class="cropit-image-input" />
 
           :csssrc
-            /* Show spinner when image is being loaded */
-            .cropit-image-preview.cropit-image-loading {
-              .spinner {
-                opacity: 1;
-              }
+            /* Show load indicator when image is being loaded */
+            .cropit-image-preview.cropit-image-loading .spinner {
+              opacity: 1;
             }
 
             /* Show move cursor when image has been loaded */

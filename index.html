@@ -157,11 +157,9 @@ $imageCropper.cropit('zoom', .75);
 &lt;!-- File selector -&gt;
 &lt;!-- cropit will add accept=&quot;image/*&quot; attribute to it --&gt;
 &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
-</code></pre><pre><code class="css">/* Show spinner when image is being loaded */
-.cropit-image-preview.cropit-image-loading {
-  .spinner {
-    opacity: 1;
-  }
+</code></pre><pre><code class="css">/* Show load indicator when image is being loaded */
+.cropit-image-preview.cropit-image-loading .spinner {
+  opacity: 1;
 }
 
 /* Show move cursor when image has been loaded */
