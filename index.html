@@ -13,11 +13,11 @@
   &lt;!-- The cropit- classes above are needed
        so cropit can identify these elements --&gt;
 &lt;/div&gt;
-</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit();
+</code></pre></div><div class="javascript"><pre><code class="javascript">$('#image-cropper').cropit();
 
 // In the demos I'm passing in an imageState option
 // so it renders an image by default:
-// $('.image-cropper').cropit({ imageState: { src: { imageSrc } } });
+// $('#image-cropper').cropit({ imageState: { src: { imageSrc } } });
 </code></pre></div><div class="css"><pre><code class="css">.cropit-image-preview {
   /* You can specify preview size in CSS */
   width: 960px;
@@ -32,7 +32,7 @@
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;!-- And clicking on this button will open up select file dialog --&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit();
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('#image-cropper').cropit();
 
 // When user clicks select image button,
 // open select file dialog programmatically
@@ -57,7 +57,7 @@ input.cropit-image-input {
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">/* Translucent background image */
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('#image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">/* Translucent background image */
 .cropit-image-background {
   opacity: .2;
 }
@@ -71,7 +71,7 @@ input.cropit-image-zoom-input {
 }
 
 /* Limit the background image by adding overflow: hidden */
-.image-cropper {
+#image-cropper {
   overflow: hidden;
 }
 </code></pre></div></div></div></div><div class="sub-section demo-wrapper image-background-border"><div class="container"><h3 class="title">Image cropper with thin background border</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
@@ -83,7 +83,7 @@ input.cropit-image-zoom-input {
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
-&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('.image-cropper').cropit({
+&lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('#image-cropper').cropit({
   imageBackground: true,
   imageBackgroundBorderSize: 15 // Width of background border
 });
@@ -195,7 +195,7 @@ input.cropit-image-zoom-input {
 }
 
 /* Limit the background image by adding overflow: hidden */
-.image-cropper {
+#image-cropper {
   overflow: hidden;
 }
 </code></pre></div></div></section><footer><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>Fork me on GitHub</a>|<a href="http://scottcheng.com/" target="_blank">Scott Cheng</a></footer><script src="scripts/vendor.js"></script><script src="scripts/index.js"></script><script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

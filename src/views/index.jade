@@ -129,11 +129,11 @@ html
 
             .javascript
               :jssrc
-                $('.image-cropper').cropit();
+                $('#image-cropper').cropit();
 
                 // In the demos I'm passing in an imageState option
                 // so it renders an image by default:
-                // $('.image-cropper').cropit({ imageState: { src: { imageSrc } } });
+                // $('#image-cropper').cropit({ imageState: { src: { imageSrc } } });
 
             .css
               :csssrc
@@ -178,7 +178,7 @@ html
                 </div>
             .javascript
               :jssrc
-                $('.image-cropper').cropit();
+                $('#image-cropper').cropit();
 
                 // When user clicks select image button,
                 // open select file dialog programmatically
@@ -234,7 +234,7 @@ html
                 </div>
             .javascript
               :jssrc
-                $('.image-cropper').cropit({ imageBackground: true });
+                $('#image-cropper').cropit({ imageBackground: true });
             .css
               :csssrc
                 /* Translucent background image */
@@ -251,7 +251,7 @@ html
                 }
 
                 /* Limit the background image by adding overflow: hidden */
-                .image-cropper {
+                #image-cropper {
                   overflow: hidden;
                 }
 
@@ -291,7 +291,7 @@ html
                 </div>
             .javascript
               :jssrc
-                $('.image-cropper').cropit({
+                $('#image-cropper').cropit({
                   imageBackground: true,
                   imageBackgroundBorderSize: 15 // Width of background border
                 });
@@ -530,7 +530,7 @@ html
             }
 
             /* Limit the background image by adding overflow: hidden */
-            .image-cropper {
+            #image-cropper {
               overflow: hidden;
             }
 
