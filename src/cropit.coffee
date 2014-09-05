@@ -286,15 +286,17 @@ class Cropit
         width: croppedSize.w * exportZoom
         height: croppedSize.h * exportZoom
       .appendTo @$el
-    canvasContext = $canvas[0].getContext '2d'
+    canvas = $canvas.get 0
+    canvasContext = canvas.getContext '2d'
 
-    canvasContext.drawImage @$hiddenImage[0],
+    image = @$hiddenImage.get 0
+    canvasContext.drawImage image,
       @offset.x * exportZoom,
       @offset.y * exportZoom,
       @zoom * exportZoom * @imageSize.w,
       @zoom * exportZoom * @imageSize.h
 
-    $canvas[0].toDataURL options.type, options.quality
+    canvas.toDataURL options.type, options.quality
 
   getImageState: ->
     src: @imageSrc
