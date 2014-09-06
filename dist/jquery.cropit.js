@@ -130,6 +130,15 @@
                 }
                 $previewContainer.css("position", "relative").prepend(this.$imageBgContainer);
                 this.$preview.css("position", "relative");
+                this.$preview.hover(function(_this) {
+                    return function() {
+                        return _this.$imageBg.addClass("hover-preview");
+                    };
+                }(this), function(_this) {
+                    return function() {
+                        return _this.$imageBg.removeClass("hover-preview");
+                    };
+                }(this));
             }
             this.initialOffset = {
                 x: 0,

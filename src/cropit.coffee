@@ -63,6 +63,11 @@ class Cropit
         .prepend @$imageBgContainer
       @$preview.css 'position', 'relative'
 
+      @$preview.hover =>
+        @$imageBg.addClass 'hover-preview'
+      , =>
+        @$imageBg.removeClass 'hover-preview'
+
     @initialOffset = x: 0, y: 0
     @initialZoom = 0
     @initialSliderPos = 0
