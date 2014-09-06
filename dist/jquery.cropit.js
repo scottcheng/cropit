@@ -333,7 +333,7 @@
             return this.zoomer.isZoomable();
         };
         Cropit.prototype.getCroppedImageData = function(options) {
-            var $canvas, canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
+            var canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
                 return null;
             }
@@ -353,12 +353,10 @@
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
             exportZoom = options.originalSize ? 1 / this.zoom : this.options.exportZoom;
-            $canvas = $("<canvas />").attr({
-                style: "display: none;",
+            canvas = $("<canvas />").attr({
                 width: croppedSize.w * exportZoom,
                 height: croppedSize.h * exportZoom
-            }).appendTo(this.$el);
-            canvas = $canvas.get(0);
+            }).get(0);
             canvasContext = canvas.getContext("2d");
             canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
             return canvas.toDataURL(options.type, options.quality);

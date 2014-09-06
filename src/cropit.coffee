@@ -275,13 +275,11 @@ class Cropit
 
     exportZoom = if options.originalSize then 1 / @zoom else @options.exportZoom
 
-    $canvas = $ '<canvas />'
+    canvas = $ '<canvas />'
       .attr
-        style: 'display: none;'
         width: croppedSize.w * exportZoom
         height: croppedSize.h * exportZoom
-      .appendTo @$el
-    canvas = $canvas.get 0
+      .get 0
     canvasContext = canvas.getContext '2d'
 
     canvasContext.drawImage @image,
