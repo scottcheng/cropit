@@ -14,6 +14,15 @@ describe 'Cropit', ->
 
   describe 'init()', ->
 
+    it 'enables cross origin image source if allowCrossOrigin is set in options', ->
+      cropit = new Cropit null,
+        allowCrossOrigin: true
+      expect(cropit.image.crossOrigin).toBe 'Anonymous'
+
+    it 'disables cross origin image source if allowCrossOrigin is not set in options', ->
+      cropit = new Cropit
+      expect(cropit.image.crossOrigin).not.toBe 'Anonymous'
+
     it 'sets default zoom', ->
       cropit = new Cropit
       expect(cropit.zoom).toBe 0

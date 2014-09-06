@@ -86,6 +86,10 @@
         }
         Cropit.prototype.init = function() {
             var $previewContainer, imageBgBorderWidth, _ref, _ref1, _ref2;
+            this.image = new Image();
+            if (this.options.allowCrossOrigin) {
+                this.image.crossOrigin = "Anonymous";
+            }
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
@@ -97,7 +101,6 @@
                 max: 1,
                 step: .01
             });
-            this.image = new Image();
             this.previewSize = {
                 w: this.options.width || this.$preview.width(),
                 h: this.options.height || this.$preview.height()

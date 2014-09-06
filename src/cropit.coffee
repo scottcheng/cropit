@@ -19,6 +19,9 @@ class Cropit
     @init()
 
   init: ->
+    @image = new Image
+    @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
+
     @$fileInput = @options.$fileInput
       .attr
         accept: 'image/*'
@@ -30,7 +33,6 @@ class Cropit
         min: 0
         max: 1
         step: .01
-    @image = new Image
 
     @previewSize =
       w: @options.width or @$preview.width()
