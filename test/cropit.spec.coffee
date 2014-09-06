@@ -73,6 +73,17 @@ describe 'Cropit', ->
       cropit.onFileReaderLoaded target: result: imageData
       expect(cropit.offset).toEqual x: 0, y: 0
 
+  describe 'loadImage()', ->
+
+    beforeEach ->
+      cropit = new Cropit
+
+    it 'sets image source', ->
+      expect(cropit.image.src).not.toBe imageData
+
+      cropit.loadImage imageData
+      expect(cropit.image.src).toBe imageData
+
   describe 'onPreviewMouseEvent()', ->
 
     previewEvent =

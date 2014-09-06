@@ -17,12 +17,6 @@ describe 'Cropit View', ->
 
     describe 'init()', ->
 
-      it 'inserts hidden image', ->
-        $el.cropit()
-        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
-        expect($hiddenImage).toBeInDOM()
-        expect($hiddenImage).not.toBeVisible()
-
       it 'sets preview size from options', ->
         $preview = $el.find '.cropit-image-preview'
         $preview.css width: 1, height: 1
@@ -84,15 +78,6 @@ describe 'Cropit View', ->
         expect(onFileChangeCallback).toHaveBeenCalled()
 
     describe 'loadImage()', ->
-
-      it 'sets hidden image source', ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        $hiddenImage = $el.find 'img.cropit-image-hidden-preview'
-        expect($hiddenImage).not.toHaveAttr 'src', imageData
-
-        cropit.loadImage imageData
-        expect($hiddenImage).toHaveAttr 'src', imageData
 
       it 'calls options.onImageLoading()', ->
         onImageLoadingCallback = jasmine.createSpy 'onImageLoading callback'

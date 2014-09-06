@@ -97,10 +97,7 @@
                 max: 1,
                 step: .01
             });
-            this.$hiddenImage = $("<img />").addClass("cropit-image-hidden-preview").attr({
-                alt: "",
-                style: "display: none;"
-            }).appendTo(this.$el);
+            this.image = new Image();
             this.previewSize = {
                 w: this.options.width || this.$preview.width(),
                 h: this.options.height || this.$preview.height()
@@ -180,13 +177,13 @@
             if (!this.imageSrc) {
                 return;
             }
-            this.$hiddenImage.attr("src", this.imageSrc);
             if (typeof (_base = this.options).onImageLoading === "function") {
                 _base.onImageLoading();
             }
             this.setImageLoadingClass();
-            this.$hiddenImage.one("load", this.onImageLoaded.bind(this));
-            return this.$hiddenImage.one("error", this.onImageError.bind(this));
+            this.image.onload = this.onImageLoaded.bind(this);
+            this.image.onerror = this.onImageError.bind(this);
+            return this.image.src = this.imageSrc;
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
@@ -197,8 +194,8 @@
                 this.$imageBg.attr("src", this.imageSrc);
             }
             this.imageSize = {
-                w: this.$hiddenImage.width(),
-                h: this.$hiddenImage.height()
+                w: this.image.width,
+                h: this.image.height
             };
             this.setupZoomer();
             this.imageLoaded = true;
@@ -336,7 +333,7 @@
             return this.zoomer.isZoomable();
         };
         Cropit.prototype.getCroppedImageData = function(options) {
-            var $canvas, canvas, canvasContext, croppedSize, exportDefaults, exportZoom, image;
+            var $canvas, canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
                 return null;
             }
@@ -363,8 +360,7 @@
             }).appendTo(this.$el);
             canvas = $canvas.get(0);
             canvasContext = canvas.getContext("2d");
-            image = this.$hiddenImage.get(0);
-            canvasContext.drawImage(image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
+            canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
             return canvas.toDataURL(options.type, options.quality);
         };
         Cropit.prototype.getImageState = function() {

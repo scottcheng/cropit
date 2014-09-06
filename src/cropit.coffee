@@ -30,12 +30,7 @@ class Cropit
         min: 0
         max: 1
         step: .01
-    @$hiddenImage = $ '<img />'
-      .addClass 'cropit-image-hidden-preview'
-      .attr
-        alt: ''
-        style: 'display: none;'
-      .appendTo @$el
+    @image = new Image
 
     @previewSize =
       w: @options.width or @$preview.width()
@@ -111,13 +106,13 @@ class Cropit
     @imageSrc = imageSrc
     return unless @imageSrc
 
-    @$hiddenImage.attr 'src', @imageSrc
-
     @options.onImageLoading?()
     @setImageLoadingClass()
 
-    @$hiddenImage.one 'load', @onImageLoaded.bind @
-    @$hiddenImage.one 'error', @onImageError.bind @
+    @image.onload = @onImageLoaded.bind @
+    @image.onerror = @onImageError.bind @
+
+    @image.src = @imageSrc
 
   onImageLoaded: ->
     @setImageLoadedClass()
@@ -127,8 +122,8 @@ class Cropit
     @$imageBg.attr 'src', @imageSrc if @options.imageBackground
 
     @imageSize =
-      w: @$hiddenImage.width()
-      h: @$hiddenImage.height()
+      w: @image.width
+      h: @image.height
 
     @setupZoomer()
 
@@ -289,8 +284,7 @@ class Cropit
     canvas = $canvas.get 0
     canvasContext = canvas.getContext '2d'
 
-    image = @$hiddenImage.get 0
-    canvasContext.drawImage image,
+    canvasContext.drawImage @image,
       @offset.x * exportZoom,
       @offset.y * exportZoom,
       @zoom * exportZoom * @imageSize.w,
