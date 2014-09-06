@@ -64,9 +64,9 @@ class Cropit
       @$preview.css 'position', 'relative'
 
       @$preview.hover =>
-        @$imageBg.addClass 'hover-preview'
+        @$imageBg.addClass 'cropit-preview-hovered'
       , =>
-        @$imageBg.removeClass 'hover-preview'
+        @$imageBg.removeClass 'cropit-preview-hovered'
 
     @initialOffset = x: 0, y: 0
     @initialZoom = 0

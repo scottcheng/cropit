@@ -132,11 +132,11 @@
                 this.$preview.css("position", "relative");
                 this.$preview.hover(function(_this) {
                     return function() {
-                        return _this.$imageBg.addClass("hover-preview");
+                        return _this.$imageBg.addClass("cropit-preview-hovered");
                     };
                 }(this), function(_this) {
                     return function() {
-                        return _this.$imageBg.removeClass("hover-preview");
+                        return _this.$imageBg.removeClass("cropit-preview-hovered");
                     };
                 }(this));
             }
