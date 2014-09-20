@@ -67,7 +67,8 @@
         exportZoom: 1,
         imageBackground: false,
         imageBackgroundBorderWidth: 0,
-        imageState: null
+        imageState: null,
+        allowCrossOrigin: false
     };
     Cropit = function() {
         function Cropit(element, options) {

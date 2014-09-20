@@ -3,6 +3,7 @@ defaults =
   imageBackground: false
   imageBackgroundBorderWidth: 0
   imageState: null
+  allowCrossOrigin: false
 
 class Cropit
   constructor: (@element, options) ->
