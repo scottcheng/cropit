@@ -78,9 +78,16 @@ class Cropit
 
     @zoomer = new Zoomer
 
-    @$preview.on 'mousedown mouseup mouseleave touchstart touchend touchcancel touchleave', @onPreviewEvent.bind @
-    @$fileInput.on 'change', @onFileChange.bind @
-    @$imageZoomInput.on 'mousemove touchmove change', @onSliderChange.bind @
+    @$preview.on [
+        'mousedown', 'mouseup', 'mouseleave'
+        'touchstart', 'touchend', 'touchcancel', 'touchleave'
+      ].map( (type) -> "#{type}.cropit" ).join(' ')
+      , @onPreviewEvent.bind @
+    @$fileInput.on 'change.cropit', @onFileChange.bind @
+    @$imageZoomInput.on [
+        'mousemove', 'touchmove', 'change'
+      ].map( (type) -> "#{type}.cropit" ).join(' ')
+      , @onSliderChange.bind @
 
     @$imageZoomInput.val @initialSliderPos
     @setOffset @options.imageState?.offset or @initialOffset
@@ -159,12 +166,12 @@ class Cropit
   onPreviewEvent: (e) ->
     return unless @imageLoaded
     @moveContinue = false
-    @$preview.off 'mousemove touchmove'
+    @$preview.off 'mousemove.cropit touchmove.cropit'
 
     if e.type is 'mousedown' or e.type is 'touchstart'
       @origin = @getEventPosition e
       @moveContinue = true
-      @$preview.on 'mousemove touchmove', @onMove.bind @
+      @$preview.on 'mousemove.cropit touchmove.cropit', @onMove.bind @
     else
       $(document.body).focus()
     e.stopPropagation()

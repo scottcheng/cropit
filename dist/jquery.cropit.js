@@ -150,9 +150,13 @@
             this.imageLoaded = false;
             this.moveContinue = false;
             this.zoomer = new Zoomer();
-            this.$preview.on("mousedown mouseup mouseleave touchstart touchend touchcancel touchleave", this.onPreviewEvent.bind(this));
-            this.$fileInput.on("change", this.onFileChange.bind(this));
-            this.$imageZoomInput.on("mousemove touchmove change", this.onSliderChange.bind(this));
+            this.$preview.on([ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
+                return "" + type + ".cropit";
+            }).join(" "), this.onPreviewEvent.bind(this));
+            this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
+            this.$imageZoomInput.on([ "mousemove", "touchmove", "change" ].map(function(type) {
+                return "" + type + ".cropit";
+            }).join(" "), this.onSliderChange.bind(this));
             this.$imageZoomInput.val(this.initialSliderPos);
             this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
             this.zoom = ((_ref1 = this.options.imageState) != null ? _ref1.zoom : void 0) || this.initialZoom;
@@ -241,11 +245,11 @@
                 return;
             }
             this.moveContinue = false;
-            this.$preview.off("mousemove touchmove");
+            this.$preview.off("mousemove.cropit touchmove.cropit");
             if (e.type === "mousedown" || e.type === "touchstart") {
                 this.origin = this.getEventPosition(e);
                 this.moveContinue = true;
-                this.$preview.on("mousemove touchmove", this.onMove.bind(this));
+                this.$preview.on("mousemove.cropit touchmove.cropit", this.onMove.bind(this));
             } else {
                 $(document.body).focus();
             }
