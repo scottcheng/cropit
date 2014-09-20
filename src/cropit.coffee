@@ -1,11 +1,27 @@
-defaults =
-  exportZoom: 1
-  imageBackground: false
-  imageBackgroundBorderWidth: 0
-  imageState: null
-  allowCrossOrigin: false
-
 class Cropit
+
+  @_DEFAULTS:
+    exportZoom: 1
+    imageBackground: false
+    imageBackgroundBorderWidth: 0
+    imageState: null
+    allowCrossOrigin: false
+
+  @PREVIEW_EVENTS: do ->
+    [
+      'mousedown', 'mouseup', 'mouseleave'
+      'touchstart', 'touchend', 'touchcancel', 'touchleave'
+    ]
+      .map (type) -> "#{type}.cropit"
+      .join ' '
+  @PREVIEW_MOVE_EVENTS: 'mousemove.cropit touchmove.cropit'
+  @ZOOM_INPUT_EVENTS: do ->
+    [
+      'mousemove', 'touchmove', 'change'
+    ]
+      .map (type) -> "#{type}.cropit"
+      .join ' '
+
   constructor: (@element, options) ->
     @$el = $ @element
 
@@ -15,8 +31,7 @@ class Cropit
       $imageZoomInput: @$ 'input.cropit-image-zoom-input'
       $previewContainer: @$ '.cropit-image-preview-container'
 
-    @options = $.extend {}, defaults, dynamicDefaults, options
-    @_defaults = defaults
+    @options = $.extend {}, Cropit._DEFAULTS, dynamicDefaults, options
     @init()
 
   init: ->
@@ -78,21 +93,22 @@ class Cropit
 
     @zoomer = new Zoomer
 
-    @$preview.on [
-        'mousedown', 'mouseup', 'mouseleave'
-        'touchstart', 'touchend', 'touchcancel', 'touchleave'
-      ].map( (type) -> "#{type}.cropit" ).join(' ')
-      , @onPreviewEvent.bind @
-    @$fileInput.on 'change.cropit', @onFileChange.bind @
-    @$imageZoomInput.on [
-        'mousemove', 'touchmove', 'change'
-      ].map( (type) -> "#{type}.cropit" ).join(' ')
-      , @onSliderChange.bind @
+    @bindListeners()
 
     @$imageZoomInput.val @initialSliderPos
     @setOffset @options.imageState?.offset or @initialOffset
     @zoom = @options.imageState?.zoom or @initialZoom
     @loadImage @options.imageState?.src or null
+
+  bindListeners: ->
+    @$fileInput.on 'change.cropit', @onFileChange.bind @
+    @$preview.on Cropit.PREVIEW_EVENTS, @onPreviewEvent.bind @
+    @$imageZoomInput.on Cropit.ZOOM_INPUT_EVENTS, @onSliderChange.bind @
+
+  unbindListeners: ->
+    @$fileInput.off 'change.cropit'
+    @$preview.off Cropit.PREVIEW_EVENTS
+    @$imageZoomInput.off Cropit.ZOOM_INPUT_EVENTS
 
   reset: ->
     @zoom = @initialZoom
@@ -166,12 +182,12 @@ class Cropit
   onPreviewEvent: (e) ->
     return unless @imageLoaded
     @moveContinue = false
-    @$preview.off 'mousemove.cropit touchmove.cropit'
+    @$preview.off Cropit.PREVIEW_MOVE_EVENTS
 
     if e.type is 'mousedown' or e.type is 'touchstart'
       @origin = @getEventPosition e
       @moveContinue = true
-      @$preview.on 'mousemove.cropit touchmove.cropit', @onMove.bind @
+      @$preview.on Cropit.PREVIEW_MOVE_EVENTS, @onMove.bind @
     else
       $(document.body).focus()
     e.stopPropagation()

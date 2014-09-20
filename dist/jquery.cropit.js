@@ -62,15 +62,26 @@
         };
         return Zoomer;
     }();
-    var Cropit, defaults;
-    defaults = {
-        exportZoom: 1,
-        imageBackground: false,
-        imageBackgroundBorderWidth: 0,
-        imageState: null,
-        allowCrossOrigin: false
-    };
+    var Cropit;
     Cropit = function() {
+        Cropit._DEFAULTS = {
+            exportZoom: 1,
+            imageBackground: false,
+            imageBackgroundBorderWidth: 0,
+            imageState: null,
+            allowCrossOrigin: false
+        };
+        Cropit.PREVIEW_EVENTS = function() {
+            return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
+                return "" + type + ".cropit";
+            }).join(" ");
+        }();
+        Cropit.PREVIEW_MOVE_EVENTS = "mousemove.cropit touchmove.cropit";
+        Cropit.ZOOM_INPUT_EVENTS = function() {
+            return [ "mousemove", "touchmove", "change" ].map(function(type) {
+                return "" + type + ".cropit";
+            }).join(" ");
+        }();
         function Cropit(element, options) {
             var dynamicDefaults;
             this.element = element;
@@ -81,8 +92,7 @@
                 $imageZoomInput: this.$("input.cropit-image-zoom-input"),
                 $previewContainer: this.$(".cropit-image-preview-container")
             };
-            this.options = $.extend({}, defaults, dynamicDefaults, options);
-            this._defaults = defaults;
+            this.options = $.extend({}, Cropit._DEFAULTS, dynamicDefaults, options);
             this.init();
         }
         Cropit.prototype.init = function() {
@@ -150,17 +160,21 @@
             this.imageLoaded = false;
             this.moveContinue = false;
             this.zoomer = new Zoomer();
-            this.$preview.on([ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
-                return "" + type + ".cropit";
-            }).join(" "), this.onPreviewEvent.bind(this));
-            this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
-            this.$imageZoomInput.on([ "mousemove", "touchmove", "change" ].map(function(type) {
-                return "" + type + ".cropit";
-            }).join(" "), this.onSliderChange.bind(this));
+            this.bindListeners();
             this.$imageZoomInput.val(this.initialSliderPos);
             this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
             this.zoom = ((_ref1 = this.options.imageState) != null ? _ref1.zoom : void 0) || this.initialZoom;
             return this.loadImage(((_ref2 = this.options.imageState) != null ? _ref2.src : void 0) || null);
+        };
+        Cropit.prototype.bindListeners = function() {
+            this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
+            this.$preview.on(Cropit.PREVIEW_EVENTS, this.onPreviewEvent.bind(this));
+            return this.$imageZoomInput.on(Cropit.ZOOM_INPUT_EVENTS, this.onSliderChange.bind(this));
+        };
+        Cropit.prototype.unbindListeners = function() {
+            this.$fileInput.off("change.cropit");
+            this.$preview.off(Cropit.PREVIEW_EVENTS);
+            return this.$imageZoomInput.off(Cropit.ZOOM_INPUT_EVENTS);
         };
         Cropit.prototype.reset = function() {
             this.zoom = this.initialZoom;
@@ -245,11 +259,11 @@
                 return;
             }
             this.moveContinue = false;
-            this.$preview.off("mousemove.cropit touchmove.cropit");
+            this.$preview.off(Cropit.PREVIEW_MOVE_EVENTS);
             if (e.type === "mousedown" || e.type === "touchstart") {
                 this.origin = this.getEventPosition(e);
                 this.moveContinue = true;
-                this.$preview.on("mousemove.cropit touchmove.cropit", this.onMove.bind(this));
+                this.$preview.on(Cropit.PREVIEW_MOVE_EVENTS, this.onMove.bind(this));
             } else {
                 $(document.body).focus();
             }
