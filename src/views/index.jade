@@ -519,12 +519,17 @@ html
 
             /* Translucent background image */
             .cropit-image-background {
+              opacity: .1;
+            }
+
+            /* Style the background image differently when preview area is hovered */
+            .cropit-image-background.cropit-preview-hovered {
               opacity: .2;
             }
 
             /*
              * If the slider or anything else is covered by the background image,
-             * use relative or absolute position on it
+             * use non-static position on it
              */
             input.cropit-image-zoom-input {
               position: relative;
