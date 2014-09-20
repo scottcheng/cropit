@@ -36,27 +36,27 @@ describe 'Cropit View', ->
         expect($preview.css('background-repeat')).toBe 'no-repeat'
 
       it 'sets min, max and step attributes on zoom slider', ->
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-        $imageZoomInput.attr
+        $zoomSlider = $el.find 'input.cropit-image-zoom-input'
+        $zoomSlider.attr
           min: 2
           max: 3
           step: .5
-        expect($imageZoomInput.attr 'min').not.toBe '0'
-        expect($imageZoomInput.attr 'max').not.toBe '1'
-        expect($imageZoomInput.attr 'step').not.toBe '0.01'
+        expect($zoomSlider.attr 'min').not.toBe '0'
+        expect($zoomSlider.attr 'max').not.toBe '1'
+        expect($zoomSlider.attr 'step').not.toBe '0.01'
 
         $el.cropit()
-        expect($imageZoomInput.attr 'min').toBe '0'
-        expect($imageZoomInput.attr 'max').toBe '1'
-        expect($imageZoomInput.attr 'step').toBe '0.01'
+        expect($zoomSlider.attr 'min').toBe '0'
+        expect($zoomSlider.attr 'max').toBe '1'
+        expect($zoomSlider.attr 'step').toBe '0.01'
 
       it 'sets zoom slider to 0', ->
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-        $imageZoomInput.val 1
-        expect($imageZoomInput.val()).not.toBe 0
+        $zoomSlider = $el.find 'input.cropit-image-zoom-input'
+        $zoomSlider.val 1
+        expect($zoomSlider.val()).not.toBe 0
 
         $el.cropit()
-        expect(Number($imageZoomInput.val())).toBe 0
+        expect(Number($zoomSlider.val())).toBe 0
 
     describe 'onFileChange()', ->
 
@@ -111,13 +111,13 @@ describe 'Cropit View', ->
           expect(cropit.zoomer.setup).toHaveBeenCalled()
 
         it 'updates zoom slider', ->
-          $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-          $imageZoomInput.val 1
+          $zoomSlider = $el.find 'input.cropit-image-zoom-input'
+          $zoomSlider.val 1
           cropit.zoomer.getSliderPos = -> .5
-          expect(Number($imageZoomInput.val())).not.toBe .5
+          expect(Number($zoomSlider.val())).not.toBe .5
 
           cropit.onImageLoaded()
-          expect(Number($imageZoomInput.val())).toBe .5
+          expect(Number($zoomSlider.val())).toBe .5
 
       it 'calls options.onImageLoaded()', ->
         onImageLoadedCallback = jasmine.createSpy 'onImageLoaded callback'
@@ -298,31 +298,31 @@ describe 'Cropit View', ->
         cropit.setOffset x: -1, y: -1
         expect($preview).toHaveCss backgroundPosition: '-1px -1px'
 
-    describe 'onSliderChange()', ->
+    describe 'onZoomSliderChange()', ->
 
       it 'is invoked mousemove on zoom slider', ->
-        spyOn Cropit.prototype, 'onSliderChange'
+        spyOn Cropit.prototype, 'onZoomSliderChange'
         $el.cropit()
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+        $zoomSlider = $el.find 'input.cropit-image-zoom-input'
 
-        $imageZoomInput.trigger 'mousemove'
-        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
+        $zoomSlider.trigger 'mousemove'
+        expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled()
 
       it 'is invoked touchmove on zoom slider', ->
-        spyOn Cropit.prototype, 'onSliderChange'
+        spyOn Cropit.prototype, 'onZoomSliderChange'
         $el.cropit()
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+        $zoomSlider = $el.find 'input.cropit-image-zoom-input'
 
-        $imageZoomInput.trigger 'touchmove'
-        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
+        $zoomSlider.trigger 'touchmove'
+        expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled()
 
       it 'is invoked change on zoom slider', ->
-        spyOn Cropit.prototype, 'onSliderChange'
+        spyOn Cropit.prototype, 'onZoomSliderChange'
         $el.cropit()
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+        $zoomSlider = $el.find 'input.cropit-image-zoom-input'
 
-        $imageZoomInput.trigger 'change'
-        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
+        $zoomSlider.trigger 'change'
+        expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled()
 
       describe 'when invoked', ->
 
@@ -335,18 +335,18 @@ describe 'Cropit View', ->
           cropit.imageLoaded = true
           cropit.setZoom = ->
 
-        it 'updates sliderPos', ->
-          cropit.sliderPos = 0
-          expect(cropit.sliderPos).not.toBe 1
+        it 'updates zoomSliderPos', ->
+          cropit.zoomSliderPos = 0
+          expect(cropit.zoomSliderPos).not.toBe 1
 
-          $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-          $imageZoomInput.val 1
-          cropit.onSliderChange()
-          expect(cropit.sliderPos).toBe 1
+          $zoomSlider = $el.find 'input.cropit-image-zoom-input'
+          $zoomSlider.val 1
+          cropit.onZoomSliderChange()
+          expect(cropit.zoomSliderPos).toBe 1
 
         it 'calls setZoom', ->
           spyOn cropit, 'setZoom'
-          cropit.onSliderChange()
+          cropit.onZoomSliderChange()
           expect(cropit.setZoom).toHaveBeenCalled()
 
     describe 'setZoom()', ->

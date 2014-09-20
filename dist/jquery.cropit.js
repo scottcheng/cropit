@@ -89,7 +89,7 @@
             dynamicDefaults = {
                 $fileInput: this.$("input.cropit-image-input"),
                 $preview: this.$(".cropit-image-preview"),
-                $imageZoomInput: this.$("input.cropit-image-zoom-input"),
+                $zoomSlider: this.$("input.cropit-image-zoom-input"),
                 $previewContainer: this.$(".cropit-image-preview-container")
             };
             this.options = $.extend({}, Cropit._DEFAULTS, dynamicDefaults, options);
@@ -107,7 +107,7 @@
             this.$preview = this.options.$preview.css({
                 backgroundRepeat: "no-repeat"
             });
-            this.$imageZoomInput = this.options.$imageZoomInput.attr({
+            this.$zoomSlider = this.options.$zoomSlider.attr({
                 min: 0,
                 max: 1,
                 step: .01
@@ -156,12 +156,12 @@
                 y: 0
             };
             this.initialZoom = 0;
-            this.initialSliderPos = 0;
+            this.initialZoomSliderPos = 0;
             this.imageLoaded = false;
             this.moveContinue = false;
             this.zoomer = new Zoomer();
             this.bindListeners();
-            this.$imageZoomInput.val(this.initialSliderPos);
+            this.$zoomSlider.val(this.initialZoomSliderPos);
             this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
             this.zoom = ((_ref1 = this.options.imageState) != null ? _ref1.zoom : void 0) || this.initialZoom;
             return this.loadImage(((_ref2 = this.options.imageState) != null ? _ref2.src : void 0) || null);
@@ -169,12 +169,12 @@
         Cropit.prototype.bindListeners = function() {
             this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
             this.$preview.on(Cropit.PREVIEW_EVENTS, this.onPreviewEvent.bind(this));
-            return this.$imageZoomInput.on(Cropit.ZOOM_INPUT_EVENTS, this.onSliderChange.bind(this));
+            return this.$zoomSlider.on(Cropit.ZOOM_INPUT_EVENTS, this.onZoomSliderChange.bind(this));
         };
         Cropit.prototype.unbindListeners = function() {
             this.$fileInput.off("change.cropit");
             this.$preview.off(Cropit.PREVIEW_EVENTS);
-            return this.$imageZoomInput.off(Cropit.ZOOM_INPUT_EVENTS);
+            return this.$zoomSlider.off(Cropit.ZOOM_INPUT_EVENTS);
         };
         Cropit.prototype.reset = function() {
             this.zoom = this.initialZoom;
@@ -320,23 +320,23 @@
             ret.y = this.round(ret.y);
             return ret;
         };
-        Cropit.prototype.onSliderChange = function() {
+        Cropit.prototype.onZoomSliderChange = function() {
             var newZoom;
             if (!this.imageLoaded) {
                 return;
             }
-            this.sliderPos = Number(this.$imageZoomInput.val());
-            newZoom = this.zoomer.getZoom(this.sliderPos);
+            this.zoomSliderPos = Number(this.$zoomSlider.val());
+            newZoom = this.zoomer.getZoom(this.zoomSliderPos);
             return this.setZoom(newZoom);
         };
-        Cropit.prototype.enableZoomInput = function() {
+        Cropit.prototype.enableZoomSlider = function() {
             var _base;
-            this.$imageZoomInput.removeAttr("disabled");
+            this.$zoomSlider.removeAttr("disabled");
             return typeof (_base = this.options).onZoomEnabled === "function" ? _base.onZoomEnabled() : void 0;
         };
-        Cropit.prototype.disableZoomInput = function() {
+        Cropit.prototype.disableZoomSlider = function() {
             var _base;
-            this.$imageZoomInput.attr("disabled", true);
+            this.$zoomSlider.attr("disabled", true);
             return typeof (_base = this.options).onZoomDisabled === "function" ? _base.onZoomDisabled() : void 0;
         };
         Cropit.prototype.setupZoomer = function() {
@@ -344,9 +344,9 @@
             this.zoom = this.fixZoom(this.zoom);
             this.setZoom(this.zoom);
             if (this.isZoomable()) {
-                return this.enableZoomInput();
+                return this.enableZoomSlider();
             } else {
-                return this.disableZoomInput();
+                return this.disableZoomSlider();
             }
         };
         Cropit.prototype.setZoom = function(newZoom) {
@@ -362,8 +362,8 @@
                 x: newX,
                 y: newY
             });
-            this.sliderPos = this.zoomer.getSliderPos(this.zoom);
-            this.$imageZoomInput.val(this.sliderPos);
+            this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
+            this.$zoomSlider.val(this.zoomSliderPos);
             this.$preview.css("background-size", "" + updatedWidth + "px " + updatedHeight + "px");
             if (this.options.imageBackground) {
                 return this.$imageBg.css({
@@ -462,12 +462,12 @@
         };
         Cropit.prototype.disable = function() {
             this.unbindListeners();
-            this.disableZoomInput();
+            this.disableZoomSlider();
             return this.$el.addClass("cropit-disabled");
         };
         Cropit.prototype.reenable = function() {
             this.bindListeners();
-            this.enableZoomInput();
+            this.enableZoomSlider();
             return this.$el.removeClass("cropit-disabled");
         };
         Cropit.prototype.round = function(x) {

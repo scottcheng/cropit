@@ -28,7 +28,7 @@ class Cropit
     dynamicDefaults =
       $fileInput: @$ 'input.cropit-image-input'
       $preview: @$ '.cropit-image-preview'
-      $imageZoomInput: @$ 'input.cropit-image-zoom-input'
+      $zoomSlider: @$ 'input.cropit-image-zoom-input'
       $previewContainer: @$ '.cropit-image-preview-container'
 
     @options = $.extend {}, Cropit._DEFAULTS, dynamicDefaults, options
@@ -44,7 +44,7 @@ class Cropit
     @$preview = @options.$preview
       .css
         backgroundRepeat: 'no-repeat'
-    @$imageZoomInput = @options.$imageZoomInput
+    @$zoomSlider = @options.$zoomSlider
       .attr
         min: 0
         max: 1
@@ -86,7 +86,7 @@ class Cropit
 
     @initialOffset = x: 0, y: 0
     @initialZoom = 0
-    @initialSliderPos = 0
+    @initialZoomSliderPos = 0
     @imageLoaded = false
 
     @moveContinue = false
@@ -95,7 +95,7 @@ class Cropit
 
     @bindListeners()
 
-    @$imageZoomInput.val @initialSliderPos
+    @$zoomSlider.val @initialZoomSliderPos
     @setOffset @options.imageState?.offset or @initialOffset
     @zoom = @options.imageState?.zoom or @initialZoom
     @loadImage @options.imageState?.src or null
@@ -103,12 +103,12 @@ class Cropit
   bindListeners: ->
     @$fileInput.on 'change.cropit', @onFileChange.bind @
     @$preview.on Cropit.PREVIEW_EVENTS, @onPreviewEvent.bind @
-    @$imageZoomInput.on Cropit.ZOOM_INPUT_EVENTS, @onSliderChange.bind @
+    @$zoomSlider.on Cropit.ZOOM_INPUT_EVENTS, @onZoomSliderChange.bind @
 
   unbindListeners: ->
     @$fileInput.off 'change.cropit'
     @$preview.off Cropit.PREVIEW_EVENTS
-    @$imageZoomInput.off Cropit.ZOOM_INPUT_EVENTS
+    @$zoomSlider.off Cropit.ZOOM_INPUT_EVENTS
 
   reset: ->
     @zoom = @initialZoom
@@ -238,19 +238,19 @@ class Cropit
 
     ret
 
-  onSliderChange: ->
+  onZoomSliderChange: ->
     return unless @imageLoaded
 
-    @sliderPos = Number @$imageZoomInput.val()
-    newZoom = @zoomer.getZoom @sliderPos
+    @zoomSliderPos = Number @$zoomSlider.val()
+    newZoom = @zoomer.getZoom @zoomSliderPos
     @setZoom newZoom
 
-  enableZoomInput: ->
-    @$imageZoomInput.removeAttr 'disabled'
+  enableZoomSlider: ->
+    @$zoomSlider.removeAttr 'disabled'
     @options.onZoomEnabled?()
 
-  disableZoomInput: ->
-    @$imageZoomInput.attr 'disabled', true
+  disableZoomSlider: ->
+    @$zoomSlider.attr 'disabled', true
     @options.onZoomDisabled?()
 
   setupZoomer: ->
@@ -258,7 +258,7 @@ class Cropit
     @zoom = @fixZoom @zoom
     @setZoom @zoom
 
-    if @isZoomable() then @enableZoomInput() else @disableZoomInput()
+    if @isZoomable() then @enableZoomSlider() else @disableZoomSlider()
 
   setZoom: (newZoom) ->
     newZoom = @fixZoom newZoom
@@ -274,8 +274,8 @@ class Cropit
     @zoom = newZoom
     @setOffset x: newX, y: newY
 
-    @sliderPos = @zoomer.getSliderPos @zoom
-    @$imageZoomInput.val @sliderPos
+    @zoomSliderPos = @zoomer.getSliderPos @zoom
+    @$zoomSlider.val @zoomSliderPos
 
     @$preview.css 'background-size', "#{updatedWidth}px #{updatedHeight}px"
     if @options.imageBackground
@@ -369,12 +369,12 @@ class Cropit
 
   disable: ->
     @unbindListeners()
-    @disableZoomInput()
+    @disableZoomSlider()
     @$el.addClass 'cropit-disabled'
 
   reenable: ->
     @bindListeners()
-    @enableZoomInput()
+    @enableZoomSlider()
     @$el.removeClass 'cropit-disabled'
 
   round: (x) -> Math.round(x * 1e5) / 1e5
