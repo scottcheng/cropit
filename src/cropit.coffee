@@ -245,17 +245,20 @@ class Cropit
     newZoom = @zoomer.getZoom @sliderPos
     @setZoom newZoom
 
+  enableZoomInput: ->
+    @$imageZoomInput.removeAttr 'disabled'
+    @options.onZoomEnabled?()
+
+  disableZoomInput: ->
+    @$imageZoomInput.attr 'disabled', true
+    @options.onZoomDisabled?()
+
   setupZoomer: ->
     @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
     @zoom = @fixZoom @zoom
     @setZoom @zoom
 
-    if @isZoomable()
-      @$imageZoomInput.removeAttr 'disabled'
-      @options.onZoomEnabled?()
-    else
-      @$imageZoomInput.attr 'disabled', true
-      @options.onZoomDisabled?()
+    if @isZoomable() then @enableZoomInput() else @disableZoomInput()
 
   setZoom: (newZoom) ->
     newZoom = @fixZoom newZoom
@@ -363,6 +366,16 @@ class Cropit
 
     if @imageLoaded
       @setupZoomer()
+
+  disable: ->
+    @unbindListeners()
+    @disableZoomInput()
+    @$el.addClass 'cropit-disabled'
+
+  reenable: ->
+    @bindListeners()
+    @enableZoomInput()
+    @$el.removeClass 'cropit-disabled'
 
   round: (x) -> Math.round(x * 1e5) / 1e5
 

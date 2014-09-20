@@ -66,6 +66,16 @@ methods =
       cropit = @first().data dataKey
       cropit?.getPreviewSize()
 
+  disable: ->
+    @each ->
+      cropit = $.data @, dataKey
+      cropit.disable()
+
+  reenable: ->
+    @each ->
+      cropit = $.data @, dataKey
+      cropit.reenable()
+
 $.fn.cropit = (method) ->
   if methods[method]
     methods[method].apply @, [].slice.call arguments, 1

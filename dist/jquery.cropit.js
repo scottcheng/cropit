@@ -329,17 +329,24 @@
             newZoom = this.zoomer.getZoom(this.sliderPos);
             return this.setZoom(newZoom);
         };
+        Cropit.prototype.enableZoomInput = function() {
+            var _base;
+            this.$imageZoomInput.removeAttr("disabled");
+            return typeof (_base = this.options).onZoomEnabled === "function" ? _base.onZoomEnabled() : void 0;
+        };
+        Cropit.prototype.disableZoomInput = function() {
+            var _base;
+            this.$imageZoomInput.attr("disabled", true);
+            return typeof (_base = this.options).onZoomDisabled === "function" ? _base.onZoomDisabled() : void 0;
+        };
         Cropit.prototype.setupZoomer = function() {
-            var _base, _base1;
             this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
             this.zoom = this.fixZoom(this.zoom);
             this.setZoom(this.zoom);
             if (this.isZoomable()) {
-                this.$imageZoomInput.removeAttr("disabled");
-                return typeof (_base = this.options).onZoomEnabled === "function" ? _base.onZoomEnabled() : void 0;
+                return this.enableZoomInput();
             } else {
-                this.$imageZoomInput.attr("disabled", true);
-                return typeof (_base1 = this.options).onZoomDisabled === "function" ? _base1.onZoomDisabled() : void 0;
+                return this.disableZoomInput();
             }
         };
         Cropit.prototype.setZoom = function(newZoom) {
@@ -453,6 +460,16 @@
                 return this.setupZoomer();
             }
         };
+        Cropit.prototype.disable = function() {
+            this.unbindListeners();
+            this.disableZoomInput();
+            return this.$el.addClass("cropit-disabled");
+        };
+        Cropit.prototype.reenable = function() {
+            this.bindListeners();
+            this.enableZoomInput();
+            return this.$el.removeClass("cropit-disabled");
+        };
         Cropit.prototype.round = function(x) {
             return Math.round(x * 1e5) / 1e5;
         };
@@ -555,6 +572,20 @@
                 cropit = this.first().data(dataKey);
                 return cropit != null ? cropit.getPreviewSize() : void 0;
             }
+        },
+        disable: function() {
+            return this.each(function() {
+                var cropit;
+                cropit = $.data(this, dataKey);
+                return cropit.disable();
+            });
+        },
+        reenable: function() {
+            return this.each(function() {
+                var cropit;
+                cropit = $.data(this, dataKey);
+                return cropit.reenable();
+            });
         }
     };
     $.fn.cropit = function(method) {
