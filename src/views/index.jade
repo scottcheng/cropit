@@ -372,6 +372,11 @@ html
               code 600px * 400px
               | . This also affects the maximum zoom level, since the exported image cannot be zoomed to larger than its original size.
             .default: code 1
+          .option
+            .name allowCrossOrigin
+            .type boolean
+            .description Set to true if you need to crop image served from other domains.
+            .default: code false
 
           //- Callbacks
           .option
