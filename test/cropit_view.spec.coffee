@@ -460,7 +460,6 @@ describe 'Cropit View', ->
         expect($imageBg).toHaveCss left: '-1px', top: '-1px'
 
     describe 'setZoom()', ->
-      # TODO
 
       it 'zooms background image', ->
         $el.cropit imageBackground: true
