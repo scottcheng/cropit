@@ -93,35 +93,70 @@ describe 'Cropit', ->
       cropit.loadImage imageData
       expect(cropit.image.src).toBe imageData
 
-  describe 'onPreviewMouseEvent()', ->
+  describe 'onPreviewEvent()', ->
 
-    previewEvent =
-      type: 'mousedown'
-      clientX: 1
-      clientY: 1
-      stopPropagation: ->
+    describe 'mouse event', ->
 
-    beforeEach ->
-      cropit = new Cropit
+      previewEvent =
+        type: 'mousedown'
+        clientX: 1
+        clientY: 1
+        stopPropagation: ->
 
-    it 'sets origin coordinates on mousedown', ->
-      expect(cropit.origin).not.toEqual x: 1, y: 1
+      beforeEach ->
+        cropit = new Cropit
 
-      cropit.imageLoaded = true
-      cropit.onPreviewMouseEvent previewEvent
-      expect(cropit.origin).toEqual x: 1, y: 1
+      it 'sets origin coordinates on mousedown', ->
+        expect(cropit.origin).not.toEqual x: 1, y: 1
 
-    it 'calls stopPropagation()', ->
-      spyOn previewEvent, 'stopPropagation'
-      cropit.imageLoaded = true
-      cropit.onPreviewMouseEvent previewEvent
-      expect(previewEvent.stopPropagation).toHaveBeenCalled()
+        cropit.imageLoaded = true
+        cropit.onPreviewEvent previewEvent
+        expect(cropit.origin).toEqual x: 1, y: 1
 
-    it 'does nothing before loading image', ->
-      spyOn previewEvent, 'stopPropagation'
-      cropit.onPreviewMouseEvent previewEvent
-      expect(cropit.origin).not.toEqual x: 1, y: 1
-      expect(previewEvent.stopPropagation).not.toHaveBeenCalled()
+      it 'calls stopPropagation()', ->
+        spyOn previewEvent, 'stopPropagation'
+        cropit.imageLoaded = true
+        cropit.onPreviewEvent previewEvent
+        expect(previewEvent.stopPropagation).toHaveBeenCalled()
+
+      it 'does nothing before loading image', ->
+        spyOn previewEvent, 'stopPropagation'
+        cropit.onPreviewEvent previewEvent
+        expect(cropit.origin).not.toEqual x: 1, y: 1
+        expect(previewEvent.stopPropagation).not.toHaveBeenCalled()
+
+    describe 'touch event', ->
+
+      previewEvent =
+        type: 'touchstart'
+        originalEvent:
+          touches: [
+            clientX: 1
+            clientY: 1
+          ]
+        stopPropagation: ->
+
+      beforeEach ->
+        cropit = new Cropit
+
+      it 'sets origin coordinates on mousedown', ->
+        expect(cropit.origin).not.toEqual x: 1, y: 1
+
+        cropit.imageLoaded = true
+        cropit.onPreviewEvent previewEvent
+        expect(cropit.origin).toEqual x: 1, y: 1
+
+      it 'calls stopPropagation()', ->
+        spyOn previewEvent, 'stopPropagation'
+        cropit.imageLoaded = true
+        cropit.onPreviewEvent previewEvent
+        expect(previewEvent.stopPropagation).toHaveBeenCalled()
+
+      it 'does nothing before loading image', ->
+        spyOn previewEvent, 'stopPropagation'
+        cropit.onPreviewEvent previewEvent
+        expect(cropit.origin).not.toEqual x: 1, y: 1
+        expect(previewEvent.stopPropagation).not.toHaveBeenCalled()
 
   describe 'fixOffset()', ->
 

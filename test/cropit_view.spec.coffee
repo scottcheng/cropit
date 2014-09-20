@@ -139,71 +139,147 @@ describe 'Cropit View', ->
         cropit.onImageError()
         expect(onImageError).toHaveBeenCalled()
 
-    describe 'onPreviewMouseEvent()', ->
+    describe 'onPreviewEvent()', ->
 
-      it 'is invoked on mousedown on preview', ->
-        spyOn Cropit.prototype, 'onPreviewMouseEvent'
-        $el.cropit()
-        $preview = $el.find '.cropit-image-preview'
+      describe 'mouse event', ->
 
-        $preview.trigger 'mousedown'
-        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
+        it 'is invoked on mousedown on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
 
-      it 'is invoked on mouseup on preview', ->
-        spyOn Cropit.prototype, 'onPreviewMouseEvent'
-        $el.cropit()
-        $preview = $el.find '.cropit-image-preview'
+          $preview.trigger 'mousedown'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
 
-        $preview.trigger 'mouseup'
-        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
+        it 'is invoked on mouseup on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
 
-      it 'is invoked on mouseleave on preview', ->
-        spyOn Cropit.prototype, 'onPreviewMouseEvent'
-        $el.cropit()
-        $preview = $el.find '.cropit-image-preview'
+          $preview.trigger 'mouseup'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
 
-        $preview.trigger 'mouseleave'
-        expect(Cropit.prototype.onPreviewMouseEvent).toHaveBeenCalled()
+        it 'is invoked on mouseleave on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
 
-      it 'binds onMove() on mousedown', ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageLoaded = true
-        cropit.imageSize = w: 8, h: 6
-        cropit.previewSize = w: 2, h: 2
+          $preview.trigger 'mouseleave'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
 
-        $preview = $el.find '.cropit-image-preview'
+        it 'binds onMove() on mousedown', ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageLoaded = true
+          cropit.imageSize = w: 8, h: 6
+          cropit.previewSize = w: 2, h: 2
 
-        spyOn Cropit.prototype, 'onMove'
-        cropit.onPreviewMouseEvent
-          type: 'mousedown'
-          stopPropagation: ->
+          $preview = $el.find '.cropit-image-preview'
 
-        $preview.trigger 'mousemove'
-        expect(Cropit.prototype.onMove).toHaveBeenCalled()
+          spyOn Cropit.prototype, 'onMove'
+          cropit.onPreviewEvent
+            type: 'mousedown'
+            stopPropagation: ->
 
-      it 'moves image by dragging', ->
-        $el.cropit()
-        cropit = $el.data dataKey
-        cropit.imageLoaded = true
-        cropit.imageSize = w: 8, h: 6
-        cropit.previewSize = w: 2, h: 2
-        cropit.setOffset x: 0, y: 0
-        spyOn cropit, 'setOffset'
+          $preview.trigger 'mousemove'
+          expect(Cropit.prototype.onMove).toHaveBeenCalled()
 
-        cropit.onPreviewMouseEvent
-          type: 'mousedown'
-          clientX: -1
-          clientY: -1
-          stopPropagation: ->
-        expect(cropit.setOffset).not.toHaveBeenCalled()
+        it 'moves image by dragging', ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageLoaded = true
+          cropit.imageSize = w: 8, h: 6
+          cropit.previewSize = w: 2, h: 2
+          cropit.setOffset x: 0, y: 0
+          spyOn cropit, 'setOffset'
 
-        cropit.onMove
-          type: 'mousemove'
-          clientX: -3
-          clientY: -2
-          stopPropagation: ->
-        expect(cropit.setOffset).toHaveBeenCalledWith x: -2, y: -1
+          cropit.onPreviewEvent
+            type: 'mousedown'
+            clientX: -1
+            clientY: -1
+            stopPropagation: ->
+          expect(cropit.setOffset).not.toHaveBeenCalled()
+
+          cropit.onMove
+            type: 'mousemove'
+            clientX: -3
+            clientY: -2
+            stopPropagation: ->
+          expect(cropit.setOffset).toHaveBeenCalledWith x: -2, y: -1
+
+      describe 'touch event', ->
+
+        it 'is invoked on touchstart on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
+
+          $preview.trigger 'touchstart'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
+
+        it 'is invoked on touchend on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
+
+          $preview.trigger 'touchend'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
+
+        it 'is invoked on touchcancel on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
+
+          $preview.trigger 'touchcancel'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
+
+        it 'is invoked on touchleave on preview', ->
+          spyOn Cropit.prototype, 'onPreviewEvent'
+          $el.cropit()
+          $preview = $el.find '.cropit-image-preview'
+
+          $preview.trigger 'touchleave'
+          expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled()
+
+        it 'binds onMove() on touchstart', ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageLoaded = true
+          cropit.imageSize = w: 8, h: 6
+          cropit.previewSize = w: 2, h: 2
+
+          $preview = $el.find '.cropit-image-preview'
+
+          spyOn Cropit.prototype, 'onMove'
+          cropit.onPreviewEvent
+            type: 'touchstart'
+            stopPropagation: ->
+
+          $preview.trigger 'touchmove'
+          expect(Cropit.prototype.onMove).toHaveBeenCalled()
+
+        it 'moves image by dragging', ->
+          $el.cropit()
+          cropit = $el.data dataKey
+          cropit.imageLoaded = true
+          cropit.imageSize = w: 8, h: 6
+          cropit.previewSize = w: 2, h: 2
+          cropit.setOffset x: 0, y: 0
+          spyOn cropit, 'setOffset'
+
+          cropit.onPreviewEvent
+            type: 'touchstart'
+            clientX: -1
+            clientY: -1
+            stopPropagation: ->
+          expect(cropit.setOffset).not.toHaveBeenCalled()
+
+          cropit.onMove
+            type: 'touchmove'
+            clientX: -3
+            clientY: -2
+            stopPropagation: ->
+          expect(cropit.setOffset).toHaveBeenCalledWith x: -2, y: -1
 
     describe 'setOffset()', ->
 
@@ -224,28 +300,28 @@ describe 'Cropit View', ->
 
     describe 'onSliderChange()', ->
 
-      it 'is invoked mousedown on zoom slider', ->
-        spyOn Cropit.prototype, 'onSliderChange'
-        $el.cropit()
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-
-        $imageZoomInput.trigger 'mousedown'
-        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
-
-      it 'is invoked mouseup on zoom slider', ->
-        spyOn Cropit.prototype, 'onSliderChange'
-        $el.cropit()
-        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
-
-        $imageZoomInput.trigger 'mouseup'
-        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
-
       it 'is invoked mousemove on zoom slider', ->
         spyOn Cropit.prototype, 'onSliderChange'
         $el.cropit()
         $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
 
         $imageZoomInput.trigger 'mousemove'
+        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
+
+      it 'is invoked touchmove on zoom slider', ->
+        spyOn Cropit.prototype, 'onSliderChange'
+        $el.cropit()
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+
+        $imageZoomInput.trigger 'touchmove'
+        expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
+
+      it 'is invoked change on zoom slider', ->
+        spyOn Cropit.prototype, 'onSliderChange'
+        $el.cropit()
+        $imageZoomInput = $el.find 'input.cropit-image-zoom-input'
+
+        $imageZoomInput.trigger 'change'
         expect(Cropit.prototype.onSliderChange).toHaveBeenCalled()
 
       describe 'when invoked', ->

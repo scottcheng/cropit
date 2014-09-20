@@ -78,9 +78,9 @@ class Cropit
 
     @zoomer = new Zoomer
 
-    @$preview.on 'mousedown mouseup mouseleave', @onPreviewMouseEvent.bind @
+    @$preview.on 'mousedown mouseup mouseleave touchstart touchend touchcancel touchleave', @onPreviewEvent.bind @
     @$fileInput.on 'change', @onFileChange.bind @
-    @$imageZoomInput.on 'mousedown mouseup mousemove', @onSliderChange.bind @
+    @$imageZoomInput.on 'mousemove touchmove change', @onSliderChange.bind @
 
     @$imageZoomInput.val @initialSliderPos
     @setOffset @options.imageState?.offset or @initialOffset
@@ -152,31 +152,33 @@ class Cropit
       .removeClass 'cropit-image-loading'
       .addClass 'cropit-image-loaded'
 
-  onPreviewMouseEvent: (e) ->
+  getEventPosition: (e) ->
+    e = e.originalEvent?.touches?[0] if e.originalEvent?.touches?[0]
+    return x: e.clientX, y: e.clientY if e.clientX and e.clientY
+
+  onPreviewEvent: (e) ->
     return unless @imageLoaded
     @moveContinue = false
-    @$preview.off 'mousemove'
+    @$preview.off 'mousemove touchmove'
 
-    if e.type is 'mousedown'
-      @origin =
-        x: e.clientX
-        y: e.clientY
+    if e.type is 'mousedown' or e.type is 'touchstart'
+      @origin = @getEventPosition e
       @moveContinue = true
-      @$preview.on 'mousemove', @onMove.bind @
+      @$preview.on 'mousemove touchmove', @onMove.bind @
     else
       $(document.body).focus()
     e.stopPropagation()
     false
 
   onMove: (e) ->
-    if @moveContinue
-      @setOffset
-        x: @offset.x + e.clientX - @origin.x
-        y: @offset.y + e.clientY - @origin.y
+    eventPosition = @getEventPosition e
 
-    @origin =
-      x: e.clientX
-      y: e.clientY
+    if @moveContinue and eventPosition
+      @setOffset
+        x: @offset.x + eventPosition.x - @origin.x
+        y: @offset.y + eventPosition.y - @origin.y
+
+    @origin = eventPosition
 
     e.stopPropagation()
     false
