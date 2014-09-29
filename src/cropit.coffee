@@ -219,7 +219,7 @@ class Cropit
     if @options.imageBackground
       @$imageBg.css
         left: @offset.x + @imgBgBorder[3]
-        top: @offset.y + @imgBgBorder[]
+        top: @offset.y + @imgBgBorder[0]
 
   fixOffset: (offset) ->
     return offset unless @imageLoaded
