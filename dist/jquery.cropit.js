@@ -386,7 +386,8 @@
             exportDefaults = {
                 type: "image/png",
                 quality: .75,
-                originalSize: false
+                originalSize: false,
+                fillBg:'#fff'
             };
             options = $.extend({}, exportDefaults, options);
             croppedSize = {
@@ -404,6 +405,12 @@
                 height: croppedSize.h * exportZoom
             }).get(0);
             canvasContext = canvas.getContext("2d");
+
+            if (options.type == 'image/jpeg' || options.type == 'image/jpg') {
+                canvasContext.fillStyle = options.fillBg;
+                canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
             canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
             return canvas.toDataURL(options.type, options.quality);
         };
