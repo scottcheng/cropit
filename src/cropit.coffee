@@ -39,12 +39,12 @@ class Cropit
     @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
     if typeof @options.imageBackgroundBorderWidth is 'object'
-      @imgBgBorder = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
     else
-      @imgBgBorder[0] = @options.imageBackgroundBorderWidth
-      @imgBgBorder[1] = @options.imageBackgroundBorderWidth
-      @imgBgBorder[2] = @options.imageBackgroundBorderWidth
-      @imgBgBorder[3] = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray[0] = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray[1] = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray[2] = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray[3] = @options.imageBackgroundBorderWidth
 
     @$fileInput = @options.$fileInput
       .attr
@@ -75,12 +75,12 @@ class Cropit
         .css
           position: 'absolute'
           zIndex: 0
-          left: -@imgBgBorder[3] + window.parseInt @$preview.css 'border-left-width'
-          top: -@imgBgBorder[0] + window.parseInt @$preview.css 'border-top-width'
-          width: @previewSize.w + @imgBgBorder[1] + @imgBgBorder[3]
-          height: @previewSize.h + @imgBgBorder[0] + @imgBgBorder[2]
+          left: -@imageBgBorderWidthArray[3] + window.parseInt @$preview.css 'border-left-width'
+          top: -@imageBgBorderWidthArray[0] + window.parseInt @$preview.css 'border-top-width'
+          width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+          height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
         .append @$imageBg
-      @$imageBgContainer.css overflow: 'hidden' if @imgBgBorder[0] > 0
+      @$imageBgContainer.css overflow: 'hidden' if @imageBgBorderWidthArray[0] > 0
       $previewContainer
         .css 'position', 'relative'
         .prepend @$imageBgContainer
@@ -218,8 +218,8 @@ class Cropit
     @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
       @$imageBg.css
-        left: @offset.x + @imgBgBorder[3]
-        top: @offset.y + @imgBgBorder[0]
+        left: @offset.x + @imageBgBorderWidthArray[3]
+        top: @offset.y + @imageBgBorderWidthArray[0]
 
   fixOffset: (offset) ->
     return offset unless @imageLoaded
@@ -368,8 +368,8 @@ class Cropit
 
     if @options.imageBackground
       @$imageBgContainer.css
-        width: @previewSize.w + @imgBgBorder[1] + @imgBgBorder[3]
-        height: @previewSize.h + @imgBgBorder[0] + @imgBgBorder[2]
+        width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+        height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
 
     if @imageLoaded
       @setupZoomer()
