@@ -293,7 +293,7 @@ html
               :jssrc
                 $('#image-cropper').cropit({
                   imageBackground: true,
-                  imageBackgroundBorderSize: 15 // Width of background border
+                  imageBackgroundBorderWidth: 15 // Width of background border
                 });
 
     section.docs
@@ -352,13 +352,13 @@ html
             .default: code false
           .option
             .name imageBackgroundBorderWidth
-            .type number
+            .type array or number
             .description
               | Width of background image border in pixels. 
-              | If greater than 
-              code 0
-              | , the background image beyond the width will be hidden.
-            .default: code 0
+              | The four array elements specify the width of background image width on the top, right, bottom, left side respectively. 
+              | The background image beyond the width will be hidden. 
+              | If specified as a number, border with uniform width on all sides will be applied.
+            .default: code [0, 0, 0, 0]
           .option
             .name exportZoom
             .type number
@@ -426,9 +426,11 @@ html
             // The second argument `options` takes the following keys:
             // - [type='image/png'] exported image type.
             // - [quality=.75] exported image quality, only works when type is
-            //   'image/jpeg' or 'image/webp'.
+            //     'image/jpeg' or 'image/webp'.
             // - [originalSize=false] when set to true, export cropped part in
-            //   original size, overriding exportZoom.
+            //     original size, overriding exportZoom.
+            // - [fillBg='#fff'] if `type` is 'image/jpeg', this color will be
+            //     filled as the background of the exported image.
             $imageCropper.cropit('export', {
               type: 'image/jpeg',
               quality: .9,
@@ -470,6 +472,15 @@ html
 
             // Sets image zoom.
             $imageCropper.cropit('zoom', .75);
+
+            // Disables the cropper.
+            // Unbinds event listeners from preview, zoom slider and file input, and
+            // adds `cropit-disabled` class to `$imageCropper`.
+            $imageCropper.cropit('disable');
+
+            // Re-enables the cropper.
+            // Does the opposite to `disable` method.
+            $imageCropper.cropit('reenable');
 
       .sub-section.doc-wrapper.styles
         .container
