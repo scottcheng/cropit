@@ -387,7 +387,7 @@
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();
         };
-        Cropit.prototype.getCroppedImageData = function(options) {
+        Cropit.prototype.getCroppedImageData = function(exportOptions) {
             var canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
                 return null;
@@ -395,9 +395,10 @@
             exportDefaults = {
                 type: "image/png",
                 quality: .75,
-                originalSize: false
+                originalSize: false,
+                fillBg: "#fff"
             };
-            options = $.extend({}, exportDefaults, options);
+            exportOptions = $.extend({}, exportDefaults, exportOptions);
             croppedSize = {
                 w: this.previewSize.w,
                 h: this.previewSize.h
@@ -407,14 +408,18 @@
             } else if (this.options.fitWidth && !this.options.fitHeight && this.imageSize.h * this.zoom < this.previewSize.h) {
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
-            exportZoom = options.originalSize ? 1 / this.zoom : this.options.exportZoom;
+            exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
             canvas = $("<canvas />").attr({
                 width: croppedSize.w * exportZoom,
                 height: croppedSize.h * exportZoom
             }).get(0);
             canvasContext = canvas.getContext("2d");
+            if (exportOptions.type === "image/jpeg") {
+                canvasContext.fillStyle = exportOptions.fillBg;
+                canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+            }
             canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
-            return canvas.toDataURL(options.type, options.quality);
+            return canvas.toDataURL(exportOptions.type, exportOptions.quality);
         };
         Cropit.prototype.getImageState = function() {
             return {

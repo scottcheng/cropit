@@ -302,6 +302,7 @@ class Cropit
       type: 'image/png'
       quality: .75
       originalSize: false
+      fillBg: '#fff'
     exportOptions = $.extend {}, exportDefaults, exportOptions
 
     croppedSize =
@@ -323,6 +324,10 @@ class Cropit
         height: croppedSize.h * exportZoom
       .get 0
     canvasContext = canvas.getContext '2d'
+
+    if exportOptions.type is 'image/jpeg'
+      canvasContext.fillStyle = exportOptions.fillBg
+      canvasContext.fillRect 0, 0, canvas.width, canvas.height
 
     canvasContext.drawImage @image,
       @offset.x * exportZoom,
