@@ -101,16 +101,6 @@
             if (this.options.allowCrossOrigin) {
                 this.image.crossOrigin = "Anonymous";
             }
-            if ($.isArray(this.options.imageBackgroundBorderWidth)) {
-                this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
-            } else {
-                this.imageBgBorderWidthArray = [];
-                [ 0, 1, 2, 3 ].forEach(function(_this) {
-                    return function(i) {
-                        return _this.imageBgBorderWidthArray[i] = _this.options.imageBackgroundBorderWidth;
-                    };
-                }(this));
-            }
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
@@ -133,6 +123,16 @@
                 this.$preview.height(this.previewSize.h);
             }
             if (this.options.imageBackground) {
+                if ($.isArray(this.options.imageBackgroundBorderWidth)) {
+                    this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
+                } else {
+                    this.imageBgBorderWidthArray = [];
+                    [ 0, 1, 2, 3 ].forEach(function(_this) {
+                        return function(i) {
+                            return _this.imageBgBorderWidthArray[i] = _this.options.imageBackgroundBorderWidth;
+                        };
+                    }(this));
+                }
                 $previewContainer = this.options.$previewContainer;
                 this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
                 this.$imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({

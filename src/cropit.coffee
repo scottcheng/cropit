@@ -38,13 +38,6 @@ class Cropit
     @image = new Image
     @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
-    if $.isArray @options.imageBackgroundBorderWidth
-      @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
-    else
-      @imageBgBorderWidthArray = []
-      [0..3].forEach (i) =>
-        @imageBgBorderWidthArray[i] = @options.imageBackgroundBorderWidth
-
     @$fileInput = @options.$fileInput
       .attr
         accept: 'image/*'
@@ -64,6 +57,13 @@ class Cropit
     @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
+      if $.isArray @options.imageBackgroundBorderWidth
+        @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
+      else
+        @imageBgBorderWidthArray = []
+        [0..3].forEach (i) =>
+          @imageBgBorderWidthArray[i] = @options.imageBackgroundBorderWidth
+
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
         .addClass 'cropit-image-background'
