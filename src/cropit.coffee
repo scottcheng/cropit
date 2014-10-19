@@ -38,6 +38,13 @@ class Cropit
     @image = new Image
     @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
+    if $.isArray @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
+    else
+      @imageBgBorderWidthArray = []
+      [0..3].forEach (i) =>
+        @imageBgBorderWidthArray[i] = @options.imageBackgroundBorderWidth
+
     @$fileInput = @options.$fileInput
       .attr
         accept: 'image/*'
@@ -57,7 +64,6 @@ class Cropit
     @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
-      imageBgBorderWidth = @options.imageBackgroundBorderWidth
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
         .addClass 'cropit-image-background'
@@ -68,12 +74,12 @@ class Cropit
         .css
           position: 'absolute'
           zIndex: 0
-          left: -imageBgBorderWidth + window.parseInt @$preview.css 'border-left-width'
-          top: -imageBgBorderWidth + window.parseInt @$preview.css 'border-top-width'
-          width: @previewSize.w + imageBgBorderWidth * 2
-          height: @previewSize.h + imageBgBorderWidth * 2
+          left: -@imageBgBorderWidthArray[3] + window.parseInt @$preview.css 'border-left-width'
+          top: -@imageBgBorderWidthArray[0] + window.parseInt @$preview.css 'border-top-width'
+          width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+          height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
         .append @$imageBg
-      @$imageBgContainer.css overflow: 'hidden' if imageBgBorderWidth > 0
+      @$imageBgContainer.css overflow: 'hidden' if @imageBgBorderWidthArray[0] > 0
       $previewContainer
         .css 'position', 'relative'
         .prepend @$imageBgContainer
@@ -211,8 +217,8 @@ class Cropit
     @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
       @$imageBg.css
-        left: @offset.x + @options.imageBackgroundBorderWidth
-        top: @offset.y + @options.imageBackgroundBorderWidth
+        left: @offset.x + @imageBgBorderWidthArray[3]
+        top: @offset.y + @imageBgBorderWidthArray[0]
 
   fixOffset: (offset) ->
     return offset unless @imageLoaded
@@ -361,8 +367,8 @@ class Cropit
 
     if @options.imageBackground
       @$imageBgContainer.css
-        width: @previewSize.w + @options.imageBackgroundBorderWidth * 2
-        height: @previewSize.h + @options.imageBackgroundBorderWidth * 2
+        width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+        height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
 
     if @imageLoaded
       @setupZoomer()
