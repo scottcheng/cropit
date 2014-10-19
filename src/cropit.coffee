@@ -295,14 +295,14 @@ class Cropit
   isZoomable: ->
     @zoomer.isZoomable()
 
-  getCroppedImageData: (options) ->
+  getCroppedImageData: (exportOptions) ->
     return null unless @imageSrc
 
     exportDefaults =
       type: 'image/png'
       quality: .75
       originalSize: false
-    options = $.extend {}, exportDefaults, options
+    exportOptions = $.extend {}, exportDefaults, exportOptions
 
     croppedSize =
       w: @previewSize.w
@@ -315,7 +315,7 @@ class Cropit
         @imageSize.h * @zoom < @previewSize.h
       croppedSize.h = @imageSize.h * @zoom
 
-    exportZoom = if options.originalSize then 1 / @zoom else @options.exportZoom
+    exportZoom = if exportOptions.originalSize then 1 / @zoom else @options.exportZoom
 
     canvas = $ '<canvas />'
       .attr
@@ -330,7 +330,7 @@ class Cropit
       @zoom * exportZoom * @imageSize.w,
       @zoom * exportZoom * @imageSize.h
 
-    canvas.toDataURL options.type, options.quality
+    canvas.toDataURL exportOptions.type, exportOptions.quality
 
   getImageState: ->
     src: @imageSrc
