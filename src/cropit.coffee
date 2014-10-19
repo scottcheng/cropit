@@ -6,21 +6,22 @@ class Cropit
     imageBackgroundBorderWidth: 0
     imageState: null
     allowCrossOrigin: false
+    allowDrag: true
 
   @PREVIEW_EVENTS: do ->
     [
       'mousedown', 'mouseup', 'mouseleave'
       'touchstart', 'touchend', 'touchcancel', 'touchleave'
     ]
-      .map (type) -> "#{type}.cropit"
-      .join ' '
+    .map (type) -> "#{type}.cropit"
+    .join ' '
   @PREVIEW_MOVE_EVENTS: 'mousemove.cropit touchmove.cropit'
   @ZOOM_INPUT_EVENTS: do ->
     [
       'mousemove', 'touchmove', 'change'
     ]
-      .map (type) -> "#{type}.cropit"
-      .join ' '
+    .map (type) -> "#{type}.cropit"
+    .join ' '
 
   constructor: (@element, options) ->
     @$el = $ @element
@@ -39,13 +40,13 @@ class Cropit
     @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
     @$fileInput = @options.$fileInput
-      .attr
+    .attr
         accept: 'image/*'
     @$preview = @options.$preview
-      .css
+    .css
         backgroundRepeat: 'no-repeat'
     @$zoomSlider = @options.$zoomSlider
-      .attr
+    .attr
         min: 0
         max: 1
         step: .01
@@ -66,23 +67,23 @@ class Cropit
 
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
-        .addClass 'cropit-image-background'
-        .attr 'alt', ''
-        .css 'position', 'absolute'
+      .addClass 'cropit-image-background'
+      .attr 'alt', ''
+      .css 'position', 'absolute'
       @$imageBgContainer = $ '<div />'
-        .addClass 'cropit-image-background-container'
-        .css
+      .addClass 'cropit-image-background-container'
+      .css
           position: 'absolute'
           zIndex: 0
           left: -@imageBgBorderWidthArray[3] + window.parseInt @$preview.css 'border-left-width'
           top: -@imageBgBorderWidthArray[0] + window.parseInt @$preview.css 'border-top-width'
           width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
           height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
-        .append @$imageBg
+      .append @$imageBg
       @$imageBgContainer.css overflow: 'hidden' if @imageBgBorderWidthArray[0] > 0
       $previewContainer
-        .css 'position', 'relative'
-        .prepend @$imageBgContainer
+      .css 'position', 'relative'
+      .prepend @$imageBgContainer
       @$preview.css 'position', 'relative'
 
       @$preview.hover =>
@@ -109,11 +110,19 @@ class Cropit
   bindListeners: ->
     @$fileInput.on 'change.cropit', @onFileChange.bind @
     @$preview.on Cropit.PREVIEW_EVENTS, @onPreviewEvent.bind @
+
+    if @options.allowDrag
+      @$preview.on 'dragover.cropit dragleave.cropit', @onDragOver.bind @
+      @$preview.on 'drop.cropit', @onDrop.bind @
+
     @$zoomSlider.on Cropit.ZOOM_INPUT_EVENTS, @onZoomSliderChange.bind @
+
+    jQuery.event.props.push('dataTransfer');
 
   unbindListeners: ->
     @$fileInput.off 'change.cropit'
     @$preview.off Cropit.PREVIEW_EVENTS
+    @$preview.off 'dragover.cropit dragleave.cropit drop.cropit'
     @$zoomSlider.off Cropit.ZOOM_INPUT_EVENTS
 
   reset: ->
@@ -123,8 +132,10 @@ class Cropit
   onFileChange: ->
     @options.onFileChange?()
 
+    @loadFileReader @$fileInput.get(0).files[0]
+
+  loadFileReader: (file) ->
     fileReader = new FileReader()
-    file = @$fileInput.get(0).files[0]
     if file?.type.match 'image'
       @setImageLoadingClass()
 
@@ -138,6 +149,25 @@ class Cropit
 
   onFileReaderError: ->
     @options.onFileReaderError?()
+
+  onDragOver: (e) ->
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+    @$preview.toggleClass 'drag-hover', e.type == 'dragover'
+
+  onDrop: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    files = e.dataTransfer.files
+    i = 0
+
+    while f = files[i]
+      if f.type.match("image")
+        @loadFileReader f
+        break
+      i++
+
+    @$preview.toggleClass 'drag-hover', false
 
   loadImage: (imageSrc) ->
     @imageSrc = imageSrc
@@ -173,13 +203,13 @@ class Cropit
 
   setImageLoadingClass: ->
     @$preview
-      .removeClass 'cropit-image-loaded'
-      .addClass 'cropit-image-loading'
+    .removeClass 'cropit-image-loaded'
+    .addClass 'cropit-image-loading'
 
   setImageLoadedClass: ->
     @$preview
-      .removeClass 'cropit-image-loading'
-      .addClass 'cropit-image-loaded'
+    .removeClass 'cropit-image-loading'
+    .addClass 'cropit-image-loaded'
 
   getEventPosition: (e) ->
     e = e.originalEvent?.touches?[0] if e.originalEvent?.touches?[0]
@@ -310,19 +340,19 @@ class Cropit
       h: @previewSize.h
 
     if @options.fitHeight and not @options.fitWidth and
-        @imageSize.w * @zoom < @previewSize.w
+      @imageSize.w * @zoom < @previewSize.w
       croppedSize.w = @imageSize.w * @zoom
     else if @options.fitWidth and not @options.fitHeight and
-        @imageSize.h * @zoom < @previewSize.h
+      @imageSize.h * @zoom < @previewSize.h
       croppedSize.h = @imageSize.h * @zoom
 
     exportZoom = if exportOptions.originalSize then 1 / @zoom else @options.exportZoom
 
     canvas = $ '<canvas />'
-      .attr
+    .attr
         width: croppedSize.w * exportZoom
         height: croppedSize.h * exportZoom
-      .get 0
+    .get 0
     canvasContext = canvas.getContext '2d'
 
     if exportOptions.type is 'image/jpeg'
