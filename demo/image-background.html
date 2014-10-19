@@ -23,13 +23,18 @@
       }
 
       .image-size-label {
-        margin-top: 0.6rem;
+        margin-top: 10px;
       }
 
       input {
         /* Use relative position to prevent from being covered by image background */
         position: relative;
         z-index: 10;
+        display: block;
+      }
+
+      .export {
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -44,6 +49,7 @@
         Resize image
       </div>
       <input type="range" class="cropit-image-zoom-input">
+      <button class="export">Export</button>
     </div>
 
     <script>
@@ -55,6 +61,11 @@
           imageState: {
             src: 'http://lorempixel.com/500/400/'
           }
+        });
+
+        $('.export').click(function() {
+          var imageData = $('.image-editor').cropit('export');
+          window.open(imageData);
         });
       });
     </script>
