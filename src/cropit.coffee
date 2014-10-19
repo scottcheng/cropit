@@ -38,13 +38,12 @@ class Cropit
     @image = new Image
     @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
-    if typeof @options.imageBackgroundBorderWidth is 'object'
+    if $.isArray @options.imageBackgroundBorderWidth
       @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
     else
-      @imageBgBorderWidthArray[0] = @options.imageBackgroundBorderWidth
-      @imageBgBorderWidthArray[1] = @options.imageBackgroundBorderWidth
-      @imageBgBorderWidthArray[2] = @options.imageBackgroundBorderWidth
-      @imageBgBorderWidthArray[3] = @options.imageBackgroundBorderWidth
+      @imageBgBorderWidthArray = []
+      [0..3].forEach (i) =>
+        @imageBgBorderWidthArray[i] = @options.imageBackgroundBorderWidth
 
     @$fileInput = @options.$fileInput
       .attr
