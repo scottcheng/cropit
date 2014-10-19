@@ -57,7 +57,13 @@ class Cropit
     @$preview.height @previewSize.h if @options.height
 
     if @options.imageBackground
-      imageBgBorderWidth = @options.imageBackgroundBorderWidth
+      if $.isArray @options.imageBackgroundBorderWidth
+        @imageBgBorderWidthArray = @options.imageBackgroundBorderWidth
+      else
+        @imageBgBorderWidthArray = []
+        [0..3].forEach (i) =>
+          @imageBgBorderWidthArray[i] = @options.imageBackgroundBorderWidth
+
       $previewContainer = @options.$previewContainer
       @$imageBg = $ '<img />'
         .addClass 'cropit-image-background'
@@ -68,12 +74,12 @@ class Cropit
         .css
           position: 'absolute'
           zIndex: 0
-          left: -imageBgBorderWidth + window.parseInt @$preview.css 'border-left-width'
-          top: -imageBgBorderWidth + window.parseInt @$preview.css 'border-top-width'
-          width: @previewSize.w + imageBgBorderWidth * 2
-          height: @previewSize.h + imageBgBorderWidth * 2
+          left: -@imageBgBorderWidthArray[3] + window.parseInt @$preview.css 'border-left-width'
+          top: -@imageBgBorderWidthArray[0] + window.parseInt @$preview.css 'border-top-width'
+          width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+          height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
         .append @$imageBg
-      @$imageBgContainer.css overflow: 'hidden' if imageBgBorderWidth > 0
+      @$imageBgContainer.css overflow: 'hidden' if @imageBgBorderWidthArray[0] > 0
       $previewContainer
         .css 'position', 'relative'
         .prepend @$imageBgContainer
@@ -211,8 +217,8 @@ class Cropit
     @$preview.css 'background-position', "#{@offset.x}px #{@offset.y}px"
     if @options.imageBackground
       @$imageBg.css
-        left: @offset.x + @options.imageBackgroundBorderWidth
-        top: @offset.y + @options.imageBackgroundBorderWidth
+        left: @offset.x + @imageBgBorderWidthArray[3]
+        top: @offset.y + @imageBgBorderWidthArray[0]
 
   fixOffset: (offset) ->
     return offset unless @imageLoaded
@@ -289,14 +295,15 @@ class Cropit
   isZoomable: ->
     @zoomer.isZoomable()
 
-  getCroppedImageData: (options) ->
+  getCroppedImageData: (exportOptions) ->
     return null unless @imageSrc
 
     exportDefaults =
       type: 'image/png'
       quality: .75
       originalSize: false
-    options = $.extend {}, exportDefaults, options
+      fillBg: '#fff'
+    exportOptions = $.extend {}, exportDefaults, exportOptions
 
     croppedSize =
       w: @previewSize.w
@@ -309,7 +316,7 @@ class Cropit
         @imageSize.h * @zoom < @previewSize.h
       croppedSize.h = @imageSize.h * @zoom
 
-    exportZoom = if options.originalSize then 1 / @zoom else @options.exportZoom
+    exportZoom = if exportOptions.originalSize then 1 / @zoom else @options.exportZoom
 
     canvas = $ '<canvas />'
       .attr
@@ -318,13 +325,17 @@ class Cropit
       .get 0
     canvasContext = canvas.getContext '2d'
 
+    if exportOptions.type is 'image/jpeg'
+      canvasContext.fillStyle = exportOptions.fillBg
+      canvasContext.fillRect 0, 0, canvas.width, canvas.height
+
     canvasContext.drawImage @image,
       @offset.x * exportZoom,
       @offset.y * exportZoom,
       @zoom * exportZoom * @imageSize.w,
       @zoom * exportZoom * @imageSize.h
 
-    canvas.toDataURL options.type, options.quality
+    canvas.toDataURL exportOptions.type, exportOptions.quality
 
   getImageState: ->
     src: @imageSrc
@@ -361,8 +372,8 @@ class Cropit
 
     if @options.imageBackground
       @$imageBgContainer.css
-        width: @previewSize.w + @options.imageBackgroundBorderWidth * 2
-        height: @previewSize.h + @options.imageBackgroundBorderWidth * 2
+        width: @previewSize.w + @imageBgBorderWidthArray[1] + @imageBgBorderWidthArray[3]
+        height: @previewSize.h + @imageBgBorderWidthArray[0] + @imageBgBorderWidthArray[2]
 
     if @imageLoaded
       @setupZoomer()

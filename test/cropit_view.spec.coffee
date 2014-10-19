@@ -417,6 +417,30 @@ describe 'Cropit View', ->
         expect($imageBgContainer).toBeInDOM()
         expect($imageBgContainer).toHaveCss position: 'absolute'
 
+      it 'offsets background image when border is specified', ->
+        $el.cropit
+          imageBackground: true
+          imageBackgroundBorderWidth: [1, 2, 3, 4]
+        $preview = $el.find '.cropit-image-preview'
+        $imageBgContainer = $el.find '.cropit-image-background-container'
+        expect($imageBgContainer).toHaveCss
+          left: '-4px'
+          top: '-1px'
+          width: "#{$preview.width() + 2 + 4}px"
+          height: "#{$preview.height() + 1 + 3}px"
+
+      it 'takes numeric background image border size to make uniform border size', ->
+        $el.cropit
+          imageBackground: true
+          imageBackgroundBorderWidth: 3
+        $preview = $el.find '.cropit-image-preview'
+        $imageBgContainer = $el.find '.cropit-image-background-container'
+        expect($imageBgContainer).toHaveCss
+          left: '-3px'
+          top: '-3px'
+          width: "#{$preview.width() + 2 * 3}px"
+          height: "#{$preview.height() + 2 * 3}px"
+
     describe 'onImageLoaded()', ->
 
       it 'updates background image source', ->

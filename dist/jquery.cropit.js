@@ -1,5 +1,5 @@
 /*
- *  cropit - v0.1.8
+ *  cropit - v0.1.9
  *  Customizable crop and zoom.
  *  https://github.com/scottcheng/cropit
  *
@@ -96,7 +96,7 @@
             this.init();
         }
         Cropit.prototype.init = function() {
-            var $previewContainer, imageBgBorderWidth, _ref, _ref1, _ref2;
+            var $previewContainer, _ref, _ref1, _ref2;
             this.image = new Image();
             if (this.options.allowCrossOrigin) {
                 this.image.crossOrigin = "Anonymous";
@@ -123,18 +123,27 @@
                 this.$preview.height(this.previewSize.h);
             }
             if (this.options.imageBackground) {
-                imageBgBorderWidth = this.options.imageBackgroundBorderWidth;
+                if ($.isArray(this.options.imageBackgroundBorderWidth)) {
+                    this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
+                } else {
+                    this.imageBgBorderWidthArray = [];
+                    [ 0, 1, 2, 3 ].forEach(function(_this) {
+                        return function(i) {
+                            return _this.imageBgBorderWidthArray[i] = _this.options.imageBackgroundBorderWidth;
+                        };
+                    }(this));
+                }
                 $previewContainer = this.options.$previewContainer;
                 this.$imageBg = $("<img />").addClass("cropit-image-background").attr("alt", "").css("position", "absolute");
                 this.$imageBgContainer = $("<div />").addClass("cropit-image-background-container").css({
                     position: "absolute",
                     zIndex: 0,
-                    left: -imageBgBorderWidth + window.parseInt(this.$preview.css("border-left-width")),
-                    top: -imageBgBorderWidth + window.parseInt(this.$preview.css("border-top-width")),
-                    width: this.previewSize.w + imageBgBorderWidth * 2,
-                    height: this.previewSize.h + imageBgBorderWidth * 2
+                    left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css("border-left-width")),
+                    top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css("border-top-width")),
+                    width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+                    height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2]
                 }).append(this.$imageBg);
-                if (imageBgBorderWidth > 0) {
+                if (this.imageBgBorderWidthArray[0] > 0) {
                     this.$imageBgContainer.css({
                         overflow: "hidden"
                     });
@@ -288,8 +297,8 @@
             this.$preview.css("background-position", "" + this.offset.x + "px " + this.offset.y + "px");
             if (this.options.imageBackground) {
                 return this.$imageBg.css({
-                    left: this.offset.x + this.options.imageBackgroundBorderWidth,
-                    top: this.offset.y + this.options.imageBackgroundBorderWidth
+                    left: this.offset.x + this.imageBgBorderWidthArray[3],
+                    top: this.offset.y + this.imageBgBorderWidthArray[0]
                 });
             }
         };
@@ -378,7 +387,7 @@
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();
         };
-        Cropit.prototype.getCroppedImageData = function(options) {
+        Cropit.prototype.getCroppedImageData = function(exportOptions) {
             var canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
                 return null;
@@ -387,9 +396,13 @@
                 type: "image/png",
                 quality: .75,
                 originalSize: false,
+<<<<<<< HEAD
                 fillBg:'#fff'
+=======
+                fillBg: "#fff"
+>>>>>>> upstream/master
             };
-            options = $.extend({}, exportDefaults, options);
+            exportOptions = $.extend({}, exportDefaults, exportOptions);
             croppedSize = {
                 w: this.previewSize.w,
                 h: this.previewSize.h
@@ -399,20 +412,27 @@
             } else if (this.options.fitWidth && !this.options.fitHeight && this.imageSize.h * this.zoom < this.previewSize.h) {
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
-            exportZoom = options.originalSize ? 1 / this.zoom : this.options.exportZoom;
+            exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
             canvas = $("<canvas />").attr({
                 width: croppedSize.w * exportZoom,
                 height: croppedSize.h * exportZoom
             }).get(0);
             canvasContext = canvas.getContext("2d");
+<<<<<<< HEAD
 
             if (options.type == 'image/jpeg' || options.type == 'image/jpg') {
                 canvasContext.fillStyle = options.fillBg;
                 canvasContext.fillRect(0, 0, canvas.width, canvas.height);
             }
 
+=======
+            if (exportOptions.type === "image/jpeg") {
+                canvasContext.fillStyle = exportOptions.fillBg;
+                canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+            }
+>>>>>>> upstream/master
             canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
-            return canvas.toDataURL(options.type, options.quality);
+            return canvas.toDataURL(exportOptions.type, exportOptions.quality);
         };
         Cropit.prototype.getImageState = function() {
             return {
@@ -459,8 +479,8 @@
             });
             if (this.options.imageBackground) {
                 this.$imageBgContainer.css({
-                    width: this.previewSize.w + this.options.imageBackgroundBorderWidth * 2,
-                    height: this.previewSize.h + this.options.imageBackgroundBorderWidth * 2
+                    width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+                    height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2]
                 });
             }
             if (this.imageLoaded) {
