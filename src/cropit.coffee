@@ -6,6 +6,8 @@ class Cropit
     imageBackgroundBorderWidth: 0
     imageState: null
     allowCrossOrigin: false
+    fitWidth: false
+    fitHeight: false
 
   @PREVIEW_EVENTS: do ->
     [

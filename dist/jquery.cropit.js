@@ -69,7 +69,9 @@
             imageBackground: false,
             imageBackgroundBorderWidth: 0,
             imageState: null,
-            allowCrossOrigin: false
+            allowCrossOrigin: false,
+            fitWidth: false,
+            fitHeight: false
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
