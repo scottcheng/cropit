@@ -6,6 +6,7 @@ class Cropit
     imageBackgroundBorderWidth: 0
     imageState: null
     allowCrossOrigin: false
+    allowDrag: true
     fitWidth: false
     fitHeight: false
 
@@ -113,9 +114,15 @@ class Cropit
     @$preview.on Cropit.PREVIEW_EVENTS, @onPreviewEvent.bind @
     @$zoomSlider.on Cropit.ZOOM_INPUT_EVENTS, @onZoomSliderChange.bind @
 
+    if @options.allowDrag
+      jQuery.event.props.push('dataTransfer');
+      @$preview.on 'dragover.cropit dragleave.cropit', @onDragOver.bind @
+      @$preview.on 'drop.cropit', @onDrop.bind @
+
   unbindListeners: ->
     @$fileInput.off 'change.cropit'
     @$preview.off Cropit.PREVIEW_EVENTS
+    @$preview.off 'dragover.cropit dragleave.cropit drop.cropit'
     @$zoomSlider.off Cropit.ZOOM_INPUT_EVENTS
 
   reset: ->
@@ -125,8 +132,10 @@ class Cropit
   onFileChange: ->
     @options.onFileChange?()
 
+    @loadFileReader @$fileInput.get(0).files[0]
+
+  loadFileReader: (file) ->
     fileReader = new FileReader()
-    file = @$fileInput.get(0).files[0]
     if file?.type.match 'image'
       @setImageLoadingClass()
 
@@ -140,6 +149,25 @@ class Cropit
 
   onFileReaderError: ->
     @options.onFileReaderError?()
+
+  onDragOver: (e) ->
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+    @$preview.toggleClass 'drag-hover', e.type == 'dragover'
+
+  onDrop: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    files = e.dataTransfer.files
+    i = 0
+
+    while f = files[i]
+      if f.type.match("image")
+        @loadFileReader f
+        break
+      i++
+
+    @$preview.toggleClass 'drag-hover', false
 
   loadImage: (imageSrc) ->
     @imageSrc = imageSrc
