@@ -14,6 +14,7 @@ describe 'Cropit', ->
     expect(cropit.options.allowCrossOrigin).toBe false
     expect(cropit.options.fitWidth).toBe false
     expect(cropit.options.fitHeight).toBe false
+    expect(cropit.options.freeImageMove).toBe false
 
   describe 'init()', ->
 
