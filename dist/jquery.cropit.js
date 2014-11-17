@@ -70,6 +70,7 @@
             imageBackgroundBorderWidth: 0,
             imageState: null,
             allowCrossOrigin: false,
+            allowDragNDrop: true,
             fitWidth: false,
             fitHeight: false
         };
@@ -171,6 +172,9 @@
             this.imageLoaded = false;
             this.moveContinue = false;
             this.zoomer = new Zoomer();
+            if (this.options.allowDragNDrop) {
+                jQuery.event.props.push("dataTransfer");
+            }
             this.bindListeners();
             this.$zoomSlider.val(this.initialZoomSliderPos);
             this.setOffset(((_ref = this.options.imageState) != null ? _ref.offset : void 0) || this.initialOffset);
@@ -180,11 +184,16 @@
         Cropit.prototype.bindListeners = function() {
             this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
             this.$preview.on(Cropit.PREVIEW_EVENTS, this.onPreviewEvent.bind(this));
-            return this.$zoomSlider.on(Cropit.ZOOM_INPUT_EVENTS, this.onZoomSliderChange.bind(this));
+            this.$zoomSlider.on(Cropit.ZOOM_INPUT_EVENTS, this.onZoomSliderChange.bind(this));
+            if (this.options.allowDragNDrop) {
+                this.$preview.on("dragover.cropit dragleave.cropit", this.onDragOver.bind(this));
+                return this.$preview.on("drop.cropit", this.onDrop.bind(this));
+            }
         };
         Cropit.prototype.unbindListeners = function() {
             this.$fileInput.off("change.cropit");
             this.$preview.off(Cropit.PREVIEW_EVENTS);
+            this.$preview.off("dragover.cropit dragleave.cropit drop.cropit");
             return this.$zoomSlider.off(Cropit.ZOOM_INPUT_EVENTS);
         };
         Cropit.prototype.reset = function() {
@@ -192,12 +201,15 @@
             return this.offset = this.initialOffset;
         };
         Cropit.prototype.onFileChange = function() {
-            var file, fileReader, _base;
+            var _base;
             if (typeof (_base = this.options).onFileChange === "function") {
                 _base.onFileChange();
             }
+            return this.loadFileReader(this.$fileInput.get(0).files[0]);
+        };
+        Cropit.prototype.loadFileReader = function(file) {
+            var fileReader;
             fileReader = new FileReader();
-            file = this.$fileInput.get(0).files[0];
             if (file != null ? file.type.match("image") : void 0) {
                 this.setImageLoadingClass();
                 fileReader.readAsDataURL(file);
@@ -212,6 +224,26 @@
         Cropit.prototype.onFileReaderError = function() {
             var _base;
             return typeof (_base = this.options).onFileReaderError === "function" ? _base.onFileReaderError() : void 0;
+        };
+        Cropit.prototype.onDragOver = function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "copy";
+            return this.$preview.toggleClass("cropit-drag-hovered", e.type === "dragover");
+        };
+        Cropit.prototype.onDrop = function(e) {
+            var files;
+            e.preventDefault();
+            e.stopPropagation();
+            files = Array.prototype.slice.call(e.dataTransfer.files, 0);
+            files.some(function(_this) {
+                return function(file) {
+                    if (file.type.match("image")) {
+                        _this.loadFileReader(file);
+                        return true;
+                    }
+                };
+            }(this));
+            return this.$preview.removeClass("cropit-drag-hovered");
         };
         Cropit.prototype.loadImage = function(imageSrc) {
             var _base;
