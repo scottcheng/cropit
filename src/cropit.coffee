@@ -254,7 +254,7 @@ class Cropit
 
     ret = x: offset.x, y: offset.y
 
-    if not @options.freeImageMove
+    unless @options.freeImageMove
       if @imageSize.w * @zoom <= @previewSize.w
         ret.x = 0
       else if ret.x > 0

@@ -72,7 +72,8 @@
             allowCrossOrigin: false,
             allowDragNDrop: true,
             fitWidth: false,
-            fitHeight: false
+            fitHeight: false,
+            freeImageMove: false
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
@@ -345,19 +346,21 @@
                 x: offset.x,
                 y: offset.y
             };
-            if (this.imageSize.w * this.zoom <= this.previewSize.w) {
-                ret.x = 0;
-            } else if (ret.x > 0) {
-                ret.x = 0;
-            } else if (ret.x + this.imageSize.w * this.zoom < this.previewSize.w) {
-                ret.x = this.previewSize.w - this.imageSize.w * this.zoom;
-            }
-            if (this.imageSize.h * this.zoom <= this.previewSize.h) {
-                ret.y = 0;
-            } else if (ret.y > 0) {
-                ret.y = 0;
-            } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
-                ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
+            if (!this.options.freeImageMove) {
+                if (this.imageSize.w * this.zoom <= this.previewSize.w) {
+                    ret.x = 0;
+                } else if (ret.x > 0) {
+                    ret.x = 0;
+                } else if (ret.x + this.imageSize.w * this.zoom < this.previewSize.w) {
+                    ret.x = this.previewSize.w - this.imageSize.w * this.zoom;
+                }
+                if (this.imageSize.h * this.zoom <= this.previewSize.h) {
+                    ret.y = 0;
+                } else if (ret.y > 0) {
+                    ret.y = 0;
+                } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
+                    ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
+                }
             }
             ret.x = this.round(ret.x);
             ret.y = this.round(ret.y);
