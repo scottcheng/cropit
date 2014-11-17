@@ -12,6 +12,7 @@ describe 'Cropit', ->
     expect(cropit.options.imageBackgroundBorderWidth).toBe 0
     expect(cropit.options.imageState).toBe null
     expect(cropit.options.allowCrossOrigin).toBe false
+    expect(cropit.options.allowDragNDrop).toBe true
     expect(cropit.options.fitWidth).toBe false
     expect(cropit.options.fitHeight).toBe false
 
