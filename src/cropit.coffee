@@ -9,6 +9,7 @@ class Cropit
     allowDragNDrop: true
     fitWidth: false
     fitHeight: false
+    freeImageMove: false
 
   @PREVIEW_EVENTS: do ->
     [
@@ -253,19 +254,20 @@ class Cropit
 
     ret = x: offset.x, y: offset.y
 
-    if @imageSize.w * @zoom <= @previewSize.w
-      ret.x = 0
-    else if ret.x > 0
-      ret.x = 0
-    else if ret.x + @imageSize.w * @zoom < @previewSize.w
-      ret.x = @previewSize.w - @imageSize.w * @zoom
+    unless @options.freeImageMove
+      if @imageSize.w * @zoom <= @previewSize.w
+        ret.x = 0
+      else if ret.x > 0
+        ret.x = 0
+      else if ret.x + @imageSize.w * @zoom < @previewSize.w
+        ret.x = @previewSize.w - @imageSize.w * @zoom
 
-    if @imageSize.h * @zoom <= @previewSize.h
-      ret.y = 0
-    else if ret.y > 0
-      ret.y = 0
-    else if ret.y + @imageSize.h * @zoom < @previewSize.h
-      ret.y = @previewSize.h - @imageSize.h * @zoom
+      if @imageSize.h * @zoom <= @previewSize.h
+        ret.y = 0
+      else if ret.y > 0
+        ret.y = 0
+      else if ret.y + @imageSize.h * @zoom < @previewSize.h
+        ret.y = @previewSize.h - @imageSize.h * @zoom
 
     ret.x = @round ret.x
     ret.y = @round ret.y
