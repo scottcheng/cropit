@@ -1,5 +1,6 @@
 {
   "name": "cropit",
+  "main": "dist/jquery.cropit.min.js",
   "description": "Customizable crop and zoom.",
   "version": "0.1.9",
   "author": {
