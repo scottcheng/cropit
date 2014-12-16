@@ -9,7 +9,7 @@ class Cropit
     allowDragNDrop: true
     fitWidth: false
     fitHeight: false
-    freeImageMove: false
+    freeMove: false
 
   @PREVIEW_EVENTS: do ->
     [
@@ -254,7 +254,7 @@ class Cropit
 
     ret = x: offset.x, y: offset.y
 
-    unless @options.freeImageMove
+    unless @options.freeMove
       if @imageSize.w * @zoom <= @previewSize.w
         ret.x = 0
       else if ret.x > 0

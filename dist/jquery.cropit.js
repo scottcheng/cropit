@@ -73,7 +73,7 @@
             allowDragNDrop: true,
             fitWidth: false,
             fitHeight: false,
-            freeImageMove: false
+            freeMove: false
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
@@ -346,7 +346,7 @@
                 x: offset.x,
                 y: offset.y
             };
-            if (!this.options.freeImageMove) {
+            if (!this.options.freeMove) {
                 if (this.imageSize.w * this.zoom <= this.previewSize.w) {
                     ret.x = 0;
                 } else if (ret.x > 0) {
