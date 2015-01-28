@@ -216,7 +216,7 @@
                 fileReader.readAsDataURL(file);
                 fileReader.onload = this.onFileReaderLoaded.bind(this);
                 return fileReader.onerror = this.onFileReaderError.bind(this);
-            } else {
+            } else if (file != null) {
                 return this.onFileReaderError();
             }
         };

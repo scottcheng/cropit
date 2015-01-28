@@ -143,7 +143,7 @@ class Cropit
       fileReader.readAsDataURL file
       fileReader.onload = @onFileReaderLoaded.bind @
       fileReader.onerror = @onFileReaderError.bind @
-    else
+    else if file?
       @onFileReaderError()
 
   onFileReaderLoaded: (e) ->
