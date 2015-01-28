@@ -216,6 +216,8 @@
                 fileReader.readAsDataURL(file);
                 fileReader.onload = this.onFileReaderLoaded.bind(this);
                 return fileReader.onerror = this.onFileReaderError.bind(this);
+            } else {
+                return this.onFileReaderError();
             }
         };
         Cropit.prototype.onFileReaderLoaded = function(e) {
