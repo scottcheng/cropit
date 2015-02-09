@@ -7,9 +7,8 @@ class Cropit
     imageState: null
     allowCrossOrigin: false
     allowDragNDrop: true
-    fitWidth: false
-    fitHeight: false
     freeMove: false
+    minZoom: 'fill'
 
   @PREVIEW_EVENTS: do ->
     [
@@ -257,19 +256,15 @@ class Cropit
     ret = x: offset.x, y: offset.y
 
     unless @options.freeMove
-      if @imageSize.w * @zoom <= @previewSize.w
-        ret.x = 0
-      else if ret.x > 0
-        ret.x = 0
-      else if ret.x + @imageSize.w * @zoom < @previewSize.w
-        ret.x = @previewSize.w - @imageSize.w * @zoom
+      if @imageSize.w * @zoom >= @previewSize.w
+        ret.x = Math.min 0, Math.max ret.x, @previewSize.w - @imageSize.w * @zoom
+      else
+        ret.x = Math.max 0, Math.min ret.x, @previewSize.w - @imageSize.w * @zoom
 
-      if @imageSize.h * @zoom <= @previewSize.h
-        ret.y = 0
-      else if ret.y > 0
-        ret.y = 0
-      else if ret.y + @imageSize.h * @zoom < @previewSize.h
-        ret.y = @previewSize.h - @imageSize.h * @zoom
+      if @imageSize.h * @zoom >= @previewSize.h
+        ret.y = Math.min 0, Math.max ret.y, @previewSize.h - @imageSize.h * @zoom
+      else
+        ret.y = Math.max 0, Math.min ret.y, @previewSize.h - @imageSize.h * @zoom
 
     ret.x = @round ret.x
     ret.y = @round ret.y
@@ -340,13 +335,6 @@ class Cropit
     croppedSize =
       w: @previewSize.w
       h: @previewSize.h
-
-    if @options.fitHeight and not @options.fitWidth and
-        @imageSize.w * @zoom < @previewSize.w
-      croppedSize.w = @imageSize.w * @zoom
-    else if @options.fitWidth and not @options.fitHeight and
-        @imageSize.h * @zoom < @previewSize.h
-      croppedSize.h = @imageSize.h * @zoom
 
     exportZoom = if exportOptions.originalSize then 1 / @zoom else @options.exportZoom
 

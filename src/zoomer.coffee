@@ -3,11 +3,7 @@ class Zoomer
     widthRatio = previewSize.w / imageSize.w
     heightRatio = previewSize.h / imageSize.h
 
-    if options?.fitWidth && !options?.fitHeight
-      @minZoom = widthRatio
-    else if options?.fitHeight && !options?.fitWidth
-      @minZoom = heightRatio
-    else if options?.fitWidth && options?.fitHeight
+    if options?.minZoom is 'fit'
       @minZoom = if widthRatio < heightRatio then widthRatio else heightRatio
     else
       @minZoom = if widthRatio < heightRatio then heightRatio else widthRatio
