@@ -408,7 +408,7 @@ class Cropit
     @enableZoomSlider()
     @$el.removeClass 'cropit-disabled'
 
-  round: (x) -> Math.round(x * 1e5) / 1e5
+  round: (x) -> +(Math.round(x * 1e2)  + 'e-2')
 
   $: (selector) ->
     return null unless @$el
