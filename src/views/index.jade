@@ -373,6 +373,12 @@ html
               | . This also affects the maximum zoom level, since the exported image cannot be zoomed to larger than its original size.
             .default: code 1
           .option
+            .name allowDragNDrop
+            .type boolean
+            .description
+              | When set to true, you can load an image by dragging it from local file browser onto the preview area.
+            .default: code true
+          .option
             .name minZoom
             .type string
             .description
