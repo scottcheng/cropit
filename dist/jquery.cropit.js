@@ -18,11 +18,7 @@
             }
             widthRatio = previewSize.w / imageSize.w;
             heightRatio = previewSize.h / imageSize.h;
-            if ((options != null ? options.fitWidth : void 0) && !(options != null ? options.fitHeight : void 0)) {
-                this.minZoom = widthRatio;
-            } else if ((options != null ? options.fitHeight : void 0) && !(options != null ? options.fitWidth : void 0)) {
-                this.minZoom = heightRatio;
-            } else if ((options != null ? options.fitWidth : void 0) && (options != null ? options.fitHeight : void 0)) {
+            if ((options != null ? options.minZoom : void 0) === "fit") {
                 this.minZoom = widthRatio < heightRatio ? widthRatio : heightRatio;
             } else {
                 this.minZoom = widthRatio < heightRatio ? heightRatio : widthRatio;
@@ -71,9 +67,8 @@
             imageState: null,
             allowCrossOrigin: false,
             allowDragNDrop: true,
-            fitWidth: false,
-            fitHeight: false,
-            freeMove: false
+            freeMove: false,
+            minZoom: "fill"
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
@@ -349,19 +344,15 @@
                 y: offset.y
             };
             if (!this.options.freeMove) {
-                if (this.imageSize.w * this.zoom <= this.previewSize.w) {
-                    ret.x = 0;
-                } else if (ret.x > 0) {
-                    ret.x = 0;
-                } else if (ret.x + this.imageSize.w * this.zoom < this.previewSize.w) {
-                    ret.x = this.previewSize.w - this.imageSize.w * this.zoom;
+                if (this.imageSize.w * this.zoom >= this.previewSize.w) {
+                    ret.x = Math.min(0, Math.max(ret.x, this.previewSize.w - this.imageSize.w * this.zoom));
+                } else {
+                    ret.x = Math.max(0, Math.min(ret.x, this.previewSize.w - this.imageSize.w * this.zoom));
                 }
-                if (this.imageSize.h * this.zoom <= this.previewSize.h) {
-                    ret.y = 0;
-                } else if (ret.y > 0) {
-                    ret.y = 0;
-                } else if (ret.y + this.imageSize.h * this.zoom < this.previewSize.h) {
-                    ret.y = this.previewSize.h - this.imageSize.h * this.zoom;
+                if (this.imageSize.h * this.zoom >= this.previewSize.h) {
+                    ret.y = Math.min(0, Math.max(ret.y, this.previewSize.h - this.imageSize.h * this.zoom));
+                } else {
+                    ret.y = Math.max(0, Math.min(ret.y, this.previewSize.h - this.imageSize.h * this.zoom));
                 }
             }
             ret.x = this.round(ret.x);
@@ -442,11 +433,6 @@
                 w: this.previewSize.w,
                 h: this.previewSize.h
             };
-            if (this.options.fitHeight && !this.options.fitWidth && this.imageSize.w * this.zoom < this.previewSize.w) {
-                croppedSize.w = this.imageSize.w * this.zoom;
-            } else if (this.options.fitWidth && !this.options.fitHeight && this.imageSize.h * this.zoom < this.previewSize.h) {
-                croppedSize.h = this.imageSize.h * this.zoom;
-            }
             exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
             canvas = $("<canvas />").attr({
                 width: croppedSize.w * exportZoom,
@@ -524,7 +510,7 @@
             return this.$el.removeClass("cropit-disabled");
         };
         Cropit.prototype.round = function(x) {
-            return Math.round(x * 1e5) / 1e5;
+            return +(Math.round(x * 100) + "e-2");
         };
         Cropit.prototype.$ = function(selector) {
             if (!this.$el) {

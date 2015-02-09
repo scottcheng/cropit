@@ -7,7 +7,7 @@ describe 'Zoomer', ->
 
   describe 'setup()', ->
 
-    it 'sets minZoom to the larger of widthRatio and heightRatio', ->
+    it 'sets minZoom to the larger of widthRatio and heightRatio in `fill` minZoom mode', ->
       zoomer.setup
         w: 4, h: 2
       , w: 1, h: 1
@@ -23,42 +23,26 @@ describe 'Zoomer', ->
       , w: 1, h: 1
       expect(zoomer.minZoom).toBe .5
 
-    it 'sets minZoom to widthRatio when fitWidth is true', ->
+    it 'sets minZoom to the smaller of widthRatio and heightRatio `fit` minZoom mode', ->
       zoomer.setup
         w: 4, h: 2
       , w: 1, h: 1
       , 1
-      , fitWidth: true
-      expect(zoomer.minZoom).toBe .25
-
-    it 'sets minZoom to heightRatio when fitHeight is true', ->
-      zoomer.setup
-        w: 2, h: 4
-      , w: 1, h: 1
-      , 1
-      , fitHeight: true
-      expect(zoomer.minZoom).toBe .25
-
-    it 'sets minZoom to the smaller of widthRatio and heightRatio when fitWidth and fitHeight are both true', ->
-      zoomer.setup
-        w: 4, h: 2
-      , w: 1, h: 1
-      , 1
-      , fitWidth: true, fitHeight: true
+      , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .25
 
       zoomer.setup
         w: 2, h: 4
       , w: 1, h: 1
       , 1
-      , fitWidth: true, fitHeight: true
+      , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .25
 
       zoomer.setup
         w: 2, h: 2
       , w: 1, h: 1
       , 1
-      , fitWidth: true, fitHeight: true
+      , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .5
 
     it 'sets maxZoom to minZoom if image is smaller than preview', ->

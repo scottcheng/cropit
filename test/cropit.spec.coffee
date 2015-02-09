@@ -13,8 +13,7 @@ describe 'Cropit', ->
     expect(cropit.options.imageState).toBe null
     expect(cropit.options.allowCrossOrigin).toBe false
     expect(cropit.options.allowDragNDrop).toBe true
-    expect(cropit.options.fitWidth).toBe false
-    expect(cropit.options.fitHeight).toBe false
+    expect(cropit.options.minZoom).toBe 'fill'
     expect(cropit.options.freeMove).toBe false
 
   describe 'init()', ->
@@ -196,8 +195,8 @@ describe 'Cropit', ->
         cropit.imageSize = w: 4
         cropit.zoom = .5
         cropit.previewSize = w: 1
-        offset = cropit.fixOffset x: -.1212121
-        expect(offset.x).toBe -.12121
+        offset = cropit.fixOffset x: -.12121
+        expect(offset.x).toBe -.12
 
     describe 'fixes y', ->
 
@@ -226,8 +225,8 @@ describe 'Cropit', ->
         cropit.imageSize = h: 4
         cropit.zoom = .5
         cropit.previewSize = h: 1
-        offset = cropit.fixOffset y: -.1212121
-        expect(offset.y).toBe -.12121
+        offset = cropit.fixOffset y: -.12121
+        expect(offset.y).toBe -.12
 
   describe 'fixZoom()', ->
 
