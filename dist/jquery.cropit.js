@@ -417,6 +417,36 @@
         Cropit.prototype.isZoomable = function() {
             return this.zoomer.isZoomable();
         };
+        Cropit.prototype.rotate = function(degree) {
+            degree = parseFloat(degree) || 0;
+            if (degree === 0) {
+                return;
+            }
+            this.rotateDegree = degree % 360;
+            return this.loadImage(this.getRotatedDataURL(this.rotateDegree));
+        };
+        Cropit.prototype.getRotatedDataURL = function(degree) {
+            var acuteAngle, acuteAngleArc, arc, canvas, context, deg, height, naturalHeight, naturalWidth, originalImage, width;
+            canvas = $("<canvas>")[0];
+            context = canvas.getContext("2d");
+            arc = degree * Math.PI / 180;
+            deg = Math.abs(degree) % 180;
+            acuteAngle = deg > 90 ? 180 - deg : deg;
+            acuteAngleArc = acuteAngle * Math.PI / 180;
+            originalImage = this.image;
+            naturalWidth = originalImage.naturalWidth;
+            naturalHeight = originalImage.naturalHeight;
+            width = Math.abs(naturalWidth * Math.cos(acuteAngleArc) + naturalHeight * Math.sin(acuteAngleArc));
+            height = Math.abs(naturalWidth * Math.sin(acuteAngleArc) + naturalHeight * Math.cos(acuteAngleArc));
+            canvas.width = width;
+            canvas.height = height;
+            context.save();
+            context.translate(width / 2, height / 2);
+            context.rotate(arc);
+            context.drawImage(this.image, -naturalWidth / 2, -naturalHeight / 2, naturalWidth, naturalHeight);
+            context.restore();
+            return canvas.toDataURL();
+        };
         Cropit.prototype.getCroppedImageData = function(exportOptions) {
             var canvas, canvasContext, croppedSize, exportDefaults, exportZoom;
             if (!this.imageSrc) {
@@ -592,6 +622,15 @@
             } else {
                 cropit = this.first().data(dataKey);
                 return cropit != null ? cropit.getZoom() : void 0;
+            }
+        },
+        rotate: function(degree) {
+            if (degree) {
+                return this.each(function() {
+                    var cropit;
+                    cropit = $.data(this, dataKey);
+                    return cropit != null ? cropit.rotate(degree) : void 0;
+                });
             }
         },
         imageSize: function() {
