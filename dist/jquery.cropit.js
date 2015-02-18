@@ -418,15 +418,19 @@
             return this.zoomer.isZoomable();
         };
         Cropit.prototype.rotate = function(degree) {
+            var rotateDegree;
             degree = parseFloat(degree) || 0;
             if (degree === 0) {
                 return;
             }
-            this.rotateDegree = degree % 360;
-            return this.loadImage(this.getRotatedDataURL(this.rotateDegree));
+            rotateDegree = degree % 360;
+            return this.loadImage(this.getRotatedDataURL(rotateDegree));
         };
         Cropit.prototype.getRotatedDataURL = function(degree) {
             var acuteAngle, acuteAngleArc, arc, canvas, context, deg, height, naturalHeight, naturalWidth, originalImage, width;
+            if (!this.imageLoaded) {
+                return null;
+            }
             canvas = $("<canvas>")[0];
             context = canvas.getContext("2d");
             arc = degree * Math.PI / 180;

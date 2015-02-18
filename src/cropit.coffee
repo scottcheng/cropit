@@ -327,10 +327,12 @@ class Cropit
     degree = parseFloat(degree) || 0
     return if degree == 0
 
-    @rotateDegree = degree % 360
-    @loadImage(@getRotatedDataURL(@rotateDegree))
+    rotateDegree = degree % 360
+    @loadImage(@getRotatedDataURL(rotateDegree))
 
   getRotatedDataURL: (degree) ->
+    return null unless @imageLoaded
+
     canvas = $("<canvas>")[0]
     context = canvas.getContext("2d")
     arc = degree * Math.PI / 180

@@ -54,6 +54,33 @@ describe 'Cropit', ->
       cropit.init()
       expect(cropit.loadImage).toHaveBeenCalled()
 
+
+  describe 'rotate()', ->
+
+    beforeEach ->
+      cropit = new Cropit
+
+    it 'calls loadImage() with null when no image', ->
+      spyOn cropit, 'loadImage'
+
+      cropit.rotate(90)
+      expect(cropit.loadImage).toHaveBeenCalledWith(null)
+
+    it 'calls loadImage() with data when image has been loaded', ->
+      cropit.loadImage imageData
+      cropit.imageLoaded = true
+      spyOn cropit, 'loadImage'
+
+      cropit.rotate(90)
+      expect(cropit.loadImage).toHaveBeenCalledWith('data:,')
+
+    it 'not calls loadImage() when image not rotated', ->
+      spyOn cropit, 'loadImage'
+
+      cropit.rotate(0)
+      expect(cropit.loadImage).not.toHaveBeenCalled()
+
+
   describe 'onFileReaderLoaded()', ->
 
     beforeEach ->
