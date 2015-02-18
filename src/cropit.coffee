@@ -322,6 +322,39 @@ class Cropit
   isZoomable: ->
     @zoomer.isZoomable()
 
+
+  rotate: (degree) ->
+    degree = parseFloat(degree) || 0
+    return if degree == 0
+
+    rotateDegree = degree % 360
+    @loadImage(@getRotatedDataURL(rotateDegree))
+
+  getRotatedDataURL: (degree) ->
+    return null unless @imageLoaded
+
+    canvas = $("<canvas>")[0]
+    context = canvas.getContext("2d")
+    arc = degree * Math.PI / 180
+    deg = Math.abs(degree) % 180
+    acuteAngle = if deg > 90 then (180 - deg) else deg
+    acuteAngleArc = acuteAngle * Math.PI / 180
+    originalImage = @image
+    naturalWidth = originalImage.naturalWidth
+    naturalHeight = originalImage.naturalHeight
+    width = Math.abs(naturalWidth * Math.cos(acuteAngleArc) + naturalHeight * Math.sin(acuteAngleArc))
+    height = Math.abs(naturalWidth * Math.sin(acuteAngleArc) + naturalHeight * Math.cos(acuteAngleArc))
+
+    canvas.width = width
+    canvas.height = height
+    context.save()
+    context.translate(width / 2, height / 2)
+    context.rotate(arc)
+    context.drawImage(@image, -naturalWidth / 2, -naturalHeight / 2, naturalWidth, naturalHeight)
+    context.restore()
+
+    return canvas.toDataURL()
+
   getCroppedImageData: (exportOptions) ->
     return null unless @imageSrc
 

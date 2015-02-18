@@ -53,6 +53,12 @@ methods =
       cropit = @first().data dataKey
       cropit?.getZoom()
 
+  rotate: (degree) ->
+    if degree
+      @each ->
+        cropit = $.data @, dataKey
+        cropit?.rotate degree
+
   imageSize: ->
     cropit = @first().data dataKey
     cropit?.getImageSize()
