@@ -446,6 +446,12 @@
                 croppedSize.h = this.imageSize.h * this.zoom;
             }
             exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
+
+            var newUncroppedWidth = this.zoom * exportZoom * this.imageSize.w;
+            var newUncroppedHeight = this.zoom * exportZoom * this.imageSize.h;
+
+            var preResizedImg = this.preResizeImage(this.image, newUncroppedWidth, newUncroppedHeight);
+
             canvas = $("<canvas />").attr({
                 width: croppedSize.w * exportZoom,
                 height: croppedSize.h * exportZoom
@@ -455,9 +461,59 @@
                 canvasContext.fillStyle = exportOptions.fillBg;
                 canvasContext.fillRect(0, 0, canvas.width, canvas.height);
             }
-            canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
+
+            canvasContext.drawImage(preResizedImg, this.offset.x * exportZoom, this.offset.y * exportZoom, newUncroppedWidth, newUncroppedHeight);
             return canvas.toDataURL(exportOptions.type, exportOptions.quality);
         };
+
+
+        /**
+         * This function simply pre resizes the image by steps
+         * Using an image size closer to the final version yields a better result later on when cropping
+         *
+         * @param src
+         * @param targetWidth
+         * @param targetHeight
+         * @param type
+         * @param quality
+         * @returns {*}
+         */
+        Cropit.prototype.preResizeImage = function( src, targetWidth, targetHeight, type, quality ){
+            var canvas, context, canvasWidth, canvasHeight;
+            var tmp = new Image();
+
+            // we copy the source only
+            tmp.src = src.src;
+
+            type = type || 'image/jpeg';
+            quality = quality || 1;
+
+            canvasWidth = tmp.width;
+            canvasHeight = tmp.height;
+
+            while(true){
+
+                canvasWidth /= 2;
+                canvasHeight /= 2;
+
+                // if the new size is smalled than the target size, we are done
+                if ( canvasWidth < targetWidth ||  canvasHeight < targetHeight ){
+                    break;
+                }
+
+                canvas = document.createElement( 'canvas' );
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                context = canvas.getContext( '2d' );
+                context.drawImage( tmp, 0, 0, canvasWidth, canvasHeight );
+
+                tmp.src = canvas.toDataURL( type, quality );
+            }
+
+           return tmp;
+        };
+
         Cropit.prototype.getImageState = function() {
             return {
                 src: this.imageSrc,
