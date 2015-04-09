@@ -4,6 +4,8 @@
  *  https://github.com/scottcheng/cropit
  *
  *  Made by Scott Cheng
+ *  Modified by Stefan Westling, Roxbury <stefan@roxbury.se>
+ *   added multi touch pinch functionality
  *  Based on https://github.com/yufeiliu/simple_image_uploader
  *  Under MIT License
  */
@@ -68,15 +70,15 @@
             allowCrossOrigin: false,
             allowDragNDrop: true,
             freeMove: false,
-            minZoom: "fill",
-            rejectSmallImage: false
+            minZoom: "fill"
         };
         Cropit.PREVIEW_EVENTS = function() {
-            return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
+            return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchmove", "touchend", "touchcancel", "touchleave" ].map(function(type) {
                 return "" + type + ".cropit";
             }).join(" ");
         }();
         Cropit.PREVIEW_MOVE_EVENTS = "mousemove.cropit touchmove.cropit";
+		Cropit.PREVIEW_PINCH_EVENTS = "touchmove.cropit";
         Cropit.ZOOM_INPUT_EVENTS = function() {
             return [ "mousemove", "touchmove", "change" ].map(function(type) {
                 return "" + type + ".cropit";
@@ -164,6 +166,7 @@
                 x: 0,
                 y: 0
             };
+			this.lastTouchScale = 0;
             this.initialZoom = 0;
             this.initialZoomSliderPos = 0;
             this.imageLoaded = false;
@@ -208,6 +211,7 @@
             var fileReader;
             fileReader = new FileReader();
             if (file != null ? file.type.match("image") : void 0) {
+                this.setImageLoadingClass();
                 fileReader.readAsDataURL(file);
                 fileReader.onload = this.onFileReaderLoaded.bind(this);
                 return fileReader.onerror = this.onFileReaderError.bind(this);
@@ -259,6 +263,7 @@
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
+            this.setImageLoadedClass();
             this.setOffset(this.offset);
             this.$preview.css("background-image", "url(" + this.imageSrc + ")");
             if (this.options.imageBackground) {
@@ -269,29 +274,18 @@
                 h: this.image.height
             };
             this.setupZoomer();
-            if (this.options.rejectSmallImage && (this.imageSize.w < this.previewSize.w || this.imageSize.h < this.previewSize.h)) {
-                this.onImageError();
-                return;
-            }
-            this.setImageLoadedClass();
             this.imageLoaded = true;
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
         };
         Cropit.prototype.onImageError = function() {
             var _base;
-            if (typeof (_base = this.options).onImageError === "function") {
-                _base.onImageError();
-            }
-            return this.removeImageLoadingClass();
+            return typeof (_base = this.options).onImageError === "function" ? _base.onImageError() : void 0;
         };
         Cropit.prototype.setImageLoadingClass = function() {
             return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");
         };
         Cropit.prototype.setImageLoadedClass = function() {
             return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
-        };
-        Cropit.prototype.removeImageLoadingClass = function() {
-            return this.$preview.removeClass("cropit-image-loading");
         };
         Cropit.prototype.getEventPosition = function(e) {
             var _ref, _ref1, _ref2, _ref3;
@@ -305,16 +299,38 @@
                 };
             }
         };
+        Cropit.prototype.onPinch = function(e) {
+            var fingers = (e.originalEvent.touches) ? e.originalEvent.touches.length : 0;
+            if(e.type === "touchmove" && fingers == 2) {
+	            var points = e.originalEvent.touches;
+				var zoom = this.getZoom();
+				if(e.originalEvent.scale > this.lastTouchScale) {
+					if(zoom < 1) {
+						zoom += 0.01;
+						this.setZoom(zoom);
+					}
+				}
+				else {
+					if(zoom > 0) {
+						zoom -= 0.01;
+						this.setZoom(zoom);
+					}
+				}
+				this.lastTouchScale = e.originalEvent.scale;
+            }
+        };
         Cropit.prototype.onPreviewEvent = function(e) {
+	        this.lastTouchScale = 1;
             if (!this.imageLoaded) {
                 return;
             }
             this.moveContinue = false;
             this.$preview.off(Cropit.PREVIEW_MOVE_EVENTS);
             if (e.type === "mousedown" || e.type === "touchstart") {
-                this.origin = this.getEventPosition(e);
-                this.moveContinue = true;
-                this.$preview.on(Cropit.PREVIEW_MOVE_EVENTS, this.onMove.bind(this));
+				this.origin = this.getEventPosition(e);
+				this.moveContinue = true;
+				this.$preview.on(Cropit.PREVIEW_MOVE_EVENTS, this.onMove.bind(this));
+				this.$preview.on(Cropit.PREVIEW_PINCH_EVENTS, this.onPinch.bind(this));
             } else {
                 $(document.body).focus();
             }

@@ -9,6 +9,7 @@ class Cropit
     allowDragNDrop: true
     freeMove: false
     minZoom: 'fill'
+    rejectSmallImage: false
 
   @PREVIEW_EVENTS: do ->
     [
@@ -180,8 +181,6 @@ class Cropit
     @image.src = @imageSrc
 
   onImageLoaded: ->
-    @setImageLoadedClass()
-
     @setOffset @offset
     @$preview.css 'background-image', "url(#{@imageSrc})"
     @$imageBg.attr 'src', @imageSrc if @options.imageBackground
@@ -191,6 +190,13 @@ class Cropit
       h: @image.height
 
     @setupZoomer()
+
+    if @options.rejectSmallImage and
+        (@imageSize.w < @previewSize.w or @imageSize.h < @previewSize.h)
+      @onImageError()
+      return
+
+    @setImageLoadedClass()
 
     @imageLoaded = true
 

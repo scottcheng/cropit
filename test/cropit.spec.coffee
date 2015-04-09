@@ -13,8 +13,9 @@ describe 'Cropit', ->
     expect(cropit.options.imageState).toBe null
     expect(cropit.options.allowCrossOrigin).toBe false
     expect(cropit.options.allowDragNDrop).toBe true
-    expect(cropit.options.minZoom).toBe 'fill'
     expect(cropit.options.freeMove).toBe false
+    expect(cropit.options.minZoom).toBe 'fill'
+    expect(cropit.options.rejectSmallImage).toBe false
 
   describe 'init()', ->
 
@@ -96,6 +97,39 @@ describe 'Cropit', ->
 
       cropit.loadImage imageData
       expect(cropit.image.src).toBe imageData
+
+  describe 'onImageLoaded()', ->
+
+    describe 'rejectSmallImage set to true', ->
+      beforeEach ->
+        cropit = new Cropit null,
+          rejectSmallImage: true
+
+      it 'rejects image where image width is smaller than preview width', ->
+        spyOn cropit, 'onImageError'
+        cropit.previewSize = w: 2, h: 2
+        cropit.image = width: 1, height: 3
+        cropit.onImageLoaded()
+        expect(cropit.onImageError).toHaveBeenCalled()
+
+      it 'rejects image where image height is smaller than preview height', ->
+        spyOn cropit, 'onImageError'
+        cropit.previewSize = w: 2, h: 2
+        cropit.image = width: 3, height: 1
+        cropit.onImageLoaded()
+        expect(cropit.onImageError).toHaveBeenCalled()
+
+    describe 'rejectSmallImage set to false', ->
+      beforeEach ->
+        cropit = new Cropit null,
+          rejectSmallImage: false
+
+      it 'does not reject small image', ->
+        spyOn cropit, 'onImageError'
+        cropit.previewSize = w: 2, h: 2
+        cropit.image = width: 1, height: 1
+        cropit.onImageLoaded()
+        expect(cropit.onImageError).not.toHaveBeenCalled()
 
   describe 'onPreviewEvent()', ->
 
