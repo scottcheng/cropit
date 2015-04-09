@@ -71,6 +71,16 @@
             minZoom: "fill",
             rejectSmallImage: false
         };
+        Cropit._ERRORS = {
+            IMAGE_FAILED_TO_LOAD: {
+                code: 0,
+                message: "Image failed to load."
+            },
+            SMALL_IMAGE: {
+                code: 1,
+                message: "Image is too small."
+            }
+        };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
                 return "" + type + ".cropit";
@@ -254,7 +264,11 @@
             }
             this.setImageLoadingClass();
             this.image.onload = this.onImageLoaded.bind(this);
-            this.image.onerror = this.onImageError.bind(this);
+            this.image.onerror = function(_this) {
+                return function() {
+                    return _this.onImageError.call(_this, Cropit._ERRORS.IMAGE_FAILED_TO_LOAD);
+                };
+            }(this);
             return this.image.src = this.imageSrc;
         };
         Cropit.prototype.onImageLoaded = function() {
@@ -270,7 +284,7 @@
             };
             this.setupZoomer();
             if (this.options.rejectSmallImage && (this.imageSize.w < this.previewSize.w || this.imageSize.h < this.previewSize.h)) {
-                this.onImageError();
+                this.onImageError(Cropit._ERRORS.SMALL_IMAGE);
                 return;
             }
             this.setImageLoadedClass();
@@ -280,7 +294,7 @@
         Cropit.prototype.onImageError = function() {
             var _base;
             if (typeof (_base = this.options).onImageError === "function") {
-                _base.onImageError();
+                _base.onImageError(arguments);
             }
             return this.removeImageLoadingClass();
         };
