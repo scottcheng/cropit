@@ -9,6 +9,7 @@ class Cropit
     allowDragNDrop: true
     freeMove: false
     minZoom: 'fill'
+    maxFileSize: false
 
   @PREVIEW_EVENTS: do ->
     [
@@ -130,9 +131,12 @@ class Cropit
     @offset = @initialOffset
 
   onFileChange: ->
+    file = @$fileInput.get(0).files[0]
+
     @options.onFileChange?()
 
-    @loadFileReader @$fileInput.get(0).files[0]
+    if @checkFileSize file
+      @loadFileReader file
 
   loadFileReader: (file) ->
     fileReader = new FileReader()
@@ -151,6 +155,15 @@ class Cropit
 
   onFileReaderError: ->
     @options.onFileReaderError?()
+
+  checkFileSize: (file) ->
+    if @options.maxFileSize && file?.size > @options.maxFileSize
+      @onFileSizeError()
+      return false
+    true
+
+  onFileSizeError: ->
+    @options.onFileSizeError?()
 
   onDragOver: (e) ->
     e.preventDefault()

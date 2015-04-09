@@ -68,7 +68,8 @@
             allowCrossOrigin: false,
             allowDragNDrop: true,
             freeMove: false,
-            minZoom: "fill"
+            minZoom: "fill",
+            maxFileSize: false
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
@@ -197,11 +198,14 @@
             return this.offset = this.initialOffset;
         };
         Cropit.prototype.onFileChange = function() {
-            var _base;
+            var file, _base;
+            file = this.$fileInput.get(0).files[0];
             if (typeof (_base = this.options).onFileChange === "function") {
                 _base.onFileChange();
             }
-            return this.loadFileReader(this.$fileInput.get(0).files[0]);
+            if (this.checkFileSize(file)) {
+                return this.loadFileReader(file);
+            }
         };
         Cropit.prototype.loadFileReader = function(file) {
             var fileReader;
@@ -222,6 +226,17 @@
         Cropit.prototype.onFileReaderError = function() {
             var _base;
             return typeof (_base = this.options).onFileReaderError === "function" ? _base.onFileReaderError() : void 0;
+        };
+        Cropit.prototype.checkFileSize = function(file) {
+            if (this.options.maxFileSize && (file != null ? file.size : void 0) > this.options.maxFileSize) {
+                this.onFileSizeError();
+                return false;
+            }
+            return true;
+        };
+        Cropit.prototype.onFileSizeError = function() {
+            var _base;
+            return typeof (_base = this.options).onFileSizeError === "function" ? _base.onFileSizeError() : void 0;
         };
         Cropit.prototype.onDragOver = function(e) {
             e.preventDefault();
