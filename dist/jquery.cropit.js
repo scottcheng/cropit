@@ -207,7 +207,6 @@
             var fileReader;
             fileReader = new FileReader();
             if (file != null ? file.type.match("image") : void 0) {
-                this.setImageLoadingClass();
                 fileReader.readAsDataURL(file);
                 fileReader.onload = this.onFileReaderLoaded.bind(this);
                 return fileReader.onerror = this.onFileReaderError.bind(this);
@@ -275,13 +274,19 @@
         };
         Cropit.prototype.onImageError = function() {
             var _base;
-            return typeof (_base = this.options).onImageError === "function" ? _base.onImageError() : void 0;
+            if (typeof (_base = this.options).onImageError === "function") {
+                _base.onImageError();
+            }
+            return this.removeImageLoadingClass();
         };
         Cropit.prototype.setImageLoadingClass = function() {
             return this.$preview.removeClass("cropit-image-loaded").addClass("cropit-image-loading");
         };
         Cropit.prototype.setImageLoadedClass = function() {
             return this.$preview.removeClass("cropit-image-loading").addClass("cropit-image-loaded");
+        };
+        Cropit.prototype.removeImageLoadingClass = function() {
+            return this.$preview.removeClass("cropit-image-loading");
         };
         Cropit.prototype.getEventPosition = function(e) {
             var _ref, _ref1, _ref2, _ref3;

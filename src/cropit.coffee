@@ -137,8 +137,6 @@ class Cropit
   loadFileReader: (file) ->
     fileReader = new FileReader()
     if file?.type.match 'image'
-      @setImageLoadingClass()
-
       fileReader.readAsDataURL file
       fileReader.onload = @onFileReaderLoaded.bind @
       fileReader.onerror = @onFileReaderError.bind @
@@ -200,6 +198,7 @@ class Cropit
 
   onImageError: ->
     @options.onImageError?()
+    @removeImageLoadingClass()
 
   setImageLoadingClass: ->
     @$preview
@@ -210,6 +209,10 @@ class Cropit
     @$preview
       .removeClass 'cropit-image-loading'
       .addClass 'cropit-image-loaded'
+
+  removeImageLoadingClass: ->
+    @$preview
+      .removeClass 'cropit-image-loading'
 
   getEventPosition: (e) ->
     e = e.originalEvent?.touches?[0] if e.originalEvent?.touches?[0]
