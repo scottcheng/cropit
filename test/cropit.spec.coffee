@@ -117,7 +117,7 @@ describe 'Cropit', ->
         cropit.previewSize = w: 2, h: 2
         cropit.image = width: 3, height: 1
         cropit.onImageLoaded()
-        expect(cropit.onImageError).toHaveBeenCalled()
+        expect(cropit.onImageError).toHaveBeenCalledWith Cropit._ERRORS.SMALL_IMAGE
 
     describe 'rejectSmallImage set to false', ->
       beforeEach ->

@@ -11,6 +11,10 @@ class Cropit
     minZoom: 'fill'
     rejectSmallImage: false
 
+  @_ERRORS:
+    IMAGE_FAILED_TO_LOAD: code: 0, message: 'Image failed to load.'
+    SMALL_IMAGE: code: 1, message: 'Image is too small.'
+
   @PREVIEW_EVENTS: do ->
     [
       'mousedown', 'mouseup', 'mouseleave'
@@ -176,7 +180,8 @@ class Cropit
     @setImageLoadingClass()
 
     @image.onload = @onImageLoaded.bind @
-    @image.onerror = @onImageError.bind @
+    @image.onerror = =>
+      @onImageError.call @, Cropit._ERRORS.IMAGE_FAILED_TO_LOAD
 
     @image.src = @imageSrc
 
@@ -193,7 +198,7 @@ class Cropit
 
     if @options.rejectSmallImage and
         (@imageSize.w < @previewSize.w or @imageSize.h < @previewSize.h)
-      @onImageError()
+      @onImageError Cropit._ERRORS.SMALL_IMAGE
       return
 
     @setImageLoadedClass()
@@ -203,7 +208,7 @@ class Cropit
     @options.onImageLoaded?()
 
   onImageError: ->
-    @options.onImageError?()
+    @options.onImageError? arguments
     @removeImageLoadingClass()
 
   setImageLoadingClass: ->
