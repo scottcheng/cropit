@@ -68,7 +68,8 @@
             allowCrossOrigin: false,
             allowDragNDrop: true,
             freeMove: false,
-            minZoom: "fill"
+            minZoom: "fill",
+            rejectSmallImage: false
         };
         Cropit.PREVIEW_EVENTS = function() {
             return [ "mousedown", "mouseup", "mouseleave", "touchstart", "touchend", "touchcancel", "touchleave" ].map(function(type) {
@@ -258,7 +259,6 @@
         };
         Cropit.prototype.onImageLoaded = function() {
             var _base;
-            this.setImageLoadedClass();
             this.setOffset(this.offset);
             this.$preview.css("background-image", "url(" + this.imageSrc + ")");
             if (this.options.imageBackground) {
@@ -269,6 +269,11 @@
                 h: this.image.height
             };
             this.setupZoomer();
+            if (this.options.rejectSmallImage && (this.imageSize.w < this.previewSize.w || this.imageSize.h < this.previewSize.h)) {
+                this.onImageError();
+                return;
+            }
+            this.setImageLoadedClass();
             this.imageLoaded = true;
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
         };
