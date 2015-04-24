@@ -28,6 +28,7 @@ describe 'Zoomer', ->
         w: 4, h: 2
       , w: 1, h: 1
       , 1
+      , 1
       , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .25
 
@@ -35,12 +36,14 @@ describe 'Zoomer', ->
         w: 2, h: 4
       , w: 1, h: 1
       , 1
+      , 1
       , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .25
 
       zoomer.setup
         w: 2, h: 2
       , w: 1, h: 1
+      , 1
       , 1
       , minZoom: 'fit'
       expect(zoomer.minZoom).toBe .5
@@ -57,12 +60,27 @@ describe 'Zoomer', ->
       , w: 1, h: 1
       expect(zoomer.maxZoom).toBe 1
 
+    it 'sets maxZoom to customized value', ->
+      zoomer.setup
+        w: 4, h: 2
+      , w: 1, h: 1
+      , 1
+      , 1.5
+      expect(zoomer.maxZoom).toBe 1.5
+
     it 'scales maxZoom in inverse proportion to exportZoom', ->
       zoomer.setup
         w: 8, h: 4
       , w: 1, h: 1
       , 2
       expect(zoomer.maxZoom).toBe .5
+
+      zoomer.setup
+        w: 8, h: 4
+      , w: 1, h: 1
+      , 2
+      , 1.5
+      expect(zoomer.maxZoom).toBe .75
 
   describe 'getZoom()', ->
 

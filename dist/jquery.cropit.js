@@ -11,10 +11,13 @@
     var Zoomer;
     Zoomer = function() {
         function Zoomer() {}
-        Zoomer.prototype.setup = function(imageSize, previewSize, exportZoom, options) {
+        Zoomer.prototype.setup = function(imageSize, previewSize, exportZoom, maxZoom, options) {
             var heightRatio, widthRatio;
             if (exportZoom == null) {
                 exportZoom = 1;
+            }
+            if (maxZoom == null) {
+                maxZoom = 1;
             }
             widthRatio = previewSize.w / imageSize.w;
             heightRatio = previewSize.h / imageSize.h;
@@ -23,7 +26,7 @@
             } else {
                 this.minZoom = widthRatio < heightRatio ? heightRatio : widthRatio;
             }
-            return this.maxZoom = this.minZoom < 1 / exportZoom ? 1 / exportZoom : this.minZoom;
+            return this.maxZoom = this.minZoom < maxZoom / exportZoom ? maxZoom / exportZoom : this.minZoom;
         };
         Zoomer.prototype.getZoom = function(sliderPos) {
             if (!(this.minZoom && this.maxZoom)) {
@@ -69,6 +72,7 @@
             allowDragNDrop: true,
             freeMove: false,
             minZoom: "fill",
+            maxZoom: 1,
             rejectSmallImage: false
         };
         Cropit._ERRORS = {
@@ -403,7 +407,7 @@
             return typeof (_base = this.options).onZoomDisabled === "function" ? _base.onZoomDisabled() : void 0;
         };
         Cropit.prototype.setupZoomer = function() {
-            this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options);
+            this.zoomer.setup(this.imageSize, this.previewSize, this.options.exportZoom, this.options.maxZoom, this.options);
             this.zoom = this.fixZoom(this.zoom);
             this.setZoom(this.zoom);
             if (this.isZoomable()) {

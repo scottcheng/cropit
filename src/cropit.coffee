@@ -9,6 +9,7 @@ class Cropit
     allowDragNDrop: true
     freeMove: false
     minZoom: 'fill'
+    maxZoom: 1
     rejectSmallImage: false
 
   @_ERRORS:
@@ -301,7 +302,7 @@ class Cropit
     @options.onZoomDisabled?()
 
   setupZoomer: ->
-    @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options
+    @zoomer.setup @imageSize, @previewSize, @options.exportZoom, @options.maxZoom, @options
     @zoom = @fixZoom @zoom
     @setZoom @zoom
 

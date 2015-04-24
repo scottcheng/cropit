@@ -1,5 +1,5 @@
 class Zoomer
-  setup: (imageSize, previewSize, exportZoom = 1, options) ->
+  setup: (imageSize, previewSize, exportZoom = 1, maxZoom = 1, options) ->
     widthRatio = previewSize.w / imageSize.w
     heightRatio = previewSize.h / imageSize.h
 
@@ -8,7 +8,7 @@ class Zoomer
     else
       @minZoom = if widthRatio < heightRatio then heightRatio else widthRatio
 
-    @maxZoom = if @minZoom < 1 / exportZoom then 1 / exportZoom else @minZoom
+    @maxZoom = if @minZoom < maxZoom / exportZoom then maxZoom / exportZoom else @minZoom
 
   getZoom: (sliderPos) ->
     return null unless @minZoom and @maxZoom
