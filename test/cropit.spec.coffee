@@ -119,6 +119,19 @@ describe 'Cropit', ->
         cropit.onImageLoaded()
         expect(cropit.onImageError).toHaveBeenCalledWith Cropit._ERRORS.SMALL_IMAGE
 
+    describe 'rejectSmallImage set to true and exportZoom not 1', ->
+      beforeEach ->
+        cropit = new Cropit null,
+          rejectSmallImage: true,
+          exportZoom: 2
+
+      it 'rejects image if image is smaller than preview after applying exportZoom', ->
+        spyOn cropit, 'onImageError'
+        cropit.previewSize = w: 4, h: 4
+        cropit.image = width: 3, height: 1
+        cropit.onImageLoaded()
+        expect(cropit.onImageError).toHaveBeenCalledWith Cropit._ERRORS.SMALL_IMAGE
+
     describe 'rejectSmallImage set to false', ->
       beforeEach ->
         cropit = new Cropit null,

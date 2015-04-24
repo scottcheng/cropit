@@ -287,7 +287,7 @@
                 h: this.image.height
             };
             this.setupZoomer();
-            if (this.options.rejectSmallImage && (this.imageSize.w < this.previewSize.w || this.imageSize.h < this.previewSize.h)) {
+            if (this.options.rejectSmallImage && (this.imageSize.w < this.previewSize.w * this.options.exportZoom || this.imageSize.h < this.previewSize.h * this.options.exportZoom)) {
                 this.onImageError(Cropit._ERRORS.SMALL_IMAGE);
                 return;
             }
