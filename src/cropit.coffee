@@ -210,7 +210,7 @@ class Cropit
     @options.onImageLoaded?()
 
   onImageError: ->
-    @options.onImageError? arguments
+    @options.onImageError?.apply @, arguments
     @removeImageLoadingClass()
 
   setImageLoadingClass: ->

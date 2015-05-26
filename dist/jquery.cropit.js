@@ -296,9 +296,9 @@
             return typeof (_base = this.options).onImageLoaded === "function" ? _base.onImageLoaded() : void 0;
         };
         Cropit.prototype.onImageError = function() {
-            var _base;
-            if (typeof (_base = this.options).onImageError === "function") {
-                _base.onImageError(arguments);
+            var _ref;
+            if ((_ref = this.options.onImageError) != null) {
+                _ref.apply(this, arguments);
             }
             return this.removeImageLoadingClass();
         };
