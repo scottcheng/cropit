@@ -11,22 +11,12 @@ describe 'Cropit', ->
     expect(cropit.options.imageBackground).toBe false
     expect(cropit.options.imageBackgroundBorderWidth).toBe 0
     expect(cropit.options.imageState).toBe null
-    expect(cropit.options.allowCrossOrigin).toBe false
     expect(cropit.options.allowDragNDrop).toBe true
     expect(cropit.options.freeMove).toBe false
     expect(cropit.options.minZoom).toBe 'fill'
     expect(cropit.options.rejectSmallImage).toBe false
 
   describe 'init()', ->
-
-    it 'enables cross origin image source if allowCrossOrigin is set in options', ->
-      cropit = new Cropit null,
-        allowCrossOrigin: true
-      expect(cropit.image.crossOrigin).toBe 'Anonymous'
-
-    it 'disables cross origin image source if allowCrossOrigin is not set in options', ->
-      cropit = new Cropit
-      expect(cropit.image.crossOrigin).not.toBe 'Anonymous'
 
     it 'sets default zoom', ->
       cropit = new Cropit

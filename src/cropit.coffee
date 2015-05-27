@@ -5,7 +5,6 @@ class Cropit
     imageBackground: false
     imageBackgroundBorderWidth: 0
     imageState: null
-    allowCrossOrigin: false
     allowDragNDrop: true
     freeMove: false
     minZoom: 'fill'
@@ -45,7 +44,6 @@ class Cropit
 
   init: ->
     @image = new Image
-    @image.crossOrigin = 'Anonymous' if @options.allowCrossOrigin
 
     @$fileInput = @options.$fileInput
       .attr

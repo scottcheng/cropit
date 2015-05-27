@@ -68,7 +68,6 @@
             imageBackground: false,
             imageBackgroundBorderWidth: 0,
             imageState: null,
-            allowCrossOrigin: false,
             allowDragNDrop: true,
             freeMove: false,
             minZoom: "fill",
@@ -112,9 +111,6 @@
         Cropit.prototype.init = function() {
             var $previewContainer, _ref, _ref1, _ref2;
             this.image = new Image();
-            if (this.options.allowCrossOrigin) {
-                this.image.crossOrigin = "Anonymous";
-            }
             this.$fileInput = this.options.$fileInput.attr({
                 accept: "image/*"
             });
