@@ -196,8 +196,8 @@ class Cropit
     @setupZoomer()
 
     if @options.rejectSmallImage and
-        (@imageSize.w < @previewSize.w * @options.exportZoom or
-          @imageSize.h < @previewSize.h * @options.exportZoom)
+        (@imageSize.w * @options.maxZoom < @previewSize.w * @options.exportZoom or
+          @imageSize.h * @options.maxZoom < @previewSize.h * @options.exportZoom)
       @onImageError Cropit._ERRORS.SMALL_IMAGE
       return
 
