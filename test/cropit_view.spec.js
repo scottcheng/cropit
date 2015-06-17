@@ -63,15 +63,6 @@ describe('Cropit View', () => {
         expect($zoomSlider.attr('max')).toBe('1');
         expect($zoomSlider.attr('step')).toBe('0.01');
       });
-
-      it('sets zoom slider to 0', () => {
-        const $zoomSlider = $el.find('input.cropit-image-zoom-input');
-        $zoomSlider.val(1);
-        expect($zoomSlider.val()).not.toBe(0);
-
-        $el.cropit();
-        expect(Number($zoomSlider.val())).toBe(0);
-      });
     });
 
     describe('#onFileChange', () => {
@@ -189,7 +180,7 @@ describe('Cropit View', () => {
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('binds onMove() on mousedown', () => {
+        it('binds onMove on mousedown', () => {
           $el.cropit();
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
@@ -214,6 +205,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.imageSize = { w: 8, h: 6 };
           cropit.previewSize = { w: 2, h: 2 };
+          cropit.zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
 
@@ -272,7 +264,7 @@ describe('Cropit View', () => {
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('binds onMove() on touchstart', () => {
+        it('binds onMove on touchstart', () => {
           $el.cropit();
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
@@ -297,6 +289,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.imageSize = { w: 8, h: 6 };
           cropit.previewSize = { w: 2, h: 2 };
+          cropit.zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
 

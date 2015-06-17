@@ -30,29 +30,6 @@ describe('Cropit', () => {
   });
 
   describe('#init', () => {
-    it('sets default zoom', () => {
-      cropit = newCropit();
-      expect(cropit.zoom).toBe(0);
-    });
-
-    it('sets default offset', () => {
-      cropit = newCropit();
-      expect(cropit.offset).toEqual({ x: 0, y: 0 });
-    });
-
-    it('restores imageState', () => {
-      cropit = newCropit({
-        imageState: {
-          src: IMAGE_URL,
-          offset: { x: -1, y: -1 },
-          zoom: 0.5,
-        },
-      });
-      expect(cropit.imageSrc).toBe(IMAGE_URL);
-      expect(cropit.zoom).toBe(0.5);
-      expect(cropit.offset).toEqual({ x: -1, y: -1 });
-    });
-
     it('calls loadImage if image source is present', () => {
       cropit = newCropit({ imageState: { src: IMAGE_URL } });
       spyOn(cropit, 'loadImage');
@@ -80,22 +57,6 @@ describe('Cropit', () => {
 
       cropit.onFileReaderLoaded({ target: { result: IMAGE_DATA } });
       expect(cropit.imageSrc).toBe(IMAGE_DATA);
-    });
-
-    it('resets zoom', () => {
-      cropit.zoom = 1;
-      expect(cropit.zoom).not.toBe(0);
-
-      cropit.onFileReaderLoaded({ target: { result: IMAGE_DATA } });
-      expect(cropit.zoom).toBe(0);
-    });
-
-    it('resets offset', () => {
-      cropit.offset = { x: 1, y: 1 };
-      expect(cropit.offset).not.toEqual({ x: 0, y: 0 });
-
-      cropit.onFileReaderLoaded({ target: { result: IMAGE_DATA } });
-      expect(cropit.offset).toEqual({ x: 0, y: 0 });
     });
   });
 
@@ -454,6 +415,7 @@ describe('Cropit', () => {
     it('updates zoomer if image is loaded', () => {
       cropit.imageLoaded = true;
       cropit.imageSize = { w: 2, h: 2 };
+      cropit.offset = { x: 0, y: 0 };
       spyOn(cropit.zoomer, 'setup');
       cropit.setPreviewSize({ width: 1, height: 1 });
       expect(cropit.zoomer.setup).toHaveBeenCalled();

@@ -2,8 +2,7 @@ import $ from 'jquery';
 
 import Cropit from './cropit';
 import { PLUGIN_KEY } from './constants';
-
-const exists = (v) => typeof v !== 'undefined';
+import { exists } from './utils';
 
 const applyOnEach = ($el, callback) => {
   return $el.each(function() {
@@ -53,7 +52,6 @@ const methods = {
   imageSrc(newImageSrc) {
     if (exists(newImageSrc)) {
       return applyOnEach(this, (cropit) => {
-        cropit.reset();
         cropit.loadImage(newImageSrc);
       });
     }

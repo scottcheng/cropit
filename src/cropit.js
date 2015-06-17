@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 import Zoomer from './Zoomer';
 import { DEFAULTS, ERRORS, EVENTS } from './constants';
+import { exists } from './utils';
 
 class Cropit {
   constructor(jQuery, element, options) {
@@ -74,9 +75,7 @@ class Cropit {
       });
     }
 
-    this.initialOffset = { x: 0, y: 0 };
     this.initialZoom = 0;
-    this.initialZoomSliderPos = 0;
     this.imageLoaded = false;
 
     this.moveContinue = false;
@@ -89,9 +88,6 @@ class Cropit {
 
     this.bindListeners();
 
-    this.$zoomSlider.val(this.initialZoomSliderPos);
-    this.setOffset(this.options.imageState && this.options.imageState.offset || this.initialOffset);
-    this.zoom = this.options.imageState && this.options.imageState.zoom || this.initialZoom;
     if (this.options.imageState && this.options.imageState.src) {
       this.loadImage(this.options.imageState.src);
     }
@@ -115,11 +111,6 @@ class Cropit {
     this.$zoomSlider.off(EVENTS.ZOOM_INPUT);
   }
 
-  reset() {
-    this.zoom = this.initialZoom;
-    this.offset = this.initialOffset;
-  }
-
   onFileChange() {
     if (this.options.onFileChange) { this.options.onFileChange(); }
 
@@ -141,7 +132,6 @@ class Cropit {
   }
 
   onFileReaderLoaded(e) {
-    this.reset();
     this.loadImage(e.target.result);
   }
 
@@ -186,18 +176,25 @@ class Cropit {
   }
 
   onImageLoaded() {
-    this.setOffset(this.offset);
-    this.$preview.css('background-image', `url(${this.imageSrc})`);
-    if (this.options.imageBackground) {
-      this.$imageBg.attr('src', this.imageSrc);
-    }
-
     this.imageSize = {
       w: this.image.width,
       h: this.image.height,
     };
 
-    this.setupZoomer();
+    this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
+    if (this.options.imageState && this.options.imageState.offset) {
+      this.setOffset(this.options.imageState.offset);
+    }
+    else {
+      this.setOffset({ x: 0, y: 0 });
+    }
+
+    this.options.imageState = {};
+
+    this.$preview.css('background-image', `url(${this.imageSrc})`);
+    if (this.options.imageBackground) {
+      this.$imageBg.attr('src', this.imageSrc);
+    }
 
     if (this.options.rejectSmallImage &&
           (this.imageSize.w * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
@@ -348,7 +345,7 @@ class Cropit {
     if (this.options.onZoomDisabled) { this.options.onZoomDisabled(); }
   }
 
-  setupZoomer() {
+  setupZoomer(zoom) {
     this.zoomer.setup({
       imageSize: this.imageSize,
       previewSize: this.previewSize,
@@ -356,8 +353,7 @@ class Cropit {
       maxZoom: this.options.maxZoom,
       minZoom: this.options.minZoom,
     });
-    this.zoom = this.fixZoom(this.zoom);
-    this.setZoom(this.zoom);
+    this.setZoom(exists(zoom) ? zoom : this.zoom);
 
     if (this.isZoomable()) {
       this.enableZoomSlider();
@@ -373,13 +369,18 @@ class Cropit {
     const updatedWidth = this.round(this.imageSize.w * newZoom);
     const updatedHeight = this.round(this.imageSize.h * newZoom);
 
-    const oldZoom = this.zoom;
+    if (this.imageLoaded) {
+      const oldZoom = this.zoom;
 
-    const newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
-    const newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
+      const newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
+      const newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
 
-    this.zoom = newZoom;
-    this.setOffset({ x: newX, y: newY });
+      this.zoom = newZoom;
+      this.setOffset({ x: newX, y: newY });
+    }
+    else {
+      this.zoom = newZoom;
+    }
 
     this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
     this.$zoomSlider.val(this.zoomSliderPos);

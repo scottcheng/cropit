@@ -66,9 +66,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants = __webpack_require__(4);
 
-	var exists = function exists(v) {
-	  return typeof v !== 'undefined';
-	};
+	var _utils = __webpack_require__(5);
 
 	var applyOnEach = function applyOnEach($el, callback) {
 	  return $el.each(function () {
@@ -122,9 +120,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  imageSrc: function imageSrc(newImageSrc) {
-	    if (exists(newImageSrc)) {
+	    if ((0, _utils.exists)(newImageSrc)) {
 	      return applyOnEach(this, function (cropit) {
-	        cropit.reset();
 	        cropit.loadImage(newImageSrc);
 	      });
 	    } else {
@@ -133,7 +130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  offset: function offset(newOffset) {
-	    if (newOffset && exists(newOffset.x) && exists(newOffset.y)) {
+	    if (newOffset && (0, _utils.exists)(newOffset.x) && (0, _utils.exists)(newOffset.y)) {
 	      return applyOnEach(this, function (cropit) {
 	        cropit.setOffset(newOffset);
 	      });
@@ -143,7 +140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  zoom: function zoom(newZoom) {
-	    if (exists(newZoom)) {
+	    if ((0, _utils.exists)(newZoom)) {
 	      return applyOnEach(this, function (cropit) {
 	        cropit.setZoom(newZoom);
 	      });
@@ -217,6 +214,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants = __webpack_require__(4);
 
+	var _utils = __webpack_require__(5);
+
 	var Cropit = (function () {
 	  function Cropit(jQuery, element, options) {
 	    _classCallCheck(this, Cropit);
@@ -289,9 +288,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 
-	      this.initialOffset = { x: 0, y: 0 };
 	      this.initialZoom = 0;
-	      this.initialZoomSliderPos = 0;
 	      this.imageLoaded = false;
 
 	      this.moveContinue = false;
@@ -304,9 +301,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.bindListeners();
 
-	      this.$zoomSlider.val(this.initialZoomSliderPos);
-	      this.setOffset(this.options.imageState && this.options.imageState.offset || this.initialOffset);
-	      this.zoom = this.options.imageState && this.options.imageState.zoom || this.initialZoom;
 	      if (this.options.imageState && this.options.imageState.src) {
 	        this.loadImage(this.options.imageState.src);
 	      }
@@ -330,12 +324,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$preview.off(_constants.EVENTS.PREVIEW);
 	      this.$preview.off('dragover.cropit dragleave.cropit drop.cropit');
 	      this.$zoomSlider.off(_constants.EVENTS.ZOOM_INPUT);
-	    }
-	  }, {
-	    key: 'reset',
-	    value: function reset() {
-	      this.zoom = this.initialZoom;
-	      this.offset = this.initialOffset;
 	    }
 	  }, {
 	    key: 'onFileChange',
@@ -363,7 +351,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onFileReaderLoaded',
 	    value: function onFileReaderLoaded(e) {
-	      this.reset();
 	      this.loadImage(e.target.result);
 	    }
 	  }, {
@@ -425,18 +412,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onImageLoaded',
 	    value: function onImageLoaded() {
-	      this.setOffset(this.offset);
-	      this.$preview.css('background-image', 'url(' + this.imageSrc + ')');
-	      if (this.options.imageBackground) {
-	        this.$imageBg.attr('src', this.imageSrc);
-	      }
-
 	      this.imageSize = {
 	        w: this.image.width,
 	        h: this.image.height
 	      };
 
-	      this.setupZoomer();
+	      this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
+	      if (this.options.imageState && this.options.imageState.offset) {
+	        this.setOffset(this.options.imageState.offset);
+	      } else {
+	        this.setOffset({ x: 0, y: 0 });
+	      }
+
+	      this.options.imageState = {};
+
+	      this.$preview.css('background-image', 'url(' + this.imageSrc + ')');
+	      if (this.options.imageBackground) {
+	        this.$imageBg.attr('src', this.imageSrc);
+	      }
 
 	      if (this.options.rejectSmallImage && (this.imageSize.w * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.imageSize.h * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
 	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
@@ -603,7 +596,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'setupZoomer',
-	    value: function setupZoomer() {
+	    value: function setupZoomer(zoom) {
 	      this.zoomer.setup({
 	        imageSize: this.imageSize,
 	        previewSize: this.previewSize,
@@ -611,8 +604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        maxZoom: this.options.maxZoom,
 	        minZoom: this.options.minZoom
 	      });
-	      this.zoom = this.fixZoom(this.zoom);
-	      this.setZoom(this.zoom);
+	      this.setZoom((0, _utils.exists)(zoom) ? zoom : this.zoom);
 
 	      if (this.isZoomable()) {
 	        this.enableZoomSlider();
@@ -628,13 +620,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var updatedWidth = this.round(this.imageSize.w * newZoom);
 	      var updatedHeight = this.round(this.imageSize.h * newZoom);
 
-	      var oldZoom = this.zoom;
+	      if (this.imageLoaded) {
+	        var oldZoom = this.zoom;
 
-	      var newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
-	      var newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
+	        var newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
+	        var newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
 
-	      this.zoom = newZoom;
-	      this.setOffset({ x: newX, y: newY });
+	        this.zoom = newZoom;
+	        this.setOffset({ x: newX, y: newY });
+	      } else {
+	        this.zoom = newZoom;
+	      }
 
 	      this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
 	      this.$zoomSlider.val(this.zoomSliderPos);
@@ -925,6 +921,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
 	};
 	exports.EVENTS = EVENTS;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var exists = function exists(v) {
+	  return typeof v !== 'undefined';
+	};
+	exports.exists = exists;
 
 /***/ }
 /******/ ])
