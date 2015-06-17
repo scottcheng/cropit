@@ -429,7 +429,6 @@ class Cropit {
       this.zoom * exportZoom * this.imageSize.w,
       this.zoom * exportZoom * this.imageSize.h);
 
-    console.log(canvas.toDataURL(exportOptions.type, exportOptions.quality))
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
 

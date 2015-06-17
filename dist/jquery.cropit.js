@@ -179,7 +179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	_jquery2['default'].fn.cropit = function (method, a, b, c, d) {
+	_jquery2['default'].fn.cropit = function (method) {
 	  if (methods[method]) {
 	    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
 	  } else {
@@ -680,7 +680,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
 
-	      console.log(canvas.toDataURL(exportOptions.type, exportOptions.quality));
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
 	  }, {

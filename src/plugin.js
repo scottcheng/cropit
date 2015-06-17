@@ -112,7 +112,7 @@ const methods = {
   },
 };
 
-$.fn.cropit = function(method, a, b, c, d) {
+$.fn.cropit = function(method) {
   if (methods[method]) {
     return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
   }

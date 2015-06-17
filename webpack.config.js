@@ -10,8 +10,8 @@ module.exports = {
   output: {
     path: paths.dist,
     filename: 'jquery.cropit.js',
-    library: ['cropitlibrary'],
-    libraryTarget: 'umd'
+    library: 'cropit',
+    libraryTarget: 'umd',
   },
 
   module: {
