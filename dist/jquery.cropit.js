@@ -421,7 +421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.options.imageState && this.options.imageState.offset) {
 	        this.setOffset(this.options.imageState.offset);
 	      } else {
-	        this.setOffset({ x: 0, y: 0 });
+	        this.centerImage();
 	      }
 
 	      this.options.imageState = {};
@@ -558,7 +558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'centerImage',
 	    value: function centerImage() {
-	      if (!this.imageLoaded) {
+	      if (!this.imageSize || !this.zoom) {
 	        return;
 	      }
 

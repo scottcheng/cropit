@@ -186,7 +186,7 @@ class Cropit {
       this.setOffset(this.options.imageState.offset);
     }
     else {
-      this.setOffset({ x: 0, y: 0 });
+      this.centerImage();
     }
 
     this.options.imageState = {};
@@ -319,7 +319,7 @@ class Cropit {
   }
 
   centerImage() {
-    if (!this.imageLoaded) { return; }
+    if (!this.imageSize || !this.zoom) { return; }
 
     this.setOffset({
       x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,

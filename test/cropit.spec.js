@@ -74,6 +74,13 @@ describe('Cropit', () => {
   });
 
   describe('#onImageLoaded', () => {
+    it('centers image', () => {
+      cropit = newCropit();
+      spyOn(cropit, 'centerImage');
+      cropit.onImageLoaded();
+      expect(cropit.centerImage).toHaveBeenCalled();
+    });
+
     describe('rejectSmallImage set to true', () => {
       beforeEach(() => {
         cropit = newCropit({ rejectSmallImage: true });
