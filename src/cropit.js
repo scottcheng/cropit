@@ -321,6 +321,15 @@ class Cropit {
     return ret;
   }
 
+  centerImage() {
+    if (!this.imageLoaded) { return; }
+
+    this.setOffset({
+      x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,
+      y: (this.previewSize.h - this.imageSize.h * this.zoom) / 2,
+    });
+  }
+
   onZoomSliderChange() {
     if (!this.imageLoaded) { return; }
 

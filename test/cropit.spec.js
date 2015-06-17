@@ -332,6 +332,22 @@ describe('Cropit', () => {
     });
   });
 
+  describe('#centerImage', () => {
+    it('should center image', () => {
+      cropit = newCropit();
+      cropit.imageLoaded = true;
+      cropit.imageSize = { w: 12, h: 8 };
+      cropit.zoom = 0.5;
+      cropit.previewSize = { w: 4, h: 2 };
+
+      cropit.setOffset({ x: 0, y: 1 });
+      expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
+
+      cropit.centerImage();
+      expect(cropit.offset).toEqual({ x: -1, y: -1 });
+    });
+  });
+
   describe('#fixZoom', () => {
     it('returns zoomer.fixZoom()', () => {
       cropit = newCropit();

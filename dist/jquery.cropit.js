@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["jQuery"], factory);
 	else if(typeof exports === 'object')
-		exports["cropitlibrary"] = factory(require("jQuery"));
+		exports["cropit"] = factory(require("jQuery"));
 	else
-		root["cropitlibrary"] = factory(root["jQuery"]);
+		root["cropit"] = factory(root["jQuery"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -561,6 +561,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ret.y = this.round(ret.y);
 
 	      return ret;
+	    }
+	  }, {
+	    key: 'centerImage',
+	    value: function centerImage() {
+	      if (!this.imageLoaded) {
+	        return;
+	      }
+
+	      this.setOffset({
+	        x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,
+	        y: (this.previewSize.h - this.imageSize.h * this.zoom) / 2
+	      });
 	    }
 	  }, {
 	    key: 'onZoomSliderChange',
