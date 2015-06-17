@@ -18,7 +18,7 @@ $ npm install cropit
 
 ## Development
 
-Run `grunt build` to build, and `grunt test` to test.
+Run `webpack` to build, and `npm test` to test.
 
 ## License
 
