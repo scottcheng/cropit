@@ -602,7 +602,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        previewSize: this.previewSize,
 	        exportZoom: this.options.exportZoom,
 	        maxZoom: this.options.maxZoom,
-	        minZoom: this.options.minZoom
+	        minZoom: this.options.minZoom,
+	        rejectSmallImage: this.options.rejectSmallImage
 	      });
 	      this.setZoom((0, _utils.exists)(zoom) ? zoom : this.zoom);
 
@@ -819,6 +820,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var maxZoom = _ref$maxZoom === undefined ? 1 : _ref$maxZoom;
 	      var _ref$minZoom = _ref.minZoom;
 	      var minZoom = _ref$minZoom === undefined ? 'fill' : _ref$minZoom;
+	      var _ref$rejectSmallImage = _ref.rejectSmallImage;
+	      var rejectSmallImage = _ref$rejectSmallImage === undefined ? false : _ref$rejectSmallImage;
 
 	      var widthRatio = previewSize.w / imageSize.w;
 	      var heightRatio = previewSize.h / imageSize.h;
@@ -827,6 +830,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.minZoom = Math.min(widthRatio, heightRatio);
 	      } else {
 	        this.minZoom = Math.max(widthRatio, heightRatio);
+	      }
+
+	      if (!rejectSmallImage) {
+	        this.minZoom = Math.min(this.minZoom, 1);
 	      }
 
 	      this.maxZoom = Math.max(this.minZoom, maxZoom / exportZoom);

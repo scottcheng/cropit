@@ -3,7 +3,7 @@ class Zoomer {
     this.minZoom = this.maxZoom = 1;
   }
 
-  setup({ imageSize, previewSize, exportZoom=1, maxZoom=1, minZoom='fill' }) {
+  setup({ imageSize, previewSize, exportZoom=1, maxZoom=1, minZoom='fill', rejectSmallImage=false }) {
     const widthRatio = previewSize.w / imageSize.w;
     const heightRatio = previewSize.h / imageSize.h;
 
@@ -12,6 +12,10 @@ class Zoomer {
     }
     else {
       this.minZoom = Math.max(widthRatio, heightRatio);
+    }
+
+    if (!rejectSmallImage) {
+      this.minZoom = Math.min(this.minZoom, 1);
     }
 
     this.maxZoom = Math.max(this.minZoom, maxZoom / exportZoom);

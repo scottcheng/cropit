@@ -18,18 +18,21 @@ describe('Zoomer', () => {
       zoomer.setup({
         imageSize: { w: 4, h: 2 },
         previewSize: { w: 1, h: 1 },
+        minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
 
       zoomer.setup({
         imageSize: { w: 2, h: 4 },
         previewSize: { w: 1, h: 1 },
+        minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
 
       zoomer.setup({
         imageSize: { w: 2, h: 2 },
         previewSize: { w: 1, h: 1 },
+        minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
     });
@@ -55,6 +58,23 @@ describe('Zoomer', () => {
         minZoom: 'fit'
       });
       expect(zoomer.minZoom).toBe(0.5);
+    });
+
+    it('sets minZoom to 1 if image is small and rejectSmallImage is false', () => {
+      zoomer.setup({
+        imageSize: { w: 1, h: 1 },
+        previewSize: { w: 2, h: 2 },
+        rejectSmallImage: false,
+      });
+      expect(zoomer.minZoom).toBe(1);
+
+      zoomer.setup({
+        imageSize: { w: 1, h: 3 },
+        previewSize: { w: 2, h: 2 },
+        minZoom: 'fill',
+        rejectSmallImage: false,
+      });
+      expect(zoomer.minZoom).toBe(1);
     });
 
     it('sets maxZoom to minZoom if image is smaller than preview', () => {
