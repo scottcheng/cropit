@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 import Zoomer from './Zoomer';
 import { DEFAULTS, ERRORS, EVENTS } from './constants';
-import { exists } from './utils';
+import { exists, round } from './utils';
 
 class Cropit {
   constructor(jQuery, element, options) {
@@ -312,8 +312,8 @@ class Cropit {
       }
     }
 
-    ret.x = this.round(ret.x);
-    ret.y = this.round(ret.y);
+    ret.x = round(ret.x);
+    ret.y = round(ret.y);
 
     return ret;
   }
@@ -366,8 +366,8 @@ class Cropit {
   setZoom(newZoom) {
     newZoom = this.fixZoom(newZoom);
 
-    const updatedWidth = this.round(this.imageSize.w * newZoom);
-    const updatedHeight = this.round(this.imageSize.h * newZoom);
+    const updatedWidth = round(this.imageSize.w * newZoom);
+    const updatedHeight = round(this.imageSize.h * newZoom);
 
     if (this.imageLoaded) {
       const oldZoom = this.zoom;
@@ -514,10 +514,6 @@ class Cropit {
     this.bindListeners();
     this.enableZoomSlider();
     this.$el.removeClass('cropit-disabled');
-  }
-
-  round(x) {
-    return +(Math.round(x * 1e2)  + 'e-2');
   }
 
   $(selector) {

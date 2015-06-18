@@ -550,8 +550,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 
-	      ret.x = this.round(ret.x);
-	      ret.y = this.round(ret.y);
+	      ret.x = (0, _utils.round)(ret.x);
+	      ret.y = (0, _utils.round)(ret.y);
 
 	      return ret;
 	    }
@@ -617,8 +617,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setZoom(newZoom) {
 	      newZoom = this.fixZoom(newZoom);
 
-	      var updatedWidth = this.round(this.imageSize.w * newZoom);
-	      var updatedHeight = this.round(this.imageSize.h * newZoom);
+	      var updatedWidth = (0, _utils.round)(this.imageSize.w * newZoom);
+	      var updatedHeight = (0, _utils.round)(this.imageSize.h * newZoom);
 
 	      if (this.imageLoaded) {
 	        var oldZoom = this.zoom;
@@ -774,11 +774,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$el.removeClass('cropit-disabled');
 	    }
 	  }, {
-	    key: 'round',
-	    value: function round(x) {
-	      return +(Math.round(x * 100) + 'e-2');
-	    }
-	  }, {
 	    key: '$',
 	    value: function $(selector) {
 	      if (!this.$el) {
@@ -932,7 +927,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var exists = function exists(v) {
 	  return typeof v !== 'undefined';
 	};
+
 	exports.exists = exists;
+	var round = function round(x) {
+	  return +(Math.round(x * 100) + 'e-2');
+	};
+	exports.round = round;
 
 /***/ }
 /******/ ])
