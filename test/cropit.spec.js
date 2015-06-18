@@ -25,7 +25,9 @@ describe('Cropit', () => {
     expect(cropit.options.imageState).toBe(null);
     expect(cropit.options.allowDragNDrop).toBe(true);
     expect(cropit.options.freeMove).toBe(false);
+    expect(cropit.options.maxZoom).toBe(1);
     expect(cropit.options.minZoom).toBe('fill');
+    expect(cropit.options.initialZoom).toBe('min');
     expect(cropit.options.rejectSmallImage).toBe(false);
   });
 
@@ -79,6 +81,16 @@ describe('Cropit', () => {
       spyOn(cropit, 'centerImage');
       cropit.onImageLoaded();
       expect(cropit.centerImage).toHaveBeenCalled();
+    });
+
+    it('sets zoom to 1 if initialZoom is image', () => {
+      cropit = newCropit({ initialZoom: 'image' });
+      expect(cropit.zoom).not.toBe(1);
+
+      cropit.image = { width: 2, height: 2 };
+      cropit.previewSize = { w: 1, h: 1 };
+      cropit.onImageLoaded();
+      expect(cropit.zoom).toBe(1);
     });
 
     describe('rejectSmallImage set to true', () => {

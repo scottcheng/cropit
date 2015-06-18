@@ -288,7 +288,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 
-	      this.initialZoom = 0;
+	      if (this.options.initialZoom === 'min') {
+	        this.initialZoom = 0; // Will be fixed when image loads
+	      } else if (this.options.initialZoom === 'image') {
+	        this.initialZoom = 1;
+	      } else {
+	        this.initialZoom = 0;
+	      }
+
 	      this.imageLoaded = false;
 
 	      this.moveContinue = false;
@@ -899,8 +906,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  imageState: null,
 	  allowDragNDrop: true,
 	  freeMove: false,
-	  minZoom: 'fill',
 	  maxZoom: 1,
+	  minZoom: 'fill',
+	  initialZoom: 'min',
 	  rejectSmallImage: false
 	};
 

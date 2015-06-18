@@ -75,7 +75,16 @@ class Cropit {
       });
     }
 
-    this.initialZoom = 0;
+    if (this.options.initialZoom === 'min') {
+      this.initialZoom = 0; // Will be fixed when image loads
+    }
+    else if (this.options.initialZoom === 'image') {
+      this.initialZoom = 1;
+    }
+    else {
+      this.initialZoom = 0;
+    }
+
     this.imageLoaded = false;
 
     this.moveContinue = false;

@@ -7,8 +7,9 @@ export const DEFAULTS = {
   imageState: null,
   allowDragNDrop: true,
   freeMove: false,
-  minZoom: 'fill',
   maxZoom: 1,
+  minZoom: 'fill',
+  initialZoom: 'min',
   rejectSmallImage: false,
 };
 
