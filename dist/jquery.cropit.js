@@ -66,7 +66,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants = __webpack_require__(4);
 
-	var _utils = __webpack_require__(5);
+	var _utils = __webpack_require__(6);
 
 	var applyOnEach = function applyOnEach($el, callback) {
 	  return $el.each(function () {
@@ -214,7 +214,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _constants = __webpack_require__(4);
 
-	var _utils = __webpack_require__(5);
+	var _options = __webpack_require__(5);
+
+	var _utils = __webpack_require__(6);
 
 	var Cropit = (function () {
 	  function Cropit(jQuery, element, options) {
@@ -222,14 +224,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.$el = (0, _jquery2['default'])(element);
 
-	    var dynamicDefaults = {
-	      $fileInput: this.$('input.cropit-image-input'),
-	      $preview: this.$('.cropit-image-preview'),
-	      $zoomSlider: this.$('input.cropit-image-zoom-input'),
-	      $previewContainer: this.$('.cropit-image-preview-container')
-	    };
+	    var defaults = (0, _options.loadDefaults)(this.$el);
+	    this.options = _jquery2['default'].extend({}, defaults, options);
 
-	    this.options = _jquery2['default'].extend({}, _constants.DEFAULTS, dynamicDefaults, options);
 	    this.init();
 	  }
 
@@ -899,20 +896,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PLUGIN_KEY = 'cropit';
 
 	exports.PLUGIN_KEY = PLUGIN_KEY;
-	var DEFAULTS = {
-	  exportZoom: 1,
-	  imageBackground: false,
-	  imageBackgroundBorderWidth: 0,
-	  imageState: null,
-	  allowDragNDrop: true,
-	  freeMove: false,
-	  maxZoom: 1,
-	  minZoom: 'fill',
-	  initialZoom: 'min',
-	  rejectSmallImage: false
-	};
-
-	exports.DEFAULTS = DEFAULTS;
 	var ERRORS = {
 	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
 	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
@@ -934,6 +917,137 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 5 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var options = {
+	  elements: [{
+	    name: '$preview',
+	    description: 'The HTML element that displays image preview.',
+	    defaultSelector: '.cropit-image-preview'
+	  }, {
+	    name: '$fileInput',
+	    description: 'File input element.',
+	    defaultSelector: 'input.cropit-image-input'
+	  }, {
+	    name: '$zoomSlider',
+	    description: 'Range input element that controls image zoom.',
+	    defaultSelector: 'input.cropit-image-zoom-input'
+	  }, {
+	    name: '$previewContainer',
+	    description: 'Preview container. Only needed when `imageBackground` is true.',
+	    defaultSelector: '.cropit-image-preview-container'
+	  }].map(function (o) {
+	    o.type = 'jQuery element';
+	    o['default'] = '$imageCropper.find(\'' + o.defaultSelector + '\')';
+	    return o;
+	  }),
+
+	  values: [{
+	    name: 'width',
+	    type: 'number',
+	    description: 'Width of image preview in pixels. If set, it will override the CSS property.',
+	    'default': null
+	  }, {
+	    name: 'height',
+	    type: 'number',
+	    description: 'Height of image preview in pixels. If set, it will override the CSS property.',
+	    'default': null
+	  }, {
+	    name: 'imageBackground',
+	    type: 'boolean',
+	    description: 'Whether or not to display the background image beyond the preview area.',
+	    'default': false
+	  }, {
+	    name: 'imageBackgroundBorderWidth',
+	    type: 'array or number',
+	    description: 'Width of background image border in pixels.\n        The four array elements specify the width of background image width on the top, right, bottom, left side respectively.\n        The background image beyond the width will be hidden.\n        If specified as a number, border with uniform width on all sides will be applied.',
+	    'default': [0, 0, 0, 0]
+	  }, {
+	    name: 'exportZoom',
+	    type: 'number',
+	    description: 'The ratio between the desired image size to export and the preview size.\n        For example, if the preview size is `300px * 200px`, and `exportZoom = 2`, then\n        the exported image size will be `600px * 400px`.\n        This also affects the maximum zoom level, since the exported image cannot be zoomed to larger than its original size.',
+	    'default': 1
+	  }, {
+	    name: 'allowDragNDrop',
+	    type: 'boolean',
+	    description: 'When set to true, you can load an image by dragging it from local file browser onto the preview area.',
+	    'default': true
+	  }, {
+	    name: 'minZoom',
+	    type: 'string',
+	    description: 'This options decides the minimal zoom level of the image.\n        If set to `\'fill\'`, the image has to fill the preview area, i.e. both width and height must not go smaller than the preview area.\n        If set to `\'fit\'`, the image can shrink further to fit the preview area, i.e. at least one of its edges must not go smaller than the preview area.',
+	    'default': 'fill'
+	  }, {
+	    name: 'maxZoom',
+	    type: 'string',
+	    description: 'Determines how big the image can be zoomed. E.g. if set to 1.5, the image can be zoomed to 150% of its original size.',
+	    'default': 1
+	  }, {
+	    name: 'initialZoom',
+	    type: 'string',
+	    description: 'Determines the zoom when an image is loaded.\n        When set to `\'min\'`, image is zoomed to the smallest when loaded.\n        When set to \'image\', image is zoomed to 100% when loaded.',
+	    'default': 'min'
+	  }, {
+	    name: 'freeMove',
+	    type: 'boolean',
+	    description: 'When set to true, you can freely move the image instead of being bound to the container borders',
+	    'default': false
+	  }, {
+	    name: 'rejectSmallImage',
+	    type: 'boolean',
+	    description: 'When set to true, `onImageError` would be called when cropit loads an image that is smaller than the container.',
+	    'default': false
+	  }],
+
+	  callbacks: [{
+	    name: 'onFileChange',
+	    description: 'Called when user selects a file in the select file input.'
+	  }, {
+	    name: 'onFileReaderError',
+	    description: 'Called when `FileReader` encounters an error while loading the image file.'
+	  }, {
+	    name: 'onImageLoading',
+	    description: 'Called when image starts to be loaded.'
+	  }, {
+	    name: 'onImageLoaded',
+	    description: 'Called when image is loaded.'
+	  }, {
+	    name: 'onImageError',
+	    description: 'Called when image cannot be loaded.'
+	  }, {
+	    name: 'onZoomEnabled',
+	    description: 'Called when image the zoom slider is enabled.'
+	  }, {
+	    name: 'onZoomDisabled',
+	    description: 'Called when image the zoom slider is disabled.'
+	  }].map(function (o) {
+	    o.type = 'function';return o;
+	  })
+	};
+
+	var loadDefaults = function loadDefaults($el) {
+	  var defaults = {};
+	  options.elements.forEach(function (o) {
+	    defaults[o.name] = $el.find(o.defaultSelector);
+	  });
+	  options.values.forEach(function (o) {
+	    defaults[o.name] = o['default'];
+	  });
+	  options.callbacks.forEach(function (o) {
+	    defaults[o.name] = function () {};
+	  });
+
+	  return defaults;
+	};
+
+	exports.loadDefaults = loadDefaults;
+	exports['default'] = options;
+
+/***/ },
+/* 6 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {

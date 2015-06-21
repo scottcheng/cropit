@@ -1,10 +1,12 @@
 jest
   .dontMock('jquery')
   .dontMock('../src/constants')
+  .dontMock('../src/options')
   .dontMock('../src/cropit');
 
 import $ from 'jquery';
 import { ERRORS } from '../src/constants';
+import options from '../src/options';
 import Cropit from '../src/cropit';
 
 const IMAGE_URL = 'http://example.com/image.jpg';
@@ -19,16 +21,10 @@ describe('Cropit', () => {
 
   it('sets default options', () => {
     cropit = newCropit();
-    expect(cropit.options.exportZoom).toBe(1);
-    expect(cropit.options.imageBackground).toBe(false);
-    expect(cropit.options.imageBackgroundBorderWidth).toBe(0);
-    expect(cropit.options.imageState).toBe(null);
-    expect(cropit.options.allowDragNDrop).toBe(true);
-    expect(cropit.options.freeMove).toBe(false);
-    expect(cropit.options.maxZoom).toBe(1);
-    expect(cropit.options.minZoom).toBe('fill');
-    expect(cropit.options.initialZoom).toBe('min');
-    expect(cropit.options.rejectSmallImage).toBe(false);
+
+    options.values.forEach((o) => {
+      expect(cropit.options[o.name]).toBe(o.default);
+    });
   });
 
   describe('#init', () => {

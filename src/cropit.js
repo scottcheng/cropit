@@ -1,21 +1,17 @@
 import $ from 'jquery';
 
 import Zoomer from './Zoomer';
-import { DEFAULTS, ERRORS, EVENTS } from './constants';
+import { ERRORS, EVENTS } from './constants';
+import { loadDefaults } from './options';
 import { exists, round } from './utils';
 
 class Cropit {
   constructor(jQuery, element, options) {
     this.$el = $(element);
 
-    const dynamicDefaults = {
-      $fileInput: this.$('input.cropit-image-input'),
-      $preview: this.$('.cropit-image-preview'),
-      $zoomSlider: this.$('input.cropit-image-zoom-input'),
-      $previewContainer: this.$('.cropit-image-preview-container'),
-    };
+    const defaults = loadDefaults(this.$el);
+    this.options = $.extend({}, defaults, options);
 
-    this.options = $.extend({}, DEFAULTS, dynamicDefaults, options);
     this.init();
   }
 
