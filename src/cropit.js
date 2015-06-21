@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 import Zoomer from './Zoomer';
-import { ERRORS, EVENTS } from './constants';
+import { CLASS_NAMES, ERRORS, EVENTS } from './constants';
 import { loadDefaults } from './options';
 import { exists, round } from './utils';
 
@@ -48,11 +48,11 @@ class Cropit {
 
       const $previewContainer = this.options.$previewContainer;
       this.$imageBg = $('<img />')
-        .addClass('cropit-image-background')
+        .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
         .attr('alt', '')
         .css('position', 'absolute');
       this.$imageBgContainer = $('<div />')
-        .addClass('cropit-image-background-container')
+        .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
         .css({
           position: 'absolute',
           zIndex: 0,
@@ -71,9 +71,9 @@ class Cropit {
       this.$preview.css('position', 'relative');
 
       this.$preview.hover(() => {
-        this.$imageBg.addClass('cropit-preview-hovered');
+        this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
       }, () => {
-        this.$imageBg.removeClass('cropit-preview-hovered');
+        this.$imageBg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
       });
     }
 
@@ -153,7 +153,7 @@ class Cropit {
   onDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
-    this.$preview.toggleClass('cropit-drag-hovered', e.type === 'dragover');
+    this.$preview.toggleClass(CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
   }
 
   onDrop(e) {
@@ -168,7 +168,7 @@ class Cropit {
       return true;
     });
 
-    this.$preview.removeClass('cropit-drag-hovered');
+    this.$preview.removeClass(CLASS_NAMES.DRAG_HOVERED);
   }
 
   loadImage(imageSrc) {
@@ -226,19 +226,19 @@ class Cropit {
 
   setImageLoadingClass() {
     this.$preview
-      .removeClass('cropit-image-loaded')
-      .addClass('cropit-image-loading');
+      .removeClass(CLASS_NAMES.IMAGE_LOADED)
+      .addClass(CLASS_NAMES.IMAGE_LOADING);
   }
 
   setImageLoadedClass() {
     this.$preview
-      .removeClass('cropit-image-loading')
-      .addClass('cropit-image-loaded');
+      .removeClass(CLASS_NAMES.IMAGE_LOADING)
+      .addClass(CLASS_NAMES.IMAGE_LOADED);
   }
 
   removeImageLoadingClass() {
     this.$preview
-      .removeClass('cropit-image-loading');
+      .removeClass(CLASS_NAMES.IMAGE_LOADING);
   }
 
   getEventPosition(e) {
@@ -517,13 +517,13 @@ class Cropit {
   disable() {
     this.unbindListeners();
     this.disableZoomSlider();
-    this.$el.addClass('cropit-disabled');
+    this.$el.addClass(CLASS_NAMES.DISABLED);
   }
 
   reenable() {
     this.bindListeners();
     this.enableZoomSlider();
-    this.$el.removeClass('cropit-disabled');
+    this.$el.removeClass(CLASS_NAMES.DISABLED);
   }
 
   $(selector) {

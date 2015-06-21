@@ -1,24 +1,26 @@
+import { CLASS_NAMES } from './constants';
+
 const options = {
   elements: [
     {
       name: '$preview',
       description: 'The HTML element that displays image preview.',
-      defaultSelector: '.cropit-image-preview',
+      defaultSelector: `.${CLASS_NAMES.PREVIEW}`,
     },
     {
       name: '$fileInput',
       description: 'File input element.',
-      defaultSelector: 'input.cropit-image-input',
+      defaultSelector: `input.${CLASS_NAMES.FILE_INPUT}`,
     },
     {
       name: '$zoomSlider',
       description: 'Range input element that controls image zoom.',
-      defaultSelector: 'input.cropit-image-zoom-input',
+      defaultSelector: `input.${CLASS_NAMES.ZOOM_SLIDER}`,
     },
     {
       name: '$previewContainer',
       description: 'Preview container. Only needed when `imageBackground` is true.',
-      defaultSelector: '.cropit-image-preview-container',
+      defaultSelector: `.${CLASS_NAMES.PREVIEW_CONTAINER}`,
     },
   ].map((o) => {
     o.type = 'jQuery element';

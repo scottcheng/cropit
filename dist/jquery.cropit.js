@@ -270,8 +270,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        var $previewContainer = this.options.$previewContainer;
-	        this.$imageBg = (0, _jquery2['default'])('<img />').addClass('cropit-image-background').attr('alt', '').css('position', 'absolute');
-	        this.$imageBgContainer = (0, _jquery2['default'])('<div />').addClass('cropit-image-background-container').css({
+	        this.$imageBg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND).attr('alt', '').css('position', 'absolute');
+	        this.$imageBgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER).css({
 	          position: 'absolute',
 	          zIndex: 0,
 	          left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
@@ -286,9 +286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.$preview.css('position', 'relative');
 
 	        this.$preview.hover(function () {
-	          _this.$imageBg.addClass('cropit-preview-hovered');
+	          _this.$imageBg.addClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
 	        }, function () {
-	          _this.$imageBg.removeClass('cropit-preview-hovered');
+	          _this.$imageBg.removeClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
 	        });
 	      }
 
@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function onDragOver(e) {
 	      e.preventDefault();
 	      e.dataTransfer.dropEffect = 'copy';
-	      this.$preview.toggleClass('cropit-drag-hovered', e.type === 'dragover');
+	      this.$preview.toggleClass(_constants.CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
 	    }
 	  }, {
 	    key: 'onDrop',
@@ -392,7 +392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return true;
 	      });
 
-	      this.$preview.removeClass('cropit-drag-hovered');
+	      this.$preview.removeClass(_constants.CLASS_NAMES.DRAG_HOVERED);
 	    }
 	  }, {
 	    key: 'loadImage',
@@ -453,17 +453,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setImageLoadingClass',
 	    value: function setImageLoadingClass() {
-	      this.$preview.removeClass('cropit-image-loaded').addClass('cropit-image-loading');
+	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADED).addClass(_constants.CLASS_NAMES.IMAGE_LOADING);
 	    }
 	  }, {
 	    key: 'setImageLoadedClass',
 	    value: function setImageLoadedClass() {
-	      this.$preview.removeClass('cropit-image-loading').addClass('cropit-image-loaded');
+	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADING).addClass(_constants.CLASS_NAMES.IMAGE_LOADED);
 	    }
 	  }, {
 	    key: 'removeImageLoadingClass',
 	    value: function removeImageLoadingClass() {
-	      this.$preview.removeClass('cropit-image-loading');
+	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADING);
 	    }
 	  }, {
 	    key: 'getEventPosition',
@@ -759,14 +759,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function disable() {
 	      this.unbindListeners();
 	      this.disableZoomSlider();
-	      this.$el.addClass('cropit-disabled');
+	      this.$el.addClass(_constants.CLASS_NAMES.DISABLED);
 	    }
 	  }, {
 	    key: 'reenable',
 	    value: function reenable() {
 	      this.bindListeners();
 	      this.enableZoomSlider();
-	      this.$el.removeClass('cropit-disabled');
+	      this.$el.removeClass(_constants.CLASS_NAMES.DISABLED);
 	    }
 	  }, {
 	    key: '$',
@@ -882,6 +882,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PLUGIN_KEY = 'cropit';
 
 	exports.PLUGIN_KEY = PLUGIN_KEY;
+	var CLASS_NAMES = {
+	  PREVIEW: 'cropit-image-preview',
+	  PREVIEW_CONTAINER: 'cropit-image-preview-container',
+	  FILE_INPUT: 'cropit-image-input',
+	  ZOOM_SLIDER: 'cropit-image-zoom-input',
+	  IMAGE_BACKGROUND: 'cropit-image-background',
+	  IMAGE_BACKGROUND_CONTAINER: 'cropit-image-background-container',
+	  PREVIEW_HOVERED: 'cropit-preview-hovered',
+	  DRAG_HOVERED: 'cropit-drag-hovered',
+	  IMAGE_LOADING: 'cropit-image-loading',
+	  IMAGE_LOADED: 'cropit-image-loaded',
+	  DISABLED: 'cropit-disabled'
+	};
+
+	exports.CLASS_NAMES = CLASS_NAMES;
 	var ERRORS = {
 	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
 	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
@@ -893,7 +908,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return '' + e + '.cropit';
 	  }).join(' ');
 	};
-
 	var EVENTS = {
 	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
 	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
@@ -903,28 +917,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+
+	var _constants = __webpack_require__(4);
+
 	var options = {
 	  elements: [{
 	    name: '$preview',
 	    description: 'The HTML element that displays image preview.',
-	    defaultSelector: '.cropit-image-preview'
+	    defaultSelector: '.' + _constants.CLASS_NAMES.PREVIEW
 	  }, {
 	    name: '$fileInput',
 	    description: 'File input element.',
-	    defaultSelector: 'input.cropit-image-input'
+	    defaultSelector: 'input.' + _constants.CLASS_NAMES.FILE_INPUT
 	  }, {
 	    name: '$zoomSlider',
 	    description: 'Range input element that controls image zoom.',
-	    defaultSelector: 'input.cropit-image-zoom-input'
+	    defaultSelector: 'input.' + _constants.CLASS_NAMES.ZOOM_SLIDER
 	  }, {
 	    name: '$previewContainer',
 	    description: 'Preview container. Only needed when `imageBackground` is true.',
-	    defaultSelector: '.cropit-image-preview-container'
+	    defaultSelector: '.' + _constants.CLASS_NAMES.PREVIEW_CONTAINER
 	  }].map(function (o) {
 	    o.type = 'jQuery element';
 	    o['default'] = '$imageCropper.find(\'' + o.defaultSelector + '\')';
