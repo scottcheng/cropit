@@ -1,4 +1,7 @@
+var webpack = require('webpack');
 var path = require('path');
+
+var pkg = require('./cropit.jquery.json');
 
 var paths = {
   src: path.join(__dirname, 'src'),
@@ -25,4 +28,9 @@ module.exports = {
   },
 
   externals: { 'jquery': 'jQuery' },
+
+  plugins: [
+    new webpack.BannerPlugin(pkg.name + ' - v' + pkg.version +
+      ' <' +pkg.homepage + '>'),
+  ],
 };

@@ -1,3 +1,4 @@
+/*! cropit - v0.2.0 <https://github.com/scottcheng/cropit> */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("jQuery"));
