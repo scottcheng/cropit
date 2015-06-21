@@ -18,7 +18,11 @@ $ npm install cropit
 
 ## Development
 
-Run `webpack` to build, and `npm test` to test.
+* Build: `webpack`
+  * Watch for changes and rebuild: `webpack -w`
+* Test: `npm test`
+  * Test specific file: `jest <filename>`
+* Lint: `npm run jshint -s`
 
 ## License
 
