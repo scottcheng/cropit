@@ -985,7 +985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name: 'rejectSmallImage',
 	    type: 'boolean',
 	    description: 'When set to true, `onImageError` would be called when cropit loads an image that is smaller than the container.',
-	    'default': false
+	    'default': true
 	  }],
 
 	  callbacks: [{
