@@ -117,7 +117,7 @@ class Cropit {
   }
 
   onFileChange() {
-    if (this.options.onFileChange) { this.options.onFileChange(); }
+    this.options.onFileChange();
 
     if (this.$fileInput.get(0).files) {
       this.loadFileReader(this.$fileInput.get(0).files[0]);
@@ -141,7 +141,7 @@ class Cropit {
   }
 
   onFileReaderError() {
-    if (this.options.onFileReaderError) { this.options.onFileReaderError(); }
+    this.options.onFileReaderError();
   }
 
   onDragOver(e) {
@@ -169,7 +169,7 @@ class Cropit {
     this.imageSrc = imageSrc;
     if (!this.imageSrc) { return; }
 
-    if (this.options.onImageLoading) { this.options.onImageLoading(); }
+    this.options.onImageLoading();
     this.setImageLoadingClass();
 
     this.image.onload = this.onImageLoaded.bind(this);
@@ -212,11 +212,11 @@ class Cropit {
 
     this.imageLoaded = true;
 
-    if (this.options.onImageLoaded) { this.options.onImageLoaded(); }
+    this.options.onImageLoaded();
   }
 
   onImageError() {
-    if (this.options.onImageError) { this.options.onImageError.apply(this, arguments); }
+    this.options.onImageError.apply(this, arguments);
     this.removeImageLoadingClass();
   }
 
@@ -342,12 +342,12 @@ class Cropit {
 
   enableZoomSlider() {
     this.$zoomSlider.removeAttr('disabled');
-    if (this.options.onZoomEnabled) { this.options.onZoomEnabled(); }
+    this.options.onZoomEnabled();
   }
 
   disableZoomSlider() {
     this.$zoomSlider.attr('disabled', true);
-    if (this.options.onZoomDisabled) { this.options.onZoomDisabled(); }
+    this.options.onZoomDisabled();
   }
 
   setupZoomer(zoom) {

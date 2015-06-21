@@ -332,9 +332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onFileChange',
 	    value: function onFileChange() {
-	      if (this.options.onFileChange) {
-	        this.options.onFileChange();
-	      }
+	      this.options.onFileChange();
 
 	      if (this.$fileInput.get(0).files) {
 	        this.loadFileReader(this.$fileInput.get(0).files[0]);
@@ -360,9 +358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onFileReaderError',
 	    value: function onFileReaderError() {
-	      if (this.options.onFileReaderError) {
-	        this.options.onFileReaderError();
-	      }
+	      this.options.onFileReaderError();
 	    }
 	  }, {
 	    key: 'onDragOver',
@@ -401,9 +397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      if (this.options.onImageLoading) {
-	        this.options.onImageLoading();
-	      }
+	      this.options.onImageLoading();
 	      this.setImageLoadingClass();
 
 	      this.image.onload = this.onImageLoaded.bind(this);
@@ -444,16 +438,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.imageLoaded = true;
 
-	      if (this.options.onImageLoaded) {
-	        this.options.onImageLoaded();
-	      }
+	      this.options.onImageLoaded();
 	    }
 	  }, {
 	    key: 'onImageError',
 	    value: function onImageError() {
-	      if (this.options.onImageError) {
-	        this.options.onImageError.apply(this, arguments);
-	      }
+	      this.options.onImageError.apply(this, arguments);
 	      this.removeImageLoadingClass();
 	    }
 	  }, {
@@ -586,17 +576,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'enableZoomSlider',
 	    value: function enableZoomSlider() {
 	      this.$zoomSlider.removeAttr('disabled');
-	      if (this.options.onZoomEnabled) {
-	        this.options.onZoomEnabled();
-	      }
+	      this.options.onZoomEnabled();
 	    }
 	  }, {
 	    key: 'disableZoomSlider',
 	    value: function disableZoomSlider() {
 	      this.$zoomSlider.attr('disabled', true);
-	      if (this.options.onZoomDisabled) {
-	        this.options.onZoomDisabled();
-	      }
+	      this.options.onZoomDisabled();
 	    }
 	  }, {
 	    key: 'setupZoomer',
