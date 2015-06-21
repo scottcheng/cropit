@@ -818,14 +818,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setup(_ref) {
 	      var imageSize = _ref.imageSize;
 	      var previewSize = _ref.previewSize;
-	      var _ref$exportZoom = _ref.exportZoom;
-	      var exportZoom = _ref$exportZoom === undefined ? 1 : _ref$exportZoom;
-	      var _ref$maxZoom = _ref.maxZoom;
-	      var maxZoom = _ref$maxZoom === undefined ? 1 : _ref$maxZoom;
-	      var _ref$minZoom = _ref.minZoom;
-	      var minZoom = _ref$minZoom === undefined ? 'fill' : _ref$minZoom;
-	      var _ref$rejectSmallImage = _ref.rejectSmallImage;
-	      var rejectSmallImage = _ref$rejectSmallImage === undefined ? false : _ref$rejectSmallImage;
+	      var exportZoom = _ref.exportZoom;
+	      var maxZoom = _ref.maxZoom;
+	      var minZoom = _ref.minZoom;
+	      var rejectSmallImage = _ref.rejectSmallImage;
 
 	      var widthRatio = previewSize.w / imageSize.w;
 	      var heightRatio = previewSize.h / imageSize.h;
@@ -1030,9 +1026,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var loadDefaults = function loadDefaults($el) {
 	  var defaults = {};
-	  options.elements.forEach(function (o) {
-	    defaults[o.name] = $el.find(o.defaultSelector);
-	  });
+	  if ($el) {
+	    options.elements.forEach(function (o) {
+	      defaults[o.name] = $el.find(o.defaultSelector);
+	    });
+	  }
 	  options.values.forEach(function (o) {
 	    defaults[o.name] = o['default'];
 	  });
