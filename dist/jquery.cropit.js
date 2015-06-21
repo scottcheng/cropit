@@ -1,4 +1,4 @@
-/*! cropit - v0.2.0 <https://github.com/scottcheng/cropit> */
+/*! cropit - v0.3.0 <https://github.com/scottcheng/cropit> */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("jQuery"));
@@ -237,6 +237,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this = this;
 
 	      this.image = new Image();
+	      this.preImage = new Image();
+	      this.image.onload = this.onImageLoaded.bind(this);
+	      this.preImage.onload = this.onPreImageLoaded.bind(this);
+	      this.image.onerror = this.preImage.onerror = function () {
+	        _this.onImageError.call(_this, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
+	      };
 
 	      this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
 	      this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
@@ -391,22 +397,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'loadImage',
 	    value: function loadImage(imageSrc) {
-	      var _this3 = this;
-
-	      this.imageSrc = imageSrc;
-	      if (!this.imageSrc) {
+	      if (!imageSrc) {
 	        return;
 	      }
 
 	      this.options.onImageLoading();
 	      this.setImageLoadingClass();
 
-	      this.image.onload = this.onImageLoaded.bind(this);
-	      this.image.onerror = function () {
-	        _this3.onImageError.call(_this3, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
-	      };
+	      this.preImage.src = imageSrc;
+	    }
+	  }, {
+	    key: 'onPreImageLoaded',
+	    value: function onPreImageLoaded() {
+	      if (this.options.rejectSmallImage && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
+	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
+	        return;
+	      }
 
-	      this.image.src = this.imageSrc;
+	      this.image.src = this.imageSrc = this.preImage.src;
 	    }
 	  }, {
 	    key: 'onImageLoaded',
@@ -428,11 +436,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$preview.css('background-image', 'url(' + this.imageSrc + ')');
 	      if (this.options.imageBackground) {
 	        this.$imageBg.attr('src', this.imageSrc);
-	      }
-
-	      if (this.options.rejectSmallImage && (this.imageSize.w * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.imageSize.h * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
-	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
-	        return;
 	      }
 
 	      this.setImageLoadedClass();

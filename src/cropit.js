@@ -17,6 +17,12 @@ class Cropit {
 
   init() {
     this.image = new Image();
+    this.preImage = new Image();
+    this.image.onload = this.onImageLoaded.bind(this);
+    this.preImage.onload = this.onPreImageLoaded.bind(this);
+    this.image.onerror = this.preImage.onerror = () => {
+      this.onImageError.call(this, ERRORS.IMAGE_FAILED_TO_LOAD);
+    };
 
     this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
     this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
@@ -166,18 +172,23 @@ class Cropit {
   }
 
   loadImage(imageSrc) {
-    this.imageSrc = imageSrc;
-    if (!this.imageSrc) { return; }
+    if (!imageSrc) { return; }
 
     this.options.onImageLoading();
     this.setImageLoadingClass();
 
-    this.image.onload = this.onImageLoaded.bind(this);
-    this.image.onerror = () => {
-      this.onImageError.call(this, ERRORS.IMAGE_FAILED_TO_LOAD);
-    };
+    this.preImage.src = imageSrc;
+  }
 
-    this.image.src = this.imageSrc;
+  onPreImageLoaded() {
+    if (this.options.rejectSmallImage &&
+          (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
+           this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
+      this.onImageError(ERRORS.SMALL_IMAGE);
+      return;
+    }
+
+    this.image.src = this.imageSrc = this.preImage.src;
   }
 
   onImageLoaded() {
@@ -199,13 +210,6 @@ class Cropit {
     this.$preview.css('background-image', `url(${this.imageSrc})`);
     if (this.options.imageBackground) {
       this.$imageBg.attr('src', this.imageSrc);
-    }
-
-    if (this.options.rejectSmallImage &&
-          (this.imageSize.w * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
-           this.imageSize.h * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
-      this.onImageError(ERRORS.SMALL_IMAGE);
-      return;
     }
 
     this.setImageLoadedClass();

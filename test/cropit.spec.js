@@ -48,14 +48,6 @@ describe('Cropit', () => {
       cropit.onFileReaderLoaded({ target: { result: IMAGE_DATA } });
       expect(cropit.loadImage).toHaveBeenCalled();
     });
-
-    it('sets imageSrc', () => {
-      cropit.imageSrc = IMAGE_URL;
-      expect(cropit.imageSrc).not.toBe(IMAGE_DATA);
-
-      cropit.onFileReaderLoaded({ target: { result: IMAGE_DATA } });
-      expect(cropit.imageSrc).toBe(IMAGE_DATA);
-    });
   });
 
   describe('#loadImage', () => {
@@ -63,10 +55,93 @@ describe('Cropit', () => {
       cropit = newCropit();
     });
 
-    it('sets image source', () => {
-      expect(cropit.image.src).not.toBe(IMAGE_DATA);
+    it('sets test image source', () => {
+      expect(cropit.preImage.src).not.toBe(IMAGE_DATA);
 
       cropit.loadImage(IMAGE_DATA);
+      expect(cropit.preImage.src).toBe(IMAGE_DATA);
+    });
+  });
+
+  describe('#onPreImageLoaded', () => {
+    describe('rejectSmallImage set to true', () => {
+      beforeEach(() => {
+        cropit = newCropit({ rejectSmallImage: true });
+      });
+
+      it('rejects image where image width is smaller than preview width', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 2, h: 2 };
+        cropit.preImage = { width: 1, height: 3 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).toHaveBeenCalled();
+      });
+
+      it('rejects image where image height is smaller than preview height', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 2, h: 2 };
+        cropit.preImage = { width: 3, height: 1 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
+      });
+
+      it('does not reject image if it is larger than preview', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 2, h: 2 };
+        cropit.preImage = { width: 3, height: 3 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).not.toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
+      });
+    });
+
+    describe('rejectSmallImage set to true and exportZoom not 1', () => {
+      beforeEach(() => {
+        cropit = newCropit({ rejectSmallImage: true, exportZoom: 2 });
+      });
+
+      it('rejects image if image is smaller than preview after applying exportZoom', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 2, h: 2 };
+        cropit.preImage = { width: 3, height: 3 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
+      });
+    });
+
+    describe('rejectSmallImage set to true and maxZoom not 1', () => {
+      beforeEach(() => {
+        cropit = newCropit({ rejectSmallImage: true, maxZoom: 2 });
+      });
+
+      it('does not reject image if maxZoom allows image to be zoomed beyond preview', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 4, h: 4 };
+        cropit.preImage = { width: 3, height: 3 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).not.toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
+      });
+    });
+
+    describe('rejectSmallImage set to false', () => {
+      beforeEach(() => {
+        cropit = newCropit({ rejectSmallImage: false });
+      });
+
+      it('does not reject small image', () => {
+        spyOn(cropit, 'onImageError');
+        cropit.previewSize = { w: 2, h: 2 };
+        cropit.preImage = { width: 1, height: 1 };
+        cropit.onPreImageLoaded();
+        expect(cropit.onImageError).not.toHaveBeenCalled();
+      });
+    });
+
+    it('sets image.src if everything passes', () => {
+      cropit = newCropit();
+      cropit.preImage = { src: IMAGE_DATA };
+      expect(cropit.image.src).not.toBe(IMAGE_DATA);
+
+      cropit.onPreImageLoaded();
       expect(cropit.image.src).toBe(IMAGE_DATA);
     });
   });
@@ -87,78 +162,6 @@ describe('Cropit', () => {
       cropit.previewSize = { w: 1, h: 1 };
       cropit.onImageLoaded();
       expect(cropit.zoom).toBe(1);
-    });
-
-    describe('rejectSmallImage set to true', () => {
-      beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true });
-      });
-
-      it('rejects image where image width is smaller than preview width', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 2, h: 2 };
-        cropit.image = { width: 1, height: 3 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).toHaveBeenCalled();
-      });
-
-      it('rejects image where image height is smaller than preview height', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 2, h: 2 };
-        cropit.image = { width: 3, height: 1 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
-      });
-
-      it('does not reject image if it is larger than preview', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 2, h: 2 };
-        cropit.image = { width: 3, height: 3 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).not.toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
-      });
-    });
-
-    describe('rejectSmallImage set to true and exportZoom not 1', () => {
-      beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true, exportZoom: 2 });
-      });
-
-      it('rejects image if image is smaller than preview after applying exportZoom', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 2, h: 2 };
-        cropit.image = { width: 3, height: 3 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
-      });
-    });
-
-    describe('rejectSmallImage set to true and maxZoom not 1', () => {
-      beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true, maxZoom: 2 });
-      });
-
-      it('does not reject image if maxZoom allows image to be zoomed beyond preview', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 4, h: 4 };
-        cropit.image = { width: 3, height: 3 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).not.toHaveBeenCalledWith(ERRORS.SMALL_IMAGE);
-      });
-    });
-
-    describe('rejectSmallImage set to false', () => {
-      beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: false });
-      });
-
-      it('does not reject small image', () => {
-        spyOn(cropit, 'onImageError');
-        cropit.previewSize = { w: 2, h: 2 };
-        cropit.image = { width: 1, height: 1 };
-        cropit.onImageLoaded();
-        expect(cropit.onImageError).not.toHaveBeenCalled();
-      });
     });
   });
 
