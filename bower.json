@@ -1,7 +1,7 @@
 {
   "name": "cropit",
   "description": "Customizable crop and zoom.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [
     "Scott Cheng <me@scottcheng.com>",
     "Yufei Liu <liu.yufei@gmail.com>"
@@ -17,14 +17,9 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test"
   ],
   "dependencies": {
     "jquery": ">=1.9"
-  },
-  "devDependencies": {
-    "jquery": "~2.1.1",
-    "jasmine-jquery": "~2.0.5"
   }
 }
