@@ -27,7 +27,14 @@ module.exports = {
     ],
   },
 
-  externals: { 'jquery': 'jQuery' },
+  externals: {
+    jquery: {
+      root: 'jQuery',
+      commonjs: 'jquery',
+      commonjs2: 'jquery',
+      amd: 'jquery',
+    },
+  },
 
   plugins: [
     new webpack.BannerPlugin(pkg.name + ' - v' + pkg.version +
