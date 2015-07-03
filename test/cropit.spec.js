@@ -35,6 +35,16 @@ describe('Cropit', () => {
       cropit.init();
       expect(cropit.loadImage).toHaveBeenCalled();
     });
+
+    it('enables cross origin image source if allowCrossOrigin is set in options', () => {
+      cropit = newCropit({ allowCrossOrigin: true });
+      expect(cropit.image.crossOrigin).toBe('Anonymous');
+    });
+
+    it('disables cross origin image source if allowCrossOrigin is not set in options', () => {
+      cropit = newCropit();
+      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
+    });
   });
 
   describe('#onFileReaderLoaded', () => {

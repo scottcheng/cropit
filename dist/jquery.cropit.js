@@ -237,6 +237,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this = this;
 
 	      this.image = new Image();
+	      if (this.options.allowCrossOrigin) {
+	        this.image.crossOrigin = 'Anonymous';
+	      }
 	      this.preImage = new Image();
 	      this.image.onload = this.onImageLoaded.bind(this);
 	      this.preImage.onload = this.onPreImageLoaded.bind(this);
@@ -1003,6 +1006,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    type: 'boolean',
 	    description: 'When set to true, `onImageError` would be called when cropit loads an image that is smaller than the container.',
 	    'default': true
+	  }, {
+	    name: 'allowCrossOrigin',
+	    type: 'boolean',
+	    description: 'Set to true if you need to crop image served from other domains.',
+	    'default': false
 	  }],
 
 	  callbacks: [{
