@@ -994,7 +994,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    name: 'initialZoom',
 	    type: 'string',
-	    description: 'Determines the zoom when an image is loaded.\n        When set to `\'min\'`, image is zoomed to the smallest when loaded.\n        When set to \'image\', image is zoomed to 100% when loaded.',
+	    description: 'Determines the zoom when an image is loaded.\n        When set to `\'min\'`, image is zoomed to the smallest when loaded.\n        When set to `\'image\'`, image is zoomed to 100% when loaded.',
 	    'default': 'min'
 	  }, {
 	    name: 'freeMove',

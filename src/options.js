@@ -90,7 +90,7 @@ const options = {
       type: 'string',
       description: `Determines the zoom when an image is loaded.
         When set to \`'min'\`, image is zoomed to the smallest when loaded.
-        When set to 'image', image is zoomed to 100% when loaded.`,
+        When set to \`'image'\`, image is zoomed to 100% when loaded.`,
       default: 'min',
     },
     {
