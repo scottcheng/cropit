@@ -822,7 +822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.minZoom = Math.max(widthRatio, heightRatio);
 	      }
 
-	      if (!rejectSmallImage) {
+	      if (!rejectSmallImage && minZoom !== 'fill') {
 	        this.minZoom = Math.min(this.minZoom, 1);
 	      }
 
