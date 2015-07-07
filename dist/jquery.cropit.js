@@ -412,7 +412,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onPreImageLoaded',
 	    value: function onPreImageLoaded() {
-	      if (this.options.rejectSmallImage && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
+	      if (this.options.smallImage === 'reject' && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
 	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
 	        return;
 	      }
@@ -600,7 +600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        exportZoom: this.options.exportZoom,
 	        maxZoom: this.options.maxZoom,
 	        minZoom: this.options.minZoom,
-	        rejectSmallImage: this.options.rejectSmallImage
+	        smallImage: this.options.smallImage
 	      });
 	      this.setZoom((0, _utils.exists)(zoom) ? zoom : this.zoom);
 
@@ -814,7 +814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var exportZoom = _ref.exportZoom;
 	      var maxZoom = _ref.maxZoom;
 	      var minZoom = _ref.minZoom;
-	      var rejectSmallImage = _ref.rejectSmallImage;
+	      var smallImage = _ref.smallImage;
 
 	      var widthRatio = previewSize.w / imageSize.w;
 	      var heightRatio = previewSize.h / imageSize.h;
@@ -825,7 +825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.minZoom = Math.max(widthRatio, heightRatio);
 	      }
 
-	      if (!rejectSmallImage) {
+	      if (smallImage === 'allow') {
 	        this.minZoom = Math.min(this.minZoom, 1);
 	      }
 
@@ -1002,10 +1002,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    description: 'When set to true, you can freely move the image instead of being bound to the container borders',
 	    'default': false
 	  }, {
-	    name: 'rejectSmallImage',
-	    type: 'boolean',
-	    description: 'When set to true, `onImageError` would be called when cropit loads an image that is smaller than the container.',
-	    'default': true
+	    name: 'smallImage',
+	    type: 'string',
+	    description: 'When set to `\'reject\'`, `onImageError` would be called when cropit loads an image that is smaller than the container.\n        When set to `\'allow\'`, images smaller than the container can be zoomed down to its original size, overiding `minZoom` option.\n        When set to `\'stretch\'`, the minimum zoom of small images would follow `minZoom` option.',
+	    'default': 'reject'
 	  }, {
 	    name: 'allowCrossOrigin',
 	    type: 'boolean',

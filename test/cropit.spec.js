@@ -74,9 +74,9 @@ describe('Cropit', () => {
   });
 
   describe('#onPreImageLoaded', () => {
-    describe('rejectSmallImage set to true', () => {
+    describe('reject small images', () => {
       beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true });
+        cropit = newCropit({ smallImage: 'reject' });
       });
 
       it('rejects image where image width is smaller than preview width', () => {
@@ -104,9 +104,9 @@ describe('Cropit', () => {
       });
     });
 
-    describe('rejectSmallImage set to true and exportZoom not 1', () => {
+    describe('reject small images and exportZoom is not 1', () => {
       beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true, exportZoom: 2 });
+        cropit = newCropit({ smallImage: 'reject', exportZoom: 2 });
       });
 
       it('rejects image if image is smaller than preview after applying exportZoom', () => {
@@ -118,9 +118,9 @@ describe('Cropit', () => {
       });
     });
 
-    describe('rejectSmallImage set to true and maxZoom not 1', () => {
+    describe('reject small images and maxZoom is not 1', () => {
       beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: true, maxZoom: 2 });
+        cropit = newCropit({ smallImage: 'reject', maxZoom: 2 });
       });
 
       it('does not reject image if maxZoom allows image to be zoomed beyond preview', () => {
@@ -132,9 +132,9 @@ describe('Cropit', () => {
       });
     });
 
-    describe('rejectSmallImage set to false', () => {
+    describe('allow small images', () => {
       beforeEach(() => {
-        cropit = newCropit({ rejectSmallImage: false });
+        cropit = newCropit({ smallImage: 'allow' });
       });
 
       it('does not reject small image', () => {

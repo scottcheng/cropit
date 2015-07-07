@@ -100,10 +100,12 @@ const options = {
       default: false,
     },
     {
-      name: 'rejectSmallImage',
-      type: 'boolean',
-      description: 'When set to true, `onImageError` would be called when cropit loads an image that is smaller than the container.',
-      default: true,
+      name: 'smallImage',
+      type: 'string',
+      description: `When set to \`'reject'\`, \`onImageError\` would be called when cropit loads an image that is smaller than the container.
+        When set to \`'allow'\`, images smaller than the container can be zoomed down to its original size, overiding \`minZoom\` option.
+        When set to \`'stretch'\`, the minimum zoom of small images would follow \`minZoom\` option.`,
+      default: 'reject',
     },
     {
       name: 'allowCrossOrigin',

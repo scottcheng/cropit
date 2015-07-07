@@ -182,7 +182,7 @@ class Cropit {
   }
 
   onPreImageLoaded() {
-    if (this.options.rejectSmallImage &&
+    if (this.options.smallImage === 'reject' &&
           (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
            this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
       this.onImageError(ERRORS.SMALL_IMAGE);
@@ -362,7 +362,7 @@ class Cropit {
       exportZoom: this.options.exportZoom,
       maxZoom: this.options.maxZoom,
       minZoom: this.options.minZoom,
-      rejectSmallImage: this.options.rejectSmallImage,
+      smallImage: this.options.smallImage,
     });
     this.setZoom(exists(zoom) ? zoom : this.zoom);
 
