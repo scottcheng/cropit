@@ -4,6 +4,6 @@
   "dependencies": {
     "jquery": ">=1.9",
     "normalize.css": "~3.0.1",
-    "cropit": "~0.1.0"
+    "cropit": "*"
   }
 }
