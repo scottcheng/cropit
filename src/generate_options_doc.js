@@ -13,7 +13,7 @@ let output = '';
     output += `  .type ${o.type}\n`;
     output += `  .description\n    :markdown\n      ${o.description}\n`;
     if (o.type !== 'function') {
-      if (typeof o.default === 'string') {
+      if (o.type === 'string') {
         output += `  .default: code '${o.default}'\n`;
       }
       else if (Array.isArray(o.default)) {

@@ -5,28 +5,28 @@
   .description
     :markdown
       The HTML element that displays image preview.
-  .default: code '$imageCropper.find('.cropit-image-preview')'
+  .default: code $imageCropper.find('.cropit-image-preview')
 .option
   .name $fileInput
   .type jQuery element
   .description
     :markdown
       File input element.
-  .default: code '$imageCropper.find('input.cropit-image-input')'
+  .default: code $imageCropper.find('input.cropit-image-input')
 .option
   .name $zoomSlider
   .type jQuery element
   .description
     :markdown
       Range input element that controls image zoom.
-  .default: code '$imageCropper.find('input.cropit-image-zoom-input')'
+  .default: code $imageCropper.find('input.cropit-image-zoom-input')
 .option
   .name $previewContainer
   .type jQuery element
   .description
     :markdown
       Preview container. Only needed when `imageBackground` is true.
-  .default: code '$imageCropper.find('.cropit-image-preview-container')'
+  .default: code $imageCropper.find('.cropit-image-preview-container')
 
 //- values
 .option
@@ -88,7 +88,7 @@
   .default: code 'fill'
 .option
   .name maxZoom
-  .type string
+  .type number
   .description
     :markdown
       Determines how big the image can be zoomed. E.g. if set to 1.5, the image can be zoomed to 150% of its original size.
