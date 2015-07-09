@@ -666,16 +666,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
 
-	      var croppedSize = {
-	        w: this.previewSize.w,
-	        h: this.previewSize.h
-	      };
-
 	      var exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
+	      var zoomedSize = {
+	        w: this.zoom * exportZoom * this.imageSize.w,
+	        h: this.zoom * exportZoom * this.imageSize.h
+	      };
+
 	      var canvas = (0, _jquery2['default'])('<canvas />').attr({
-	        width: croppedSize.w * exportZoom,
-	        height: croppedSize.h * exportZoom
+	        width: this.previewSize.w * exportZoom,
+	        height: this.previewSize.h * exportZoom
 	      }).get(0);
 	      var canvasContext = canvas.getContext('2d');
 
@@ -684,9 +684,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 	      }
 
-	      canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, this.zoom * exportZoom * this.imageSize.w, this.zoom * exportZoom * this.imageSize.h);
+	      var preresizedImage = this.preresizeImage(this.image, zoomedSize.w, zoomedSize.h);
+	      canvasContext.drawImage(preresizedImage, this.offset.x * exportZoom, this.offset.y * exportZoom, zoomedSize.w, zoomedSize.h);
 
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
+	    }
+	  }, {
+	    key: 'preresizeImage',
+	    value: function preresizeImage(src, targetWidth, targetHeight) {
+	      var tmp = new Image();
+	      tmp.src = src.src;
+
+	      var canvas = document.createElement('canvas');
+	      var context = canvas.getContext('2d');
+	      var canvasWidth = tmp.width;
+	      var canvasHeight = tmp.height;
+
+	      while (true) {
+	        canvasWidth /= 2;
+	        canvasHeight /= 2;
+
+	        if (canvasWidth < targetWidth || canvasHeight < targetHeight) {
+	          break;
+	        }
+
+	        canvas.width = canvasWidth;
+	        canvas.height = canvasHeight;
+
+	        context.drawImage(tmp, 0, 0, canvasWidth, canvasHeight);
+	        tmp.src = canvas.toDataURL();
+	      }
+
+	      return tmp;
 	    }
 	  }, {
 	    key: 'getImageState',
