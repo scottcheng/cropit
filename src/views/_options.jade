@@ -1,26 +1,26 @@
 //- elements
-.option
+.option#docs-options-preview
   .name $preview
   .type jQuery element
   .description
     :markdown
       The HTML element that displays image preview.
   .default: code $imageCropper.find('.cropit-image-preview')
-.option
+.option#docs-options-fileInput
   .name $fileInput
   .type jQuery element
   .description
     :markdown
       File input element.
   .default: code $imageCropper.find('input.cropit-image-input')
-.option
+.option#docs-options-zoomSlider
   .name $zoomSlider
   .type jQuery element
   .description
     :markdown
       Range input element that controls image zoom.
   .default: code $imageCropper.find('input.cropit-image-zoom-input')
-.option
+.option#docs-options-previewContainer
   .name $previewContainer
   .type jQuery element
   .description
@@ -29,28 +29,28 @@
   .default: code $imageCropper.find('.cropit-image-preview-container')
 
 //- values
-.option
+.option#docs-options-width
   .name width
   .type number
   .description
     :markdown
       Width of image preview in pixels. If set, it will override the CSS property.
   .default: code null
-.option
+.option#docs-options-height
   .name height
   .type number
   .description
     :markdown
       Height of image preview in pixels. If set, it will override the CSS property.
   .default: code null
-.option
+.option#docs-options-imageBackground
   .name imageBackground
   .type boolean
   .description
     :markdown
       Whether or not to display the background image beyond the preview area.
   .default: code false
-.option
+.option#docs-options-imageBackgroundBorderWidth
   .name imageBackgroundBorderWidth
   .type array or number
   .description
@@ -60,7 +60,7 @@
         The background image beyond the width will be hidden.
         If specified as a number, border with uniform width on all sides will be applied.
   .default: code [0,0,0,0]
-.option
+.option#docs-options-exportZoom
   .name exportZoom
   .type number
   .description
@@ -70,14 +70,14 @@
         the exported image size will be `600px * 400px`.
         This also affects the maximum zoom level, since the exported image cannot be zoomed to larger than its original size.
   .default: code 1
-.option
+.option#docs-options-allowDragNDrop
   .name allowDragNDrop
   .type boolean
   .description
     :markdown
       When set to true, you can load an image by dragging it from local file browser onto the preview area.
   .default: code true
-.option
+.option#docs-options-minZoom
   .name minZoom
   .type string
   .description
@@ -86,14 +86,14 @@
         If set to `'fill'`, the image has to fill the preview area, i.e. both width and height must not go smaller than the preview area.
         If set to `'fit'`, the image can shrink further to fit the preview area, i.e. at least one of its edges must not go smaller than the preview area.
   .default: code 'fill'
-.option
+.option#docs-options-maxZoom
   .name maxZoom
   .type number
   .description
     :markdown
       Determines how big the image can be zoomed. E.g. if set to 1.5, the image can be zoomed to 150% of its original size.
   .default: code 1
-.option
+.option#docs-options-initialZoom
   .name initialZoom
   .type string
   .description
@@ -102,14 +102,14 @@
         When set to `'min'`, image is zoomed to the smallest when loaded.
         When set to `'image'`, image is zoomed to 100% when loaded.
   .default: code 'min'
-.option
+.option#docs-options-freeMove
   .name freeMove
   .type boolean
   .description
     :markdown
       When set to true, you can freely move the image instead of being bound to the container borders
   .default: code false
-.option
+.option#docs-options-smallImage
   .name smallImage
   .type string
   .description
@@ -118,7 +118,7 @@
         When set to `'allow'`, images smaller than the container can be zoomed down to its original size, overiding `minZoom` option.
         When set to `'stretch'`, the minimum zoom of small images would follow `minZoom` option.
   .default: code 'reject'
-.option
+.option#docs-options-allowCrossOrigin
   .name allowCrossOrigin
   .type boolean
   .description
@@ -127,43 +127,43 @@
   .default: code false
 
 //- callbacks
-.option
+.option#docs-options-onFileChange
   .name onFileChange
   .type function
   .description
     :markdown
       Called when user selects a file in the select file input.
-.option
+.option#docs-options-onFileReaderError
   .name onFileReaderError
   .type function
   .description
     :markdown
       Called when `FileReader` encounters an error while loading the image file.
-.option
+.option#docs-options-onImageLoading
   .name onImageLoading
   .type function
   .description
     :markdown
       Called when image starts to be loaded.
-.option
+.option#docs-options-onImageLoaded
   .name onImageLoaded
   .type function
   .description
     :markdown
       Called when image is loaded.
-.option
+.option#docs-options-onImageError
   .name onImageError
   .type function
   .description
     :markdown
       Called when image cannot be loaded.
-.option
+.option#docs-options-onZoomEnabled
   .name onZoomEnabled
   .type function
   .description
     :markdown
       Called when image the zoom slider is enabled.
-.option
+.option#docs-options-onZoomDisabled
   .name onZoomDisabled
   .type function
   .description

@@ -8,7 +8,7 @@ let output = '';
   output += `//- ${k}\n`;
 
   options[k].forEach((o) => {
-    output += '.option\n';
+    output += `.option#docs-options-${o.name.replace('$', '')}\n`;
     output += `  .name ${o.name}\n`;
     output += `  .type ${o.type}\n`;
     output += `  .description\n    :markdown\n      ${o.description}\n`;
