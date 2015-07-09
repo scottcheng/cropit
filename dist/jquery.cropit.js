@@ -666,11 +666,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
 
-	      var croppedSize = {
-	        w: this.previewSize.w,
-	        h: this.previewSize.h
-	      };
-
 	      var exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
 	      var zoomedSize = {
@@ -679,8 +674,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	      var canvas = (0, _jquery2['default'])('<canvas />').attr({
-	        width: croppedSize.w * exportZoom,
-	        height: croppedSize.h * exportZoom
+	        width: this.previewSize.w * exportZoom,
+	        height: this.previewSize.h * exportZoom
 	      }).get(0);
 	      var canvasContext = canvas.getContext('2d');
 

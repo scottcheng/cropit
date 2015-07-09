@@ -424,11 +424,6 @@ class Cropit {
     };
     exportOptions = $.extend({}, exportDefaults, exportOptions);
 
-    const croppedSize = {
-      w: this.previewSize.w,
-      h: this.previewSize.h,
-    };
-
     const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
     const zoomedSize = {
@@ -438,8 +433,8 @@ class Cropit {
 
     const canvas = $('<canvas />')
       .attr({
-        width: croppedSize.w * exportZoom,
-        height: croppedSize.h * exportZoom,
+        width: this.previewSize.w * exportZoom,
+        height: this.previewSize.h * exportZoom,
       })
       .get(0);
     const canvasContext = canvas.getContext('2d');
