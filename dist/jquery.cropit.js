@@ -338,8 +338,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'onFileChange',
-	    value: function onFileChange() {
-	      this.options.onFileChange();
+	    value: function onFileChange(e) {
+	      this.options.onFileChange(e);
 
 	      if (this.$fileInput.get(0).files) {
 	        this.loadFileReader(this.$fileInput.get(0).files[0]);
