@@ -237,9 +237,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this = this;
 
 	      this.image = new Image();
-	      if (this.options.allowCrossOrigin) {
-	        this.image.crossOrigin = 'Anonymous';
-	      }
 	      this.preImage = new Image();
 	      this.image.onload = this.onImageLoaded.bind(this);
 	      this.preImage.onload = this.onPreImageLoaded.bind(this);
@@ -415,6 +412,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.options.smallImage === 'reject' && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
 	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
 	        return;
+	      }
+
+	      if (this.options.allowCrossOrigin) {
+	        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
 	      }
 
 	      this.image.src = this.imageSrc = this.preImage.src;

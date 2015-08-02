@@ -17,7 +17,6 @@ class Cropit {
 
   init() {
     this.image = new Image();
-    if (this.options.allowCrossOrigin) { this.image.crossOrigin = 'Anonymous'; }
     this.preImage = new Image();
     this.image.onload = this.onImageLoaded.bind(this);
     this.preImage.onload = this.onPreImageLoaded.bind(this);
@@ -187,6 +186,10 @@ class Cropit {
            this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
       this.onImageError(ERRORS.SMALL_IMAGE);
       return;
+    }
+
+    if (this.options.allowCrossOrigin) {
+      this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
     }
 
     this.image.src = this.imageSrc = this.preImage.src;

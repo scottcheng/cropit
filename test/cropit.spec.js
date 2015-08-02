@@ -35,16 +35,6 @@ describe('Cropit', () => {
       cropit.init();
       expect(cropit.loadImage).toHaveBeenCalled();
     });
-
-    it('enables cross origin image source if allowCrossOrigin is set in options', () => {
-      cropit = newCropit({ allowCrossOrigin: true });
-      expect(cropit.image.crossOrigin).toBe('Anonymous');
-    });
-
-    it('disables cross origin image source if allowCrossOrigin is not set in options', () => {
-      cropit = newCropit();
-      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
-    });
   });
 
   describe('#onFileReaderLoaded', () => {
@@ -153,6 +143,27 @@ describe('Cropit', () => {
 
       cropit.onPreImageLoaded();
       expect(cropit.image.src).toBe(IMAGE_DATA);
+    });
+
+    it('enables cross origin image source if allowCrossOrigin is true and image source is url', () => {
+      cropit = newCropit({ allowCrossOrigin: true });
+      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
+
+      cropit.preImage = { src: IMAGE_URL };
+      cropit.onPreImageLoaded();
+      expect(cropit.image.crossOrigin).toBe('Anonymous');
+
+      cropit.preImage = { src: IMAGE_DATA };
+      cropit.onPreImageLoaded();
+      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
+    });
+
+    it('disables cross origin image source if allowCrossOrigin is false', () => {
+      cropit = newCropit({ allowCrossOrigin: false });
+
+      cropit.preImage = { src: IMAGE_URL };
+      cropit.onPreImageLoaded();
+      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
     });
   });
 
