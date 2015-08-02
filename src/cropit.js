@@ -122,8 +122,8 @@ class Cropit {
     this.$zoomSlider.off(EVENTS.ZOOM_INPUT);
   }
 
-  onFileChange() {
-    this.options.onFileChange();
+  onFileChange(e) {
+    this.options.onFileChange(e);
 
     if (this.$fileInput.get(0).files) {
       this.loadFileReader(this.$fileInput.get(0).files[0]);
