@@ -1,3 +1,10 @@
+## 0.4.1 (August 2, 2015)
+
+### Bug fixes
+
+* Fixed crossOrigin preventing image from loading in Safari and Firefox.
+
+
 ## 0.4.0 (July 7, 2015)
 
 ### New features
