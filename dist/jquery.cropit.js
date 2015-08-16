@@ -765,7 +765,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setPreviewSize',
 	    value: function setPreviewSize(size) {
-	      if (!size || size.width <= 0 || size.height <= 0) {}
+	      if (!size || size.width <= 0 || size.height <= 0) {
+	        return;
+	      }
 
 	      this.previewSize = {
 	        w: size.width,
