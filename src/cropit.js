@@ -520,6 +520,33 @@ class Cropit {
     }
   }
 
+  getExportZoom() {
+    return this.options.exportZoom;
+  }
+
+  setExportZoom(exportZoom) {
+    this.options.exportZoom = exportZoom;
+    this.setupZoomer();
+  }
+
+  getMinZoom() {
+    return this.options.minZoom;
+  }
+
+  setMinZoom(minZoom) {
+    this.options.minZoom = minZoom;
+    this.setupZoomer();
+  }
+
+  getMaxZoom() {
+    return this.options.maxZoom;
+  }
+
+  setMaxZoom(maxZoom) {
+    this.options.maxZoom = maxZoom;
+    this.setupZoomer();
+  }
+
   getPreviewSize() {
     return {
       width: this.previewSize.w,

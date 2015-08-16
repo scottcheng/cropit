@@ -164,13 +164,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  initialZoom: function initialZoom(_initialZoom) {
-	    if (_initialZoom) {
+	  initialZoom: function initialZoom(newInitialZoom) {
+	    if (newInitialZoom) {
 	      return applyOnEach(this, function (cropit) {
-	        cropit.setInitialZoom(_initialZoom);
+	        cropit.setInitialZoom(newInitialZoom);
 	      });
 	    } else {
 	      return callOnFirst(this, 'getInitialZoom');
+	    }
+	  },
+
+	  exportZoom: function exportZoom(newExportZoom) {
+	    if (newExportZoom) {
+	      return applyOnEach(this, function (cropit) {
+	        cropit.setExportZoom(newExportZoom);
+	      });
+	    } else {
+	      return callOnFirst(this, 'getExportZoom');
+	    }
+	  },
+
+	  minZoom: function minZoom(newMinZoom) {
+	    if (newMinZoom) {
+	      return applyOnEach(this, function (cropit) {
+	        cropit.setMinZoom(newMinZoom);
+	      });
+	    } else {
+	      return callOnFirst(this, 'getMinZoom');
+	    }
+	  },
+
+	  maxZoom: function maxZoom(newMaxZoom) {
+	    if (newMaxZoom) {
+	      return applyOnEach(this, function (cropit) {
+	        cropit.setMaxZoom(newMaxZoom);
+	      });
+	    } else {
+	      return callOnFirst(this, 'getMaxZoom');
 	    }
 	  },
 
@@ -774,6 +804,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else {
 	        this.initialZoom = 0;
 	      }
+	    }
+	  }, {
+	    key: 'getExportZoom',
+	    value: function getExportZoom() {
+	      return this.options.exportZoom;
+	    }
+	  }, {
+	    key: 'setExportZoom',
+	    value: function setExportZoom(exportZoom) {
+	      this.options.exportZoom = exportZoom;
+	      this.setupZoomer();
+	    }
+	  }, {
+	    key: 'getMinZoom',
+	    value: function getMinZoom() {
+	      return this.options.minZoom;
+	    }
+	  }, {
+	    key: 'setMinZoom',
+	    value: function setMinZoom(minZoom) {
+	      this.options.minZoom = minZoom;
+	      this.setupZoomer();
+	    }
+	  }, {
+	    key: 'getMaxZoom',
+	    value: function getMaxZoom() {
+	      return this.options.maxZoom;
+	    }
+	  }, {
+	    key: 'setMaxZoom',
+	    value: function setMaxZoom(maxZoom) {
+	      this.options.maxZoom = maxZoom;
+	      this.setupZoomer();
 	    }
 	  }, {
 	    key: 'getPreviewSize',

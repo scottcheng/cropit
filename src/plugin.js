@@ -97,14 +97,47 @@ const methods = {
     }
   },
 
-  initialZoom(initialZoom) {
-    if (initialZoom) {
+  initialZoom(newInitialZoom) {
+    if (newInitialZoom) {
       return applyOnEach(this, (cropit) => {
-        cropit.setInitialZoom(initialZoom);
+        cropit.setInitialZoom(newInitialZoom);
       });
     }
     else {
       return callOnFirst(this, 'getInitialZoom');
+    }
+  },
+
+  exportZoom(newExportZoom) {
+    if (newExportZoom) {
+      return applyOnEach(this, (cropit) => {
+        cropit.setExportZoom(newExportZoom);
+      });
+    }
+    else {
+      return callOnFirst(this, 'getExportZoom');
+    }
+  },
+
+  minZoom(newMinZoom) {
+    if (newMinZoom) {
+      return applyOnEach(this, (cropit) => {
+        cropit.setMinZoom(newMinZoom);
+      });
+    }
+    else {
+      return callOnFirst(this, 'getMinZoom');
+    }
+  },
+
+  maxZoom(newMaxZoom) {
+    if (newMaxZoom) {
+      return applyOnEach(this, (cropit) => {
+        cropit.setMaxZoom(newMaxZoom);
+      });
+    }
+    else {
+      return callOnFirst(this, 'getMaxZoom');
     }
   },
 
