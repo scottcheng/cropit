@@ -77,15 +77,7 @@ class Cropit {
       });
     }
 
-    if (this.options.initialZoom === 'min') {
-      this.initialZoom = 0; // Will be fixed when image loads
-    }
-    else if (this.options.initialZoom === 'image') {
-      this.initialZoom = 1;
-    }
-    else {
-      this.initialZoom = 0;
-    }
+    this.setInitialZoom(this.options.initialZoom);
 
     this.imageLoaded = false;
 
@@ -509,6 +501,23 @@ class Cropit {
       width: this.imageSize.w,
       height: this.imageSize.h,
     };
+  }
+
+  getInitialZoom() {
+    return this.options.initialZoom;
+  }
+
+  setInitialZoom(initialZoomOption) {
+    this.options.initialZoom = initialZoomOption;
+    if (initialZoomOption === 'min') {
+      this.initialZoom = 0; // Will be fixed when image loads
+    }
+    else if (initialZoomOption === 'image') {
+      this.initialZoom = 1;
+    }
+    else {
+      this.initialZoom = 0;
+    }
   }
 
   getPreviewSize() {

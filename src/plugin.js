@@ -97,6 +97,17 @@ const methods = {
     }
   },
 
+  initialZoom(initialZoom) {
+    if (initialZoom) {
+      return applyOnEach(this, (cropit) => {
+        cropit.setInitialZoom(initialZoom);
+      });
+    }
+    else {
+      return callOnFirst(this, 'getInitialZoom');
+    }
+  },
+
   disable() {
     return applyOnEach(this, (cropit) => {
       cropit.disable();

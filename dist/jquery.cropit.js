@@ -164,6 +164,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
+	  initialZoom: function initialZoom(_initialZoom) {
+	    if (_initialZoom) {
+	      return applyOnEach(this, function (cropit) {
+	        cropit.setInitialZoom(_initialZoom);
+	      });
+	    } else {
+	      return callOnFirst(this, 'getInitialZoom');
+	    }
+	  },
+
 	  disable: function disable() {
 	    return applyOnEach(this, function (cropit) {
 	      cropit.disable();
@@ -292,13 +302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 
-	      if (this.options.initialZoom === 'min') {
-	        this.initialZoom = 0; // Will be fixed when image loads
-	      } else if (this.options.initialZoom === 'image') {
-	        this.initialZoom = 1;
-	      } else {
-	        this.initialZoom = 0;
-	      }
+	      this.setInitialZoom(this.options.initialZoom);
 
 	      this.imageLoaded = false;
 
@@ -753,6 +757,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: this.imageSize.w,
 	        height: this.imageSize.h
 	      };
+	    }
+	  }, {
+	    key: 'getInitialZoom',
+	    value: function getInitialZoom() {
+	      return this.options.initialZoom;
+	    }
+	  }, {
+	    key: 'setInitialZoom',
+	    value: function setInitialZoom(initialZoomOption) {
+	      this.options.initialZoom = initialZoomOption;
+	      if (initialZoomOption === 'min') {
+	        this.initialZoom = 0; // Will be fixed when image loads
+	      } else if (initialZoomOption === 'image') {
+	        this.initialZoom = 1;
+	      } else {
+	        this.initialZoom = 0;
+	      }
 	    }
 	  }, {
 	    key: 'getPreviewSize',
