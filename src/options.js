@@ -81,7 +81,7 @@ const options = {
     },
     {
       name: 'maxZoom',
-      type: 'string',
+      type: 'number',
       description: 'Determines how big the image can be zoomed. E.g. if set to 1.5, the image can be zoomed to 150% of its original size.',
       default: 1,
     },
