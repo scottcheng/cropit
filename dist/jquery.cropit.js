@@ -120,87 +120,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return callOnFirst(this, 'getImageState');
 	  },
 
-	  imageSrc: function imageSrc(newImageSrc) {
-	    if ((0, _utils.exists)(newImageSrc)) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.loadImage(newImageSrc);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getImageSrc');
-	    }
-	  },
-
-	  offset: function offset(newOffset) {
-	    if (newOffset && (0, _utils.exists)(newOffset.x) && (0, _utils.exists)(newOffset.y)) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setOffset(newOffset);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getOffset');
-	    }
-	  },
-
-	  zoom: function zoom(newZoom) {
-	    if ((0, _utils.exists)(newZoom)) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setZoom(newZoom);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getZoom');
-	    }
-	  },
-
 	  imageSize: function imageSize() {
 	    return callOnFirst(this, 'getImageSize');
 	  },
 
-	  previewSize: function previewSize(newSize) {
-	    if (newSize) {
+	  prop: function prop(name, value) {
+	    if ((0, _utils.exists)(value)) {
 	      return applyOnEach(this, function (cropit) {
-	        cropit.setPreviewSize(newSize);
+	        cropit['set' + (0, _utils.capitalize)(name)](value);
 	      });
 	    } else {
-	      return callOnFirst(this, 'getPreviewSize');
-	    }
-	  },
-
-	  initialZoom: function initialZoom(newInitialZoom) {
-	    if (newInitialZoom) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setInitialZoom(newInitialZoom);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getInitialZoom');
-	    }
-	  },
-
-	  exportZoom: function exportZoom(newExportZoom) {
-	    if (newExportZoom) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setExportZoom(newExportZoom);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getExportZoom');
-	    }
-	  },
-
-	  minZoom: function minZoom(newMinZoom) {
-	    if (newMinZoom) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setMinZoom(newMinZoom);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getMinZoom');
-	    }
-	  },
-
-	  maxZoom: function maxZoom(newMaxZoom) {
-	    if (newMaxZoom) {
-	      return applyOnEach(this, function (cropit) {
-	        cropit.setMaxZoom(newMaxZoom);
-	      });
-	    } else {
-	      return callOnFirst(this, 'getMaxZoom');
+	      return callOnFirst(this, 'get' + (0, _utils.capitalize)(name));
 	    }
 	  },
 
@@ -220,6 +150,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	_jquery2['default'].fn.cropit = function (method) {
 	  if (methods[method]) {
 	    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+	  } else if (['imageSrc', 'offset', 'previewSize', 'zoom', 'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
+	    return methods.prop.apply(this, arguments);
 	  } else {
 	    return methods.init.apply(this, arguments);
 	  }
@@ -441,6 +373,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.preImage.src = imageSrc;
 	    }
 	  }, {
+	    key: 'setImageSrc',
+	    value: function setImageSrc(imageSrc) {
+	      this.loadImage(imageSrc);
+	    }
+	  }, {
 	    key: 'onPreImageLoaded',
 	    value: function onPreImageLoaded() {
 	      if (this.options.smallImage === 'reject' && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
@@ -554,6 +491,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setOffset',
 	    value: function setOffset(position) {
+	      if (!position || !(0, _utils.exists)(position.x) || !(0, _utils.exists)(position.y)) {
+	        return;
+	      }
+
 	      this.offset = this.fixOffset(position);
 	      this.$preview.css('background-position', '' + this.offset.x + 'px ' + this.offset.y + 'px');
 	      if (this.options.imageBackground) {
@@ -1190,7 +1131,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var round = function round(x) {
 	  return +(Math.round(x * 100) + 'e-2');
 	};
+
 	exports.round = round;
+	var capitalize = function capitalize(s) {
+	  return s.charAt(0).toUpperCase() + s.slice(1);
+	};
+	exports.capitalize = capitalize;
 
 /***/ }
 /******/ ])

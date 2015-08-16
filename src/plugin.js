@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 import Cropit from './cropit';
 import { PLUGIN_KEY } from './constants';
-import { exists } from './utils';
+import { exists, capitalize } from './utils';
 
 const applyOnEach = ($el, callback) => {
   return $el.each(function() {
@@ -49,95 +49,18 @@ const methods = {
     return callOnFirst(this, 'getImageState');
   },
 
-  imageSrc(newImageSrc) {
-    if (exists(newImageSrc)) {
-      return applyOnEach(this, (cropit) => {
-        cropit.loadImage(newImageSrc);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getImageSrc');
-    }
-  },
-
-  offset(newOffset) {
-    if (newOffset && exists(newOffset.x) && exists(newOffset.y)) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setOffset(newOffset);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getOffset');
-    }
-  },
-
-  zoom(newZoom) {
-    if (exists(newZoom)) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setZoom(newZoom);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getZoom');
-    }
-  },
-
   imageSize() {
     return callOnFirst(this, 'getImageSize');
   },
 
-  previewSize(newSize) {
-    if (newSize) {
+  prop(name, value) {
+    if (exists(value)) {
       return applyOnEach(this, (cropit) => {
-        cropit.setPreviewSize(newSize);
+        cropit[`set${capitalize(name)}`](value);
       });
     }
     else {
-      return callOnFirst(this, 'getPreviewSize');
-    }
-  },
-
-  initialZoom(newInitialZoom) {
-    if (newInitialZoom) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setInitialZoom(newInitialZoom);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getInitialZoom');
-    }
-  },
-
-  exportZoom(newExportZoom) {
-    if (newExportZoom) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setExportZoom(newExportZoom);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getExportZoom');
-    }
-  },
-
-  minZoom(newMinZoom) {
-    if (newMinZoom) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setMinZoom(newMinZoom);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getMinZoom');
-    }
-  },
-
-  maxZoom(newMaxZoom) {
-    if (newMaxZoom) {
-      return applyOnEach(this, (cropit) => {
-        cropit.setMaxZoom(newMaxZoom);
-      });
-    }
-    else {
-      return callOnFirst(this, 'getMaxZoom');
+      return callOnFirst(this, `get${capitalize(name)}`);
     }
   },
 
@@ -157,6 +80,10 @@ const methods = {
 $.fn.cropit = function(method) {
   if (methods[method]) {
     return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+  }
+  else if (['imageSrc', 'offset', 'previewSize', 'zoom',
+            'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
+    return methods.prop.apply(this, arguments);
   }
   else {
     return methods.init.apply(this, arguments);

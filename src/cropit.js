@@ -172,6 +172,10 @@ class Cropit {
     this.preImage.src = imageSrc;
   }
 
+  setImageSrc(imageSrc) {
+    this.loadImage(imageSrc);
+  }
+
   onPreImageLoaded() {
     if (this.options.smallImage === 'reject' &&
           (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
@@ -282,6 +286,8 @@ class Cropit {
   }
 
   setOffset(position) {
+    if (!position || !exists(position.x) || !exists(position.y)) { return; }
+
     this.offset = this.fixOffset(position);
     this.$preview.css('background-position', `${this.offset.x}px ${this.offset.y}px`);
     if (this.options.imageBackground) {
