@@ -4,6 +4,13 @@ mixin spinner
     .spinner-dot
     .spinner-dot
 
+mixin error
+  .error-msg
+
+mixin in-preview
+  +spinner
+  +error
+
 doctype html
 html
   head
@@ -34,7 +41,7 @@ html
         .preview-wrapper
           .cropit-image-preview-container
             .cropit-image-preview
-              +spinner
+              +in-preview
           .slider-wrapper
             span.icon.icon-image.small-image
             input.cropit-image-zoom-input.custom(type='range')
@@ -104,7 +111,7 @@ html
           .demo
             .column
               .cropit-image-preview
-                +spinner
+                +in-preview
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input(type='range')
@@ -156,7 +163,7 @@ html
           .demo
             .column
               .cropit-image-preview
-                +spinner
+                +in-preview
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')
@@ -211,7 +218,7 @@ html
             .column
               .cropit-image-preview-container
                 .cropit-image-preview
-                  +spinner
+                  +in-preview
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')
@@ -269,7 +276,7 @@ html
             .column
               .cropit-image-preview-container
                 .cropit-image-preview
-                  +spinner
+                  +in-preview
               .slider-wrapper
                 span.icon.icon-image.small-image
                 input.cropit-image-zoom-input.custom(type='range')

@@ -7,6 +7,14 @@ onZoomEnabled = ->
   @find('.slider-wrapper').removeClass 'disabled'
 onZoomDisabled = ->
   @find('.slider-wrapper').addClass 'disabled'
+onImageError = (error, a, b) ->
+  if error.code is 1
+    @find('.error-msg').text "Please use an image that's at least
+      #{@outerWidth()}px in width and #{@outerHeight()}px in height."
+    @addClass 'has-error'
+    window.setTimeout =>
+      @removeClass 'has-error'
+    , 3000
 
 # Splash demo
 do ->
@@ -20,6 +28,7 @@ do ->
         y: 0
     onZoomEnabled: onZoomEnabled.bind $splash
     onZoomDisabled: onZoomDisabled.bind $splash
+    onImageError: onImageError.bind $splash.find '.cropit-image-preview'
 
   $splash.on 'click', '.select-image-btn', openFileInput.bind $splash
   $splash.on 'click', '.download-btn', downloadCroppedImage.bind $splash
@@ -35,6 +44,7 @@ do ->
         y: -125
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
+    onImageError: onImageError.bind $demo.find '.cropit-image-preview'
 
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
 
@@ -49,6 +59,7 @@ do ->
         y: -94
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
+    onImageError: onImageError.bind $demo.find '.cropit-image-preview'
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
@@ -65,6 +76,7 @@ do ->
         y: -86
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
+    onImageError: onImageError.bind $demo.find '.cropit-image-preview'
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
@@ -82,6 +94,7 @@ do ->
         y: -71
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
+    onImageError: onImageError.bind $demo.find '.cropit-image-preview'
 
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo

@@ -8,6 +8,7 @@ blue = #52a0c7
 blue-light = tint(blue, 20%)
 blue-dark = shade(blue, 20%)
 orange = #cf754f
+red = #d24148
 
 ::selection
   background blue
@@ -116,6 +117,18 @@ pre
         opacity 1
     &.cropit-image-loaded
       cursor move
+    .error-msg
+      absolute top left
+      width 100%
+      padding 10px 20px
+      color #fff
+      background rgba(red, .8)
+      line-height 1.5
+      opacity 0
+      transition opacity .25s
+    &.has-error
+      .error-msg
+        opacity 1
   .slider-wrapper
     transition opacity .25s
     &.disabled
