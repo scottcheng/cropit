@@ -181,6 +181,7 @@ class Cropit {
           (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
            this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
       this.onImageError(ERRORS.SMALL_IMAGE);
+      if (this.image.src) { this.setImageLoadedClass(); }
       return;
     }
 

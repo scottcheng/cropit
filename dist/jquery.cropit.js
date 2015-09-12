@@ -382,6 +382,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function onPreImageLoaded() {
 	      if (this.options.smallImage === 'reject' && (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
 	        this.onImageError(_constants.ERRORS.SMALL_IMAGE);
+	        if (this.image.src) {
+	          this.setImageLoadedClass();
+	        }
 	        return;
 	      }
 
