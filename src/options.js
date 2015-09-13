@@ -169,7 +169,7 @@ const options = {
       description: 'Called when image the zoom slider is disabled.',
     },
     {
-      name: 'onZoomChanged',
+      name: 'onZoomChange',
       description: 'Called when zoom changes.',
       params: [
         {

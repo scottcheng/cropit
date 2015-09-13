@@ -1121,7 +1121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name: 'onZoomDisabled',
 	    description: 'Called when image the zoom slider is disabled.'
 	  }, {
-	    name: 'onZoomChanged',
+	    name: 'onZoomChange',
 	    description: 'Called when zoom changes.',
 	    params: [{
 	      name: 'zoom',
