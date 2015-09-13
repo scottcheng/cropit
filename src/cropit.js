@@ -384,6 +384,8 @@ class Cropit {
     const updatedWidth = round(this.imageSize.w * newZoom);
     const updatedHeight = round(this.imageSize.h * newZoom);
 
+    if (newZoom === this.zoom) { return; }
+
     if (this.imageLoaded) {
       const oldZoom = this.zoom;
 

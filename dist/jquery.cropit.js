@@ -599,6 +599,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var updatedWidth = (0, _utils.round)(this.imageSize.w * newZoom);
 	      var updatedHeight = (0, _utils.round)(this.imageSize.h * newZoom);
 
+	      if (newZoom === this.zoom) {
+	        return;
+	      }
+
 	      if (this.imageLoaded) {
 	        var oldZoom = this.zoom;
 

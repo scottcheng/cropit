@@ -405,14 +405,6 @@ describe('Cropit View', () => {
         $preview = $el.find('.cropit-image-preview');
       });
 
-      it('keeps attributes when set to original zoom', () => {
-        cropit.setZoom(0.5);
-        expect(cropit.zoom).toBe(0.5);
-        expect(cropit.offset).toEqual({ x: 0, y: 0 });
-        expect($preview.css('backgroundPosition')).toBe('0px 0px');
-        expect($preview.css('backgroundSize')).toBe('4px 6px');
-      });
-
       it('zooms preview image', () => {
         expect(cropit.zoom).not.toBe(1);
         expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
