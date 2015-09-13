@@ -116,14 +116,20 @@ input.cropit-image-zoom-input {
   When set to <code>&#39;stretch&#39;</code>, the minimum zoom of small images would follow <code>minZoom</code> option.</p>
 </div><div class="default"><code>'reject'</code></div></div><div id="docs-options-allowCrossOrigin" class="option"><div class="name">allowCrossOrigin</div><div class="type">boolean</div><div class="description"><p>Set to true if you need to crop image served from other domains.</p>
 </div><div class="default"><code>false</code></div></div><div id="docs-options-onFileChange" class="option"><div class="name">onFileChange</div><div class="type">function</div><div class="description"><p>Called when user selects a file in the select file input.</p>
+</div><div class="param"><p><code>{object} event</code> - File change event object</p>
 </div></div><div id="docs-options-onFileReaderError" class="option"><div class="name">onFileReaderError</div><div class="type">function</div><div class="description"><p>Called when <code>FileReader</code> encounters an error while loading the image file.</p>
 </div></div><div id="docs-options-onImageLoading" class="option"><div class="name">onImageLoading</div><div class="type">function</div><div class="description"><p>Called when image starts to be loaded.</p>
 </div></div><div id="docs-options-onImageLoaded" class="option"><div class="name">onImageLoaded</div><div class="type">function</div><div class="description"><p>Called when image is loaded.</p>
 </div></div><div id="docs-options-onImageError" class="option"><div class="name">onImageError</div><div class="type">function</div><div class="description"><p>Called when image cannot be loaded.</p>
+</div><div class="param"><p><code>{object} error</code> - Error object.</p>
+</div><div class="param"><p><code>{number} error.code</code> - Error code. <code>0</code> means generic image loading failure. <code>1</code> means image is too small.</p>
+</div><div class="param"><p><code>{string} error.message</code> - A message explaining the error.</p>
 </div></div><div id="docs-options-onZoomEnabled" class="option"><div class="name">onZoomEnabled</div><div class="type">function</div><div class="description"><p>Called when image the zoom slider is enabled.</p>
 </div></div><div id="docs-options-onZoomDisabled" class="option"><div class="name">onZoomDisabled</div><div class="type">function</div><div class="description"><p>Called when image the zoom slider is disabled.</p>
 </div></div><div id="docs-options-onZoomChange" class="option"><div class="name">onZoomChange</div><div class="type">function</div><div class="description"><p>Called when zoom changes.</p>
+</div><div class="param"><p><code>{number} zoom</code> - New zoom.</p>
 </div></div><div id="docs-options-onOffsetChange" class="option"><div class="name">onOffsetChange</div><div class="type">function</div><div class="description"><p>Called when image offset changes.</p>
+</div><div class="param"><p><code>{object} offset</code> - New offset, with <code>x</code> and <code>y</code> values.</p>
 </div></div></div></div><div id="docs-apis" class="sub-section doc-wrapper methods"><div class="container"><h3 class="title">APIs</h3><pre><code class="javascript">// Returns the cropped image in Data URI format.
 // The second argument `options` takes the following keys:
 // - [type='image/png'] exported image type.

@@ -313,7 +313,7 @@ section.docs
         margin-left 20px
         color gray
         font-style italic
-      .description, .default
+      .description, .default, .param
         margin-top 10px
         line-height 1.5
       .default
@@ -322,6 +322,14 @@ section.docs
           margin-right 10px
           color gray
           font-style italic
+      .param
+        &:before
+          content: '@param'
+          margin-right 10px
+          color gray
+          font-style italic
+        p
+          display inline
 
 footer
   padding 60px 0

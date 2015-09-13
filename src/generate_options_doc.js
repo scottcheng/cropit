@@ -12,7 +12,14 @@ let output = '';
     output += `  .name ${o.name}\n`;
     output += `  .type ${o.type}\n`;
     output += `  .description\n    :markdown\n      ${o.description}\n`;
-    if (o.type !== 'function') {
+    if (o.type === 'function') {
+      if (o.params) {
+        o.params.forEach((p) => {
+          output += `  .param\n    :markdown\n      \`{${p.type}} ${p.name}\` - ${p.description}\n`;
+        });
+      }
+    }
+    else {
       if (o.type === 'string') {
         output += `  .default: code '${o.default}'\n`;
       }

@@ -133,6 +133,9 @@
   .description
     :markdown
       Called when user selects a file in the select file input.
+  .param
+    :markdown
+      `{object} event` - File change event object
 .option#docs-options-onFileReaderError
   .name onFileReaderError
   .type function
@@ -157,6 +160,15 @@
   .description
     :markdown
       Called when image cannot be loaded.
+  .param
+    :markdown
+      `{object} error` - Error object.
+  .param
+    :markdown
+      `{number} error.code` - Error code. `0` means generic image loading failure. `1` means image is too small.
+  .param
+    :markdown
+      `{string} error.message` - A message explaining the error.
 .option#docs-options-onZoomEnabled
   .name onZoomEnabled
   .type function
@@ -175,10 +187,16 @@
   .description
     :markdown
       Called when zoom changes.
+  .param
+    :markdown
+      `{number} zoom` - New zoom.
 .option#docs-options-onOffsetChange
   .name onOffsetChange
   .type function
   .description
     :markdown
       Called when image offset changes.
+  .param
+    :markdown
+      `{object} offset` - New offset, with `x` and `y` values.
 
