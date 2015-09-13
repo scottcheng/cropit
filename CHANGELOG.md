@@ -1,4 +1,4 @@
-## 0.4.3 (September 12, 2015)
+## 0.4.4 (September 12, 2015)
 
 ### New features
 
