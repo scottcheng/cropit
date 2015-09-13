@@ -1,3 +1,16 @@
+## 0.4.2 (September 12, 2015)
+
+### New features
+
+* Added getters and setters for `initialZoom`, `exportZoom`, `minZoom` and `maxZoom`
+* Added `onOffsetChange` and `onZoomChange` callback
+* onFileChange now passes back the event object
+
+### Bug fixes
+
+* Fixed bug where `image-loaded` class is removed if a small image is loaded and rejected
+
+
 ## 0.4.1 (August 2, 2015)
 
 ### Bug fixes
