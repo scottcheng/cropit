@@ -409,6 +409,8 @@ class Cropit {
         height: updatedHeight,
       });
     }
+
+    this.options.onZoomChange(newZoom);
   }
 
   fixZoom(zoom) {

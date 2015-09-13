@@ -625,6 +625,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          height: updatedHeight
 	        });
 	      }
+
+	      this.options.onZoomChange(newZoom);
 	    }
 	  }, {
 	    key: 'fixZoom',
@@ -1101,8 +1103,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name: 'onZoomDisabled',
 	    description: 'Called when image the zoom slider is disabled.'
 	  }, {
+	    name: 'onZoomChanged',
+	    description: 'Called when zoom changes.'
+	  }, {
 	    name: 'onOffsetChange',
-	    description: 'Called when image offset changes'
+	    description: 'Called when image offset changes.'
 	  }].map(function (o) {
 	    o.type = 'function';return o;
 	  })
