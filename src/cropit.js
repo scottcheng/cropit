@@ -346,6 +346,7 @@ class Cropit {
 
     this.zoomSliderPos = Number(this.$zoomSlider.val());
     const newZoom = this.zoomer.getZoom(this.zoomSliderPos);
+    if (newZoom === this.zoom) { return; }
     this.setZoom(newZoom);
   }
 
@@ -383,8 +384,6 @@ class Cropit {
 
     const updatedWidth = round(this.imageSize.w * newZoom);
     const updatedHeight = round(this.imageSize.h * newZoom);
-
-    if (newZoom === this.zoom) { return; }
 
     if (this.imageLoaded) {
       const oldZoom = this.zoom;

@@ -382,6 +382,7 @@ describe('Cropit View', () => {
 
         it('calls setZoom', () => {
           spyOn(cropit, 'setZoom');
+          cropit.zoomer.getZoom = jest.genMockFunction().mockReturnValueOnce(0.5);
           cropit.onZoomSliderChange();
           expect(cropit.setZoom).toHaveBeenCalled();
         });
