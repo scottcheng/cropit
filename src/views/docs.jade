@@ -69,6 +69,30 @@ section.docs#docs
         // Sets image zoom.
         $imageCropper.cropit('zoom', .75);
 
+        // Returns current initialZoom value.
+        $imageCropper.cropit('initialZoom');
+
+        // Sets initialZoom value.
+        $imageCropper.cropit('initialZoom', 'image');
+
+        // Returns current exportZoom value.
+        $imageCropper.cropit('exportZoom');
+
+        // Sets exportZoom value.
+        $imageCropper.cropit('exportZoom', 2);
+
+        // Returns current minZoom value.
+        $imageCropper.cropit('minZoom');
+
+        // Sets minZoom value.
+        $imageCropper.cropit('minZoom', 'fit');
+
+        // Returns current maxZoom value.
+        $imageCropper.cropit('maxZoom');
+
+        // Sets maxZoom value.
+        $imageCropper.cropit('maxZoom', 1.25);
+
         // Disables the cropper.
         // Unbinds event listeners from preview, zoom slider and file input, and
         // adds `cropit-disabled` class to `$imageCropper`.
