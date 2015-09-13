@@ -119,6 +119,13 @@ const options = {
     {
       name: 'onFileChange',
       description: 'Called when user selects a file in the select file input.',
+      params: [
+        {
+          name: 'event',
+          type: 'object',
+          description: 'File change event object',
+        },
+      ],
     },
     {
       name: 'onFileReaderError',
@@ -135,6 +142,23 @@ const options = {
     {
       name: 'onImageError',
       description: 'Called when image cannot be loaded.',
+      params: [
+        {
+          name: 'error',
+          type: 'object',
+          description: 'Error object.',
+        },
+        {
+          name: 'error.code',
+          type: 'number',
+          description: 'Error code. `0` means generic image loading failure. `1` means image is too small.',
+        },
+        {
+          name: 'error.message',
+          type: 'string',
+          description: 'A message explaining the error.',
+        },
+      ],
     },
     {
       name: 'onZoomEnabled',
@@ -143,6 +167,28 @@ const options = {
     {
       name: 'onZoomDisabled',
       description: 'Called when image the zoom slider is disabled.',
+    },
+    {
+      name: 'onZoomChange',
+      description: 'Called when zoom changes.',
+      params: [
+        {
+          name: 'zoom',
+          type: 'number',
+          description: 'New zoom.',
+        },
+      ],
+    },
+    {
+      name: 'onOffsetChange',
+      description: 'Called when image offset changes.',
+      params: [
+        {
+          name: 'offset',
+          type: 'object',
+          description: 'New offset, with `x` and `y` values.',
+        },
+      ],
     },
   ].map((o) => { o.type = 'function'; return o; }),
 };
