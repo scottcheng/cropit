@@ -144,6 +144,10 @@ const options = {
       name: 'onZoomDisabled',
       description: 'Called when image the zoom slider is disabled.',
     },
+    {
+      name: 'onOffsetChange',
+      description: 'Called when image offset changes',
+    },
   ].map((o) => { o.type = 'function'; return o; }),
 };
 

@@ -297,6 +297,8 @@ class Cropit {
         top: this.offset.y + this.imageBgBorderWidthArray[0],
       });
     }
+
+    this.options.onOffsetChange(position);
   }
 
   fixOffset(offset) {

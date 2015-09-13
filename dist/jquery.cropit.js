@@ -506,6 +506,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          top: this.offset.y + this.imageBgBorderWidthArray[0]
 	        });
 	      }
+
+	      this.options.onOffsetChange(position);
 	    }
 	  }, {
 	    key: 'fixOffset',
@@ -1094,6 +1096,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    name: 'onZoomDisabled',
 	    description: 'Called when image the zoom slider is disabled.'
+	  }, {
+	    name: 'onOffsetChange',
+	    description: 'Called when image offset changes'
 	  }].map(function (o) {
 	    o.type = 'function';return o;
 	  })
