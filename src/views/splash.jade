@@ -1,0 +1,28 @@
+.splash
+  .title-wrapper
+    h1.title cropit
+    .tagline a "customizable crop and zoom" jQuery plugin
+    .github-link
+      a(href='https://github.com/scottcheng/cropit')
+        span.icon.icon-github2
+        | GitHub
+
+  .demo-wrapper
+    .preview-wrapper
+      .cropit-image-preview-container
+        .cropit-image-preview
+          +in-preview
+      .slider-wrapper
+        span.icon.icon-image.small-image
+        input.cropit-image-zoom-input.custom(type='range')
+        span.icon.icon-image.large-image
+
+  .btns-wrapper
+    .btns
+      input.cropit-image-input.custom(type='file')
+      .btn.select-image-btn
+        span.icon.icon-image
+        | Select new image
+      .btn.download-btn
+        span.icon.icon-box-add
+        | Download cropped image
