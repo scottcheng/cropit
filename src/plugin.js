@@ -54,13 +54,29 @@ const methods = {
   },
 
   prop(name, value) {
+    const capitalizedName = capitalize(name);
     if (exists(value)) {
       return applyOnEach(this, (cropit) => {
-        cropit[`set${capitalize(name)}`](value);
+        if (Cropit.prototype[`set${capitalizedName}`]) {
+          // This is an interim solution.
+          // Remove when all properties are moved to getters/setters.
+          cropit[`set${capitalizedName}`](value);
+        }
+        else {
+          cropit[name] = value;
+        }
       });
     }
     else {
-      return callOnFirst(this, `get${capitalize(name)}`);
+      if (Cropit.prototype[`get${capitalizedName}`]) {
+        // This is an interim solution.
+        // Remove when all properties are moved to getters/setters.
+        return callOnFirst(this, `get${capitalizedName}`);
+      }
+      else {
+        const cropit = this.first().data(PLUGIN_KEY);
+        return cropit[name];
+      }
     }
   },
 

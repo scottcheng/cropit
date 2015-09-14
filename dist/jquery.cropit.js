@@ -125,12 +125,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  prop: function prop(name, value) {
+	    var capitalizedName = (0, _utils.capitalize)(name);
 	    if ((0, _utils.exists)(value)) {
 	      return applyOnEach(this, function (cropit) {
-	        cropit['set' + (0, _utils.capitalize)(name)](value);
+	        if (_cropit2['default'].prototype['set' + capitalizedName]) {
+	          // This is an interim solution.
+	          // Remove when all properties are moved to getters/setters.
+	          cropit['set' + capitalizedName](value);
+	        } else {
+	          cropit[name] = value;
+	        }
 	      });
 	    } else {
-	      return callOnFirst(this, 'get' + (0, _utils.capitalize)(name));
+	      if (_cropit2['default'].prototype['get' + capitalizedName]) {
+	        // This is an interim solution.
+	        // Remove when all properties are moved to getters/setters.
+	        return callOnFirst(this, 'get' + capitalizedName);
+	      } else {
+	        var cropit = this.first().data(_constants.PLUGIN_KEY);
+	        return cropit[name];
+	      }
 	    }
 	  },
 
