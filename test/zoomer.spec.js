@@ -24,22 +24,22 @@ describe('Zoomer', () => {
   describe('#setup', () => {
     it('sets minZoom to the larger of widthRatio and heightRatio in `fill` minZoom mode', () => {
       setup({
-        imageSize: { w: 4, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 4, height: 2 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
 
       setup({
-        imageSize: { w: 2, h: 4 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 4 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
 
       setup({
-        imageSize: { w: 2, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 2 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fill',
       });
       expect(zoomer.minZoom).toBe(0.5);
@@ -47,22 +47,22 @@ describe('Zoomer', () => {
 
     it('sets minZoom to the smaller of widthRatio and heightRatio `fit` minZoom mode', () => {
       setup({
-        imageSize: { w: 4, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 4, height: 2 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fit',
       });
       expect(zoomer.minZoom).toBe(0.25);
 
       setup({
-        imageSize: { w: 2, h: 4 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 4 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fit',
       });
       expect(zoomer.minZoom).toBe(0.25);
 
       setup({
-        imageSize: { w: 2, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 2 },
+        previewSize: { width: 1, height: 1 },
         minZoom: 'fit',
       });
       expect(zoomer.minZoom).toBe(0.5);
@@ -70,15 +70,15 @@ describe('Zoomer', () => {
 
     it('sets minZoom to 1 if image is small and smallImage is allow', () => {
       setup({
-        imageSize: { w: 1, h: 1 },
-        previewSize: { w: 2, h: 2 },
+        imageSize: { width: 1, height: 1 },
+        previewSize: { width: 2, height: 2 },
         smallImage: 'allow',
       });
       expect(zoomer.minZoom).toBe(1);
 
       setup({
-        imageSize: { w: 1, h: 3 },
-        previewSize: { w: 2, h: 2 },
+        imageSize: { width: 1, height: 3 },
+        previewSize: { width: 2, height: 2 },
         minZoom: 'fill',
         smallImage: 'allow',
       });
@@ -87,16 +87,16 @@ describe('Zoomer', () => {
 
     it('follows minZoom option for small images if smallImage is stretch', () => {
       setup({
-        imageSize: { w: 2, h: 1 },
-        previewSize: { w: 4, h: 4 },
+        imageSize: { width: 2, height: 1 },
+        previewSize: { width: 4, height: 4 },
         minZoom: 'fill',
         smallImage: 'stretch',
       });
       expect(zoomer.minZoom).toBe(4);
 
       setup({
-        imageSize: { w: 2, h: 1 },
-        previewSize: { w: 4, h: 4 },
+        imageSize: { width: 2, height: 1 },
+        previewSize: { width: 4, height: 4 },
         minZoom: 'fit',
         smallImage: 'stretch',
       });
@@ -105,24 +105,24 @@ describe('Zoomer', () => {
 
     it('sets maxZoom to minZoom if image is smaller than preview', () => {
       setup({
-        imageSize: { w: 4, h: 2 },
-        previewSize: { w: 5, h: 5 },
+        imageSize: { width: 4, height: 2 },
+        previewSize: { width: 5, height: 5 },
       });
       expect(zoomer.maxZoom).toBe(zoomer.minZoom);
     });
 
     it('sets maxZoom to 1 if image is larger than preview', () => {
       setup({
-        imageSize: { w: 4, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 4, height: 2 },
+        previewSize: { width: 1, height: 1 },
       });
       expect(zoomer.maxZoom).toBe(1);
     });
 
     it('sets maxZoom to customized value', () => {
       setup({
-        imageSize: { w: 4, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 4, height: 2 },
+        previewSize: { width: 1, height: 1 },
         maxZoom: 1.5,
       });
       expect(zoomer.maxZoom).toBe(1.5);
@@ -130,15 +130,15 @@ describe('Zoomer', () => {
 
     it('scales maxZoom in inverse proportion to exportZoom', () => {
       setup({
-        imageSize: { w: 8, h: 4 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 8, height: 4 },
+        previewSize: { width: 1, height: 1 },
         exportZoom: 2,
       });
       expect(zoomer.maxZoom).toBe(0.5);
 
       setup({
-        imageSize: { w: 8, h: 4 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 8, height: 4 },
+        previewSize: { width: 1, height: 1 },
         exportZoom: 2,
         maxZoom: 1.5,
       });
@@ -191,40 +191,40 @@ describe('Zoomer', () => {
   describe('#isZoomable', () => {
     it('returns true when image is bigger than preview', () => {
       setup({
-        imageSize: { w: 2, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 2 },
+        previewSize: { width: 1, height: 1 },
       });
       expect(zoomer.isZoomable()).toBe(true);
     });
 
     it('returns false when image is the same size as preview', () => {
       setup({
-        imageSize: { w: 1, h: 1 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 1, height: 1 },
+        previewSize: { width: 1, height: 1 },
       });
       expect(zoomer.isZoomable()).toBe(false);
     });
 
     it('returns false when image has the same width as preview', () => {
       setup({
-        imageSize: { w: 1, h: 2 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 1, height: 2 },
+        previewSize: { width: 1, height: 1 },
       });
       expect(zoomer.isZoomable()).toBe(false);
     });
 
     it('returns false when image has the same height as preview', () => {
       setup({
-        imageSize: { w: 2, h: 1 },
-        previewSize: { w: 1, h: 1 },
+        imageSize: { width: 2, height: 1 },
+        previewSize: { width: 1, height: 1 },
       });
       expect(zoomer.isZoomable()).toBe(false);
     });
 
     it('returns false when image is smaller than preview', () => {
       setup({
-        imageSize: { w: 1, h: 1 },
-        previewSize: { w: 2, h: 2 },
+        imageSize: { width: 1, height: 1 },
+        previewSize: { width: 2, height: 2 },
       });
       expect(zoomer.isZoomable()).toBe(false);
     });

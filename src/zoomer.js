@@ -4,8 +4,8 @@ class Zoomer {
   }
 
   setup({ imageSize, previewSize, exportZoom, maxZoom, minZoom, smallImage }) {
-    const widthRatio = previewSize.w / imageSize.w;
-    const heightRatio = previewSize.h / imageSize.h;
+    const widthRatio = previewSize.width / imageSize.width;
+    const heightRatio = previewSize.height / imageSize.height;
 
     if (minZoom === 'fit') {
       this.minZoom = Math.min(widthRatio, heightRatio);

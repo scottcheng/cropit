@@ -99,7 +99,7 @@ describe('Cropit View', () => {
     describe('#onImageLoaded', () => {
       describe('with imageSrc', () => {
         beforeEach(() => {
-          $el.cropit();
+          $el.cropit({ width: 1, height: 1 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageSrc = IMAGE_DATA;
         });
@@ -132,7 +132,7 @@ describe('Cropit View', () => {
 
       it('calls options.onImageLoaded', () => {
         const onImageLoadedCallback = jasmine.createSpy('onImageLoaded callback');
-        $el.cropit({ onImageLoaded: onImageLoadedCallback });
+        $el.cropit({ width: 1, height: 1, onImageLoaded: onImageLoadedCallback });
         cropit = $el.data(PLUGIN_KEY);
 
         cropit.onImageLoaded();
@@ -181,11 +181,10 @@ describe('Cropit View', () => {
         });
 
         it('binds onMove on mousedown', () => {
-          $el.cropit();
+          $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
-          cropit.imageSize = { w: 8, h: 6 };
-          cropit.previewSize = { w: 2, h: 2 };
+          cropit.image = { width: 8, height: 6 };
 
           const $preview = $el.find('.cropit-image-preview');
 
@@ -200,11 +199,10 @@ describe('Cropit View', () => {
         });
 
         it('moves image by dragging', () => {
-          $el.cropit();
+          $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
-          cropit.imageSize = { w: 8, h: 6 };
-          cropit.previewSize = { w: 2, h: 2 };
+          cropit.image = { width: 8, height: 6 };
           cropit.zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
@@ -265,11 +263,10 @@ describe('Cropit View', () => {
         });
 
         it('binds onMove on touchstart', () => {
-          $el.cropit();
+          $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
-          cropit.imageSize = { w: 8, h: 6 };
-          cropit.previewSize = { w: 2, h: 2 };
+          cropit.image = { width: 8, height: 6 };
 
           const $preview = $el.find('.cropit-image-preview');
 
@@ -284,11 +281,10 @@ describe('Cropit View', () => {
         });
 
         it('moves image by dragging', () => {
-          $el.cropit();
+          $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
-          cropit.imageSize = { w: 8, h: 6 };
-          cropit.previewSize = { w: 2, h: 2 };
+          cropit.image = { width: 8, height: 6 };
           cropit.zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
@@ -314,10 +310,9 @@ describe('Cropit View', () => {
 
     describe('#setOffset', () => {
       beforeEach(() => {
-        $el.cropit();
+        $el.cropit({ width: 2, height: 2 });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSize = { w: 8, h: 6 };
-        cropit.previewSize = { w: 2, h: 2 };
+        cropit.image = { width: 8, height: 6 };
         cropit.zoom = 1;
         cropit.imageLoaded = true;
       });
@@ -361,10 +356,9 @@ describe('Cropit View', () => {
 
       describe('when invoked', () => {
         beforeEach(() => {
-          $el.cropit();
+          $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
-          cropit.imageSize = { w: 8, h: 6 };
-          cropit.previewSize = { w: 2, h: 2 };
+          cropit.image = { width: 8, height: 6 };
           cropit.zoom = 1;
           cropit.imageLoaded = true;
           cropit.setZoom = () => {};
@@ -393,10 +387,9 @@ describe('Cropit View', () => {
       let $preview = null;
 
       beforeEach(() => {
-        $el.cropit();
+        $el.cropit({ width: 2, height: 2 });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSize = { w: 8, h: 12 };
-        cropit.previewSize = { w: 2, h: 2 };
+        cropit.image = { width: 8, height: 12 };
         cropit.offset = { x: 0, y: 0 };
         cropit.zoom = 0.5;
         cropit.imageLoaded = true;
@@ -442,14 +435,14 @@ describe('Cropit View', () => {
 
     describe('#init', () => {
       it('inserts background image', () => {
-        $el.cropit({ imageBackground: true });
+        $el.cropit({ width: 1, height: 1, imageBackground: true });
         const $imageBg = $el.find('img.cropit-image-background');
         expect($imageBg.length).toBeTruthy();
         expect($imageBg.css('position')).toBe('absolute');
       });
 
       it('inserts background image container', () => {
-        $el.cropit({ imageBackground: true });
+        $el.cropit({ width: 1, height: 1, imageBackground: true });
         const $imageBgContainer = $el.find('.cropit-image-background-container');
         expect($imageBgContainer.length).toBeTruthy();
         expect($imageBgContainer.css('position')).toBe('absolute');
@@ -457,6 +450,8 @@ describe('Cropit View', () => {
 
       it('offsets background image when border is specified', () => {
         $el.cropit({
+          width: 1,
+          height: 1,
           imageBackground: true,
           imageBackgroundBorderWidth: [1, 2, 3, 4],
         });
@@ -470,6 +465,8 @@ describe('Cropit View', () => {
 
       it('takes numeric background image border size to make uniform border size', () => {
         $el.cropit({
+          width: 1,
+          height: 1,
           imageBackground: true,
           imageBackgroundBorderWidth: 3,
         });
@@ -484,7 +481,7 @@ describe('Cropit View', () => {
 
     describe('#onImageLoaded', () => {
       it('updates background image source', () => {
-        $el.cropit({ imageBackground: true });
+        $el.cropit({ width: 1, height: 1, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
         cropit.imageSrc = IMAGE_DATA;
         const $imageBg = $el.find('img.cropit-image-background');
@@ -497,10 +494,9 @@ describe('Cropit View', () => {
 
     describe('#setOffset', () => {
       it('updates background image position', () => {
-        $el.cropit({ imageBackground: true });
+        $el.cropit({ width: 2, height: 2, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSize = { w: 8, h: 6 };
-        cropit.previewSize = { w: 2, h: 2 };
+        cropit.image = { width: 8, height: 6 };
         cropit.zoom = 1;
 
         const $imageBg = $el.find('img.cropit-image-background');
@@ -514,12 +510,13 @@ describe('Cropit View', () => {
 
       it('adds background image border size to background image offset', () => {
         $el.cropit({
+          width: 2,
+          height: 2,
           imageBackground: true,
           imageBackgroundBorderWidth: 2,
         });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSize = { w: 8, h: 6 };
-        cropit.previewSize = { w: 2, h: 2 };
+        cropit.image = { width: 8, height: 6 };
         cropit.zoom = 1;
 
         const $imageBg = $el.find('img.cropit-image-background');
@@ -534,10 +531,9 @@ describe('Cropit View', () => {
 
     describe('#setZoom', () => {
       it('zooms background image', () => {
-        $el.cropit({ imageBackground: true });
+        $el.cropit({ width: 2, height: 2, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSize = { w: 8, h: 12 };
-        cropit.previewSize = { w: 2, h: 2 };
+        cropit.image = { width: 8, height: 12 };
         cropit.offset = { x: 0, y: 0 };
         cropit.zoom = 0.5;
         cropit.imageLoaded = true;

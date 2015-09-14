@@ -29,11 +29,9 @@ class Cropit {
     this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
     this.previewSize = {
-      w: this.options.width || this.$preview.width(),
-      h: this.options.height || this.$preview.height(),
+      width: this.options.width || this.$preview.width(),
+      height: this.options.height || this.$preview.height(),
     };
-    if (this.options.width) { this.$preview.width(this.previewSize.w); }
-    if (this.options.height) { this.$preview.height(this.previewSize.h); }
 
     if (this.options.imageBackground) {
       if ($.isArray(this.options.imageBackgroundBorderWidth)) {
@@ -58,8 +56,8 @@ class Cropit {
           zIndex: 0,
           left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
           top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
-          width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-          height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
+          width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+          height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
         })
         .append(this.$imageBg);
       if (this.imageBgBorderWidthArray[0] > 0) {
@@ -178,8 +176,8 @@ class Cropit {
 
   onPreImageLoaded() {
     if (this.options.smallImage === 'reject' &&
-          (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
-           this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
+          (this.preImage.width * this.options.maxZoom < this.previewSize.width * this.options.exportZoom ||
+           this.preImage.height * this.options.maxZoom < this.previewSize.height * this.options.exportZoom)) {
       this.onImageError(ERRORS.SMALL_IMAGE);
       if (this.image.src) { this.setImageLoadedClass(); }
       return;
@@ -193,11 +191,6 @@ class Cropit {
   }
 
   onImageLoaded() {
-    this.imageSize = {
-      w: this.image.width,
-      h: this.image.height,
-    };
-
     this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
     if (this.options.imageState && this.options.imageState.offset) {
       this.setOffset(this.options.imageState.offset);
@@ -307,22 +300,22 @@ class Cropit {
     const ret = { x: offset.x, y: offset.y };
 
     if (!this.options.freeMove) {
-      if (this.imageSize.w * this.zoom >= this.previewSize.w) {
+      if (this.image.width * this.zoom >= this.previewSize.width) {
         ret.x = Math.min(0, Math.max(ret.x,
-          this.previewSize.w - this.imageSize.w * this.zoom));
+          this.previewSize.width - this.image.width * this.zoom));
       }
       else {
         ret.x = Math.max(0, Math.min(ret.x,
-          this.previewSize.w - this.imageSize.w * this.zoom));
+          this.previewSize.width - this.image.width * this.zoom));
       }
 
-      if (this.imageSize.h * this.zoom >= this.previewSize.h) {
+      if (this.image.height * this.zoom >= this.previewSize.height) {
         ret.y = Math.min(0, Math.max(ret.y,
-          this.previewSize.h - this.imageSize.h * this.zoom));
+          this.previewSize.height - this.image.height * this.zoom));
       }
       else {
         ret.y = Math.max(0, Math.min(ret.y,
-          this.previewSize.h - this.imageSize.h * this.zoom));
+          this.previewSize.height - this.image.height * this.zoom));
       }
     }
 
@@ -333,11 +326,11 @@ class Cropit {
   }
 
   centerImage() {
-    if (!this.imageSize || !this.zoom) { return; }
+    if (!this.image.width || !this.image.height || !this.zoom) { return; }
 
     this.setOffset({
-      x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,
-      y: (this.previewSize.h - this.imageSize.h * this.zoom) / 2,
+      x: (this.previewSize.width - this.image.width * this.zoom) / 2,
+      y: (this.previewSize.height - this.image.height * this.zoom) / 2,
     });
   }
 
@@ -382,14 +375,14 @@ class Cropit {
   setZoom(newZoom) {
     newZoom = this.fixZoom(newZoom);
 
-    const updatedWidth = round(this.imageSize.w * newZoom);
-    const updatedHeight = round(this.imageSize.h * newZoom);
+    const updatedWidth = round(this.image.width * newZoom);
+    const updatedHeight = round(this.image.height * newZoom);
 
     if (this.imageLoaded) {
       const oldZoom = this.zoom;
 
-      const newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
-      const newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
+      const newX = this.previewSize.width / 2 - (this.previewSize.width / 2 - this.offset.x) * newZoom / oldZoom;
+      const newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
       this.zoom = newZoom;
       this.setOffset({ x: newX, y: newY });
@@ -434,14 +427,14 @@ class Cropit {
     const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
     const zoomedSize = {
-      w: this.zoom * exportZoom * this.imageSize.w,
-      h: this.zoom * exportZoom * this.imageSize.h,
+      width: this.zoom * exportZoom * this.image.width,
+      height: this.zoom * exportZoom * this.image.height,
     };
 
     const canvas = $('<canvas />')
       .attr({
-        width: this.previewSize.w * exportZoom,
-        height: this.previewSize.h * exportZoom,
+        width: this.previewSize.width * exportZoom,
+        height: this.previewSize.height * exportZoom,
       })
       .get(0);
     const canvasContext = canvas.getContext('2d');
@@ -451,12 +444,12 @@ class Cropit {
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    const preresizedImage = this.preresizeImage(this.image, zoomedSize.w, zoomedSize.h);
+    const preresizedImage = this.preresizeImage(this.image, zoomedSize.width, zoomedSize.height);
     canvasContext.drawImage(preresizedImage,
       this.offset.x * exportZoom,
       this.offset.y * exportZoom,
-      zoomedSize.w,
-      zoomedSize.h);
+      zoomedSize.width,
+      zoomedSize.height);
 
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
@@ -506,12 +499,10 @@ class Cropit {
     return this.zoom;
   }
 
-  getImageSize() {
-    if (!this.imageSize) { return null; }
-
+  get imageSize() {
     return {
-      width: this.imageSize.w,
-      height: this.imageSize.h,
+      width: this.image.width,
+      height: this.image.height,
     };
   }
 
@@ -559,29 +550,26 @@ class Cropit {
     this.setupZoomer();
   }
 
-  getPreviewSize() {
-    return {
-      width: this.previewSize.w,
-      height: this.previewSize.h,
-    };
+  get previewSize() {
+    return this._previewSize;
   }
 
-  setPreviewSize(size) {
+  set previewSize(size) {
     if (!size || size.width <= 0 || size.height <= 0) { return; }
 
-    this.previewSize = {
-      w: size.width,
-      h: size.height,
+    this._previewSize = {
+      width: size.width,
+      height: size.height,
     };
     this.$preview.css({
-      width: this.previewSize.w,
-      height: this.previewSize.h,
+      width: this.previewSize.width,
+      height: this.previewSize.height,
     });
 
-    if (this.options.imageBackground) {
+    if (this.options.imageBackground && this.$imageBgContainer) {
       this.$imageBgContainer.css({
-        width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-        height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
+        width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+        height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
       });
     }
 
