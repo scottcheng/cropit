@@ -362,21 +362,13 @@ describe('Cropit', () => {
   describe('#getImageState', () => {
     it('returns image state', () => {
       cropit = newCropit();
-      cropit.imageSrc = IMAGE_DATA;
+      cropit.image = { src: IMAGE_DATA };
       cropit.offset = { x: -1, y: -1 };
       cropit.zoom = 0.5;
       const imageState = cropit.getImageState();
       expect(imageState.src).toBe(IMAGE_DATA);
       expect(imageState.offset).toEqual({ x: -1, y: -1 });
       expect(imageState.zoom).toBe(0.5);
-    });
-  });
-
-  describe('#getImageSrc', () => {
-    it('returns image source', () => {
-      cropit = newCropit();
-      cropit.imageSrc = IMAGE_URL;
-      expect(cropit.getImageSrc()).toBe(IMAGE_URL);
     });
   });
 

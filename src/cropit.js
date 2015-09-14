@@ -170,10 +170,6 @@ class Cropit {
     this.preImage.src = imageSrc;
   }
 
-  setImageSrc(imageSrc) {
-    this.loadImage(imageSrc);
-  }
-
   onPreImageLoaded() {
     if (this.options.smallImage === 'reject' &&
           (this.preImage.width * this.options.maxZoom < this.previewSize.width * this.options.exportZoom ||
@@ -187,7 +183,7 @@ class Cropit {
       this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
     }
 
-    this.image.src = this.imageSrc = this.preImage.src;
+    this.image.src = this.preImage.src;
   }
 
   onImageLoaded() {
@@ -201,9 +197,9 @@ class Cropit {
 
     this.options.imageState = {};
 
-    this.$preview.css('background-image', `url(${this.imageSrc})`);
+    this.$preview.css('background-image', `url(${this.image.src})`);
     if (this.options.imageBackground) {
-      this.$imageBg.attr('src', this.imageSrc);
+      this.$imageBg.attr('src', this.image.src);
     }
 
     this.setImageLoadedClass();
@@ -414,7 +410,7 @@ class Cropit {
   }
 
   getCroppedImageData(exportOptions) {
-    if (!this.imageSrc) { return; }
+    if (!this.image.src) { return; }
 
     const exportDefaults = {
       type: 'image/png',
@@ -481,14 +477,18 @@ class Cropit {
 
   getImageState() {
     return {
-      src: this.imageSrc,
+      src: this.image.src,
       offset: this.offset,
       zoom: this.zoom,
     };
   }
 
-  getImageSrc() {
-    return this.imageSrc;
+  get imageSrc() {
+    return this.image.src;
+  }
+
+  set imageSrc(imageSrc) {
+    this.loadImage(imageSrc);
   }
 
   getOffset() {

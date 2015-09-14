@@ -367,11 +367,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.preImage.src = imageSrc;
 	    }
 	  }, {
-	    key: 'setImageSrc',
-	    value: function setImageSrc(imageSrc) {
-	      this.loadImage(imageSrc);
-	    }
-	  }, {
 	    key: 'onPreImageLoaded',
 	    value: function onPreImageLoaded() {
 	      if (this.options.smallImage === 'reject' && (this.preImage.width * this.options.maxZoom < this.previewSize.width * this.options.exportZoom || this.preImage.height * this.options.maxZoom < this.previewSize.height * this.options.exportZoom)) {
@@ -386,7 +381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
 	      }
 
-	      this.image.src = this.imageSrc = this.preImage.src;
+	      this.image.src = this.preImage.src;
 	    }
 	  }, {
 	    key: 'onImageLoaded',
@@ -400,9 +395,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.options.imageState = {};
 
-	      this.$preview.css('background-image', 'url(' + this.imageSrc + ')');
+	      this.$preview.css('background-image', 'url(' + this.image.src + ')');
 	      if (this.options.imageBackground) {
-	        this.$imageBg.attr('src', this.imageSrc);
+	        this.$imageBg.attr('src', this.image.src);
 	      }
 
 	      this.setImageLoadedClass();
@@ -629,7 +624,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getCroppedImageData',
 	    value: function getCroppedImageData(exportOptions) {
-	      if (!this.imageSrc) {
+	      if (!this.image.src) {
 	        return;
 	      }
 
@@ -696,15 +691,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'getImageState',
 	    value: function getImageState() {
 	      return {
-	        src: this.imageSrc,
+	        src: this.image.src,
 	        offset: this.offset,
 	        zoom: this.zoom
 	      };
-	    }
-	  }, {
-	    key: 'getImageSrc',
-	    value: function getImageSrc() {
-	      return this.imageSrc;
 	    }
 	  }, {
 	    key: 'getOffset',
@@ -787,6 +777,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return null;
 	      }
 	      return this.$el.find(selector);
+	    }
+	  }, {
+	    key: 'imageSrc',
+	    get: function () {
+	      return this.image.src;
+	    },
+	    set: function (imageSrc) {
+	      this.loadImage(imageSrc);
 	    }
 	  }, {
 	    key: 'imageSize',

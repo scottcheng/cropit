@@ -101,7 +101,7 @@ describe('Cropit View', () => {
         beforeEach(() => {
           $el.cropit({ width: 1, height: 1 });
           cropit = $el.data(PLUGIN_KEY);
-          cropit.imageSrc = IMAGE_DATA;
+          cropit.image = { src: IMAGE_DATA };
         });
 
         it('sets preview background', () => {
@@ -483,7 +483,7 @@ describe('Cropit View', () => {
       it('updates background image source', () => {
         $el.cropit({ width: 1, height: 1, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
-        cropit.imageSrc = IMAGE_DATA;
+        cropit.image = { src: IMAGE_DATA };
         const $imageBg = $el.find('img.cropit-image-background');
         expect($imageBg.attr('src')).not.toBe(IMAGE_DATA);
 
