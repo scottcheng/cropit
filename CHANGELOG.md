@@ -1,3 +1,10 @@
+## 0.4.5 (September 27, 2015)
+
+### Bug fixes
+
+* Fixed an issue where cropit exports blank images on Safari. Removed progressive resizing, which may degrade cropped image quality. For high quality resizing, using a server-side tool is recommended.
+
+
 ## 0.4.4 (September 12, 2015)
 
 ### New features

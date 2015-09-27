@@ -440,39 +440,13 @@ class Cropit {
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    const preresizedImage = this.preresizeImage(this.image, zoomedSize.width, zoomedSize.height);
-    canvasContext.drawImage(preresizedImage,
+    canvasContext.drawImage(this.image,
       this.offset.x * exportZoom,
       this.offset.y * exportZoom,
       zoomedSize.width,
       zoomedSize.height);
 
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
-  }
-
-  preresizeImage(src, targetWidth, targetHeight) {
-    const tmp = new Image();
-    tmp.src = src.src;
-
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    let canvasWidth = tmp.width;
-    let canvasHeight = tmp.height;
-
-    while (true) {
-      canvasWidth /= 2;
-      canvasHeight /= 2;
-
-      if (canvasWidth < targetWidth || canvasHeight < targetHeight) { break; }
-
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
-
-      context.drawImage(tmp, 0, 0, canvasWidth, canvasHeight);
-      tmp.src = canvas.toDataURL();
-    }
-
-    return tmp;
   }
 
   getImageState() {
