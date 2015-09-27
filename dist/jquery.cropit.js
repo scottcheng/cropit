@@ -670,38 +670,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 	      }
 
-	      var preresizedImage = this.preresizeImage(this.image, zoomedSize.w, zoomedSize.h);
-	      canvasContext.drawImage(preresizedImage, this.offset.x * exportZoom, this.offset.y * exportZoom, zoomedSize.w, zoomedSize.h);
+	      canvasContext.drawImage(this.image, this.offset.x * exportZoom, this.offset.y * exportZoom, zoomedSize.w, zoomedSize.h);
 
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
-	    }
-	  }, {
-	    key: 'preresizeImage',
-	    value: function preresizeImage(src, targetWidth, targetHeight) {
-	      var tmp = new Image();
-	      tmp.src = src.src;
-
-	      var canvas = document.createElement('canvas');
-	      var context = canvas.getContext('2d');
-	      var canvasWidth = tmp.width;
-	      var canvasHeight = tmp.height;
-
-	      while (true) {
-	        canvasWidth /= 2;
-	        canvasHeight /= 2;
-
-	        if (canvasWidth < targetWidth || canvasHeight < targetHeight) {
-	          break;
-	        }
-
-	        canvas.width = canvasWidth;
-	        canvas.height = canvasHeight;
-
-	        context.drawImage(tmp, 0, 0, canvasWidth, canvasHeight);
-	        tmp.src = canvas.toDataURL();
-	      }
-
-	      return tmp;
 	    }
 	  }, {
 	    key: 'getImageState',
