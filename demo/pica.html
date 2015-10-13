@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>cropit</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="../dist/jquery.cropit.js"></script>
+    <script src="../node_modules/pica/dist/pica.js"></script>
+
+    <style>
+      .cropit-image-preview {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 250px;
+        height: 250px;
+        cursor: move;
+      }
+
+      .image-size-label {
+        margin-top: 10px;
+      }
+
+      input {
+        display: block;
+      }
+
+      .export {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image-editor">
+      <input type="file" class="cropit-image-input">
+      <div class="cropit-image-preview"></div>
+      <div class="image-size-label">
+        Resize image
+      </div>
+      <input type="range" class="cropit-image-zoom-input">
+      <button class="export">Export</button>
+    </div>
+
+    <script>
+      $(function() {
+        var $editor = $('.image-editor');
+        $editor.cropit();
+
+        $('.export').click(function() {
+          // Get cropping information
+          var imgSrc = $editor.cropit('imageSrc');
+          var offset = $editor.cropit('offset');
+          var zoom = $editor.cropit('zoom');
+          var previewSize = $editor.cropit('previewSize');
+          var exportZoom = $editor.cropit('exportZoom');
+
+          var img = new Image();
+          img.src = imgSrc;
+
+          // Draw image in original size on a canvas
+          var originalCanvas = document.createElement('canvas');
+          originalCanvas.width = previewSize.width / zoom;
+          originalCanvas.height = previewSize.height / zoom;
+          var ctx = originalCanvas.getContext('2d');
+          ctx.drawImage(img, offset.x / zoom, offset.y / zoom);
+
+          // Use pica to resize image and paint on destination canvas
+          var zoomedCanvas = document.createElement('canvas');
+          zoomedCanvas.width = previewSize.width * exportZoom;
+          zoomedCanvas.height = previewSize.height * exportZoom;
+          pica.resizeCanvas(originalCanvas, zoomedCanvas, {
+            // Pica options, see https://github.com/nodeca/pica
+          }, function(err) {
+            if (err) { return console.log(err); }
+
+            // Resizing completed
+            // Read resized image data
+            var picaImageData = zoomedCanvas.toDataURL();
+            var $picaImg = $('<img src="' + picaImageData + '" />');
+
+            // Compare to original canvas export
+            var canvasImageData = $editor.cropit('export');
+            var $canvasImg = $('<img src="' + canvasImageData + '" />');
+
+            // Render on page
+            $('<div />').css('margin', '20px 0').append($picaImg, $canvasImg).appendTo('body');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
