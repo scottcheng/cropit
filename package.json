@@ -47,7 +47,8 @@
     ]
   },
   "dependencies": {
-    "jquery": ">=1.9"
+    "jquery": ">=1.9",
+    "jquery.panzoom": "^2.0.5"
   },
   "devDependencies": {
     "babel-core": "~5.5.8",

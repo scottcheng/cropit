@@ -1,7 +1,7 @@
 import $ from 'jquery';
+import panzoom from 'jquery.panzoom';
 
-import Zoomer from './Zoomer';
-import { CLASS_NAMES, ERRORS, EVENTS } from './constants';
+import { CLASS_NAMES, ERRORS } from './constants';
 import { loadDefaults } from './options';
 import { exists, round } from './utils';
 
@@ -27,7 +27,7 @@ class Cropit {
     this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
     this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
     this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
-
+    
     this.previewSize = {
       w: this.options.width || this.$preview.width(),
       h: this.options.height || this.$preview.height(),
@@ -35,59 +35,67 @@ class Cropit {
     if (this.options.width) { this.$preview.width(this.previewSize.w); }
     if (this.options.height) { this.$preview.height(this.previewSize.h); }
 
+    this.imageBgBorderWidthArray = [0,0,0,0];
     if (this.options.imageBackground) {
       if ($.isArray(this.options.imageBackgroundBorderWidth)) {
         this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
       }
       else {
-        this.imageBgBorderWidthArray = [];
         [0, 1, 2, 3].forEach((i) => {
           this.imageBgBorderWidthArray[i] = this.options.imageBackgroundBorderWidth;
         });
       }
-
-      const $previewContainer = this.options.$previewContainer;
-      this.$imageBg = $('<img />')
-        .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
-        .attr('alt', '')
-        .css('position', 'absolute');
-      this.$imageBgContainer = $('<div />')
-        .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
-        .css({
-          position: 'absolute',
-          zIndex: 0,
-          left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
-          top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
-          width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-          height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
-        })
-        .append(this.$imageBg);
       if (this.imageBgBorderWidthArray[0] > 0) {
         this.$imageBgContainer.css('overflow', 'hidden');
       }
-      $previewContainer
-        .css('position', 'relative')
-        .prepend(this.$imageBgContainer);
-      this.$preview.css('position', 'relative');
-
-      this.$preview.hover(() => {
-        this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
-      }, () => {
-        this.$imageBg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
-      });
     }
+    // const $previewContainer = this.options.$previewContainer;
+    this.$imageBg = $('<img />')
+      .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
+      .attr('alt', '')
+      .css('position', 'absolute');
+    this.$imageBgContainer = $('<div />')
+      .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
+      .css({
+        position: 'absolute',
+        // zIndex: 0,
+        left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
+        top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
+        width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+        height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
+        })
+      .append(this.$imageBg);
+    // $previewContainer
+    //   .css('position', 'relative')
+    //   .prepend(this.$imageBgContainer);
+    this.$preview.css('position', 'relative')
+      .prepend(this.$imageBgContainer);
+    
+    this.$preview.hover(() => {
+      this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
+    }, () => {
+      this.$imageBg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
+    });
 
+    this.offset = { x: 0, y: 0 };
     this.setInitialZoom(this.options.initialZoom);
+    this.zoom = this.initialZoom;
 
     this.imageLoaded = false;
-
-    this.moveContinue = false;
-
-    this.zoomer = new Zoomer();
 
     if (this.options.allowDragNDrop) {
       $.event.props.push('dataTransfer');
     }
+
+    this.$imageBg.panzoom({
+      eventNamespace: '.cropit',
+      maxScale: this.options.maxZoom,
+      minScale: this.options.minZoom,
+      $zoomRange: this.$zoomSlider,
+      onEnd: this.onChangePanZoom.bind(this),
+      onZoom: this.onZoomChange.bind(this),
+      contain: 'invert'
+    }).panzoom('zoom');
 
     this.bindListeners();
 
@@ -98,8 +106,8 @@ class Cropit {
 
   bindListeners() {
     this.$fileInput.on('change.cropit', this.onFileChange.bind(this));
-    this.$preview.on(EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
-    this.$zoomSlider.on(EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
+    //this.$preview.on(EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
+    //this.$zoomSlider.on(EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
 
     if (this.options.allowDragNDrop) {
       this.$preview.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
@@ -109,9 +117,9 @@ class Cropit {
 
   unbindListeners() {
     this.$fileInput.off('change.cropit');
-    this.$preview.off(EVENTS.PREVIEW);
+    //this.$preview.off(EVENTS.PREVIEW);
     this.$preview.off('dragover.cropit dragleave.cropit drop.cropit');
-    this.$zoomSlider.off(EVENTS.ZOOM_INPUT);
+    //this.$zoomSlider.off(EVENTS.ZOOM_INPUT);
   }
 
   onFileChange(e) {
@@ -197,10 +205,11 @@ class Cropit {
       w: this.image.width,
       h: this.image.height,
     };
+    
 
-    this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
+    // this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
     if (this.options.imageState && this.options.imageState.offset) {
-      this.setOffset(this.options.imageState.offset);
+      this.offset = this.options.imageState.offset;
     }
     else {
       this.centerImage();
@@ -208,10 +217,10 @@ class Cropit {
 
     this.options.imageState = {};
 
-    this.$preview.css('background-image', `url(${this.imageSrc})`);
-    if (this.options.imageBackground) {
-      this.$imageBg.attr('src', this.imageSrc);
-    }
+    this.$imageBg.attr('src', this.imageSrc)
+      .panzoom('resetDimensions');
+    this.zoom = 1; // should fix zoom
+    this.$imageBg.panzoom('zoom', this.zoom);
 
     this.setImageLoadedClass();
 
@@ -242,182 +251,186 @@ class Cropit {
       .removeClass(CLASS_NAMES.IMAGE_LOADING);
   }
 
-  getEventPosition(e) {
-    if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0]) {
-      e = e.originalEvent.touches[0];
-    }
-    if (e.clientX && e.clientY) {
-      return { x: e.clientX, y: e.clientY };
-    }
-  }
+  // getEventPosition(e) {
+  //   if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0]) {
+  //     e = e.originalEvent.touches[0];
+  //   }
+  //   if (e.clientX && e.clientY) {
+  //     return { x: e.clientX, y: e.clientY };
+  //   }
+  // }
 
-  onPreviewEvent(e) {
-    if (!this.imageLoaded) { return; }
+  // onPreviewEvent(e) {
+  //   if (!this.imageLoaded) { return; }
 
-    this.moveContinue = false;
-    this.$preview.off(EVENTS.PREVIEW_MOVE);
+  //   this.moveContinue = false;
+  //   this.$preview.off(EVENTS.PREVIEW_MOVE);
 
-    if (e.type === 'mousedown' || e.type === 'touchstart') {
-      this.origin = this.getEventPosition(e);
-      this.moveContinue = true;
-      this.$preview.on(EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
+  //   if (e.type === 'mousedown' || e.type === 'touchstart') {
+  //     this.origin = this.getEventPosition(e);
+  //     this.moveContinue = true;
+  //     this.$preview.on(EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
+  //   }
+  //   else {
+  //     $(document.body).focus();
+  //   }
+
+  //   e.stopPropagation();
+  //   return false;
+  // }
+
+  onChangePanZoom(e, panzoom, matrix, changed) {
+    if(changed) {
+      console.log(matrix);
+      this.offset = { x: matrix[4], y: matrix[5] };
+      this.zoom = matrix[0];
     }
-    else {
-      $(document.body).focus();
-    }
+    
+    // if (eventPosition) {
+    //   this.setOffset({
+    //     x: this.offset.x + eventPosition.x - this.origin.x,
+    //     y: this.offset.y + eventPosition.y - this.origin.y,
+    //   });
+    // }
 
-    e.stopPropagation();
+    // this.origin = eventPosition;
+
+    //e.stopPropagation();
     return false;
   }
 
-  onMove(e) {
-    const eventPosition = this.getEventPosition(e);
+  // setOffset(position) {
+  //   if (!position || !exists(position.x) || !exists(position.y)) { return; }
 
-    if (this.moveContinue && eventPosition) {
-      this.setOffset({
-        x: this.offset.x + eventPosition.x - this.origin.x,
-        y: this.offset.y + eventPosition.y - this.origin.y,
-      });
-    }
+  //   this.offset = { x: round(position.x),
+  //                   y: round(position.y)
+  //                 };
+  //   this.$el.panzoom("pan", this.offset.x, this.offset.y);
+    // this.$preview.css('background-position', `${this.offset.x}px ${this.offset.y}px`);
+    // if (this.options.imagebackground) {
+    //   this.$imagebg.css({
+    //     left: this.offset.x + this.imagebgborderwidtharray[3],
+    //     top: this.offset.y + this.imagebgborderwidtharray[0],
+    //   });
+    // }
 
-    this.origin = eventPosition;
+  //   this.options.onOffsetChange(position);
+  // }
 
-    e.stopPropagation();
-    return false;
-  }
+  // fixOffset(offset) {
+  //   if (!this.imageLoaded) { return offset; }
 
-  setOffset(position) {
-    if (!position || !exists(position.x) || !exists(position.y)) { return; }
+  //   const ret = { x: offset.x, y: offset.y };
 
-    this.offset = this.fixOffset(position);
-    this.$preview.css('background-position', `${this.offset.x}px ${this.offset.y}px`);
-    if (this.options.imageBackground) {
-      this.$imageBg.css({
-        left: this.offset.x + this.imageBgBorderWidthArray[3],
-        top: this.offset.y + this.imageBgBorderWidthArray[0],
-      });
-    }
+  //   if (!this.options.freeMove) {
+  //     if (this.imageSize.w * this.zoom >= this.previewSize.w) {
+  //       ret.x = Math.min(0, Math.max(ret.x,
+  //         this.previewSize.w - this.imageSize.w * this.zoom));
+  //     }
+  //     else {
+  //       ret.x = Math.max(0, Math.min(ret.x,
+  //         this.previewSize.w - this.imageSize.w * this.zoom));
+  //     }
 
-    this.options.onOffsetChange(position);
-  }
+  //     if (this.imageSize.h * this.zoom >= this.previewSize.h) {
+  //       ret.y = Math.min(0, Math.max(ret.y,
+  //         this.previewSize.h - this.imageSize.h * this.zoom));
+  //     }
+  //     else {
+  //       ret.y = Math.max(0, Math.min(ret.y,
+  //         this.previewSize.h - this.imageSize.h * this.zoom));
+  //     }
+  //   }
 
-  fixOffset(offset) {
-    if (!this.imageLoaded) { return offset; }
+  //   ret.x = round(ret.x);
+  //   ret.y = round(ret.y);
 
-    const ret = { x: offset.x, y: offset.y };
-
-    if (!this.options.freeMove) {
-      if (this.imageSize.w * this.zoom >= this.previewSize.w) {
-        ret.x = Math.min(0, Math.max(ret.x,
-          this.previewSize.w - this.imageSize.w * this.zoom));
-      }
-      else {
-        ret.x = Math.max(0, Math.min(ret.x,
-          this.previewSize.w - this.imageSize.w * this.zoom));
-      }
-
-      if (this.imageSize.h * this.zoom >= this.previewSize.h) {
-        ret.y = Math.min(0, Math.max(ret.y,
-          this.previewSize.h - this.imageSize.h * this.zoom));
-      }
-      else {
-        ret.y = Math.max(0, Math.min(ret.y,
-          this.previewSize.h - this.imageSize.h * this.zoom));
-      }
-    }
-
-    ret.x = round(ret.x);
-    ret.y = round(ret.y);
-
-    return ret;
-  }
+  //   return ret;
+  // }
 
   centerImage() {
     if (!this.imageSize || !this.zoom) { return; }
+    this.$imageBg.panzoom("resetPan");
 
-    this.setOffset({
-      x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,
-      y: (this.previewSize.h - this.imageSize.h * this.zoom) / 2,
-    });
+    // this.setOffset({
+    //   x: (this.previewSize.w - this.imageSize.w * this.zoom) / 2,
+    //   y: (this.previewSize.h - this.imageSize.h * this.zoom) / 2,
+    // });
   }
 
-  onZoomSliderChange() {
-    if (!this.imageLoaded) { return; }
+  onZoomChange(e, panzoom, scale, opts) {
+    if (!this.imageLoaded || scale === this.zoom) { return; }
 
-    this.zoomSliderPos = Number(this.$zoomSlider.val());
-    const newZoom = this.zoomer.getZoom(this.zoomSliderPos);
-    if (newZoom === this.zoom) { return; }
-    this.setZoom(newZoom);
+    this.zoom = scale;
   }
 
   enableZoomSlider() {
     this.$zoomSlider.removeAttr('disabled');
+    this.$imageBg.panzoom("option", "disableZoom", false); 
     this.options.onZoomEnabled();
   }
 
   disableZoomSlider() {
     this.$zoomSlider.attr('disabled', true);
+    this.$imageBg.panzoom('option', 'disableZoom', true);
     this.options.onZoomDisabled();
   }
 
-  setupZoomer(zoom) {
-    this.zoomer.setup({
-      imageSize: this.imageSize,
-      previewSize: this.previewSize,
-      exportZoom: this.options.exportZoom,
-      maxZoom: this.options.maxZoom,
-      minZoom: this.options.minZoom,
-      smallImage: this.options.smallImage,
-    });
-    this.setZoom(exists(zoom) ? zoom : this.zoom);
+  // setupZoomer(zoom) {
+  //   this.zoomer.setup({
+  //     imageSize: this.imageSize,
+  //     previewSize: this.previewSize,
+  //     exportZoom: this.options.exportZoom,
+  //     maxZoom: this.options.maxZoom,
+  //     minZoom: this.options.minZoom,
+  //     smallImage: this.options.smallImage,
+  //   });
+  //   this.setZoom(exists(zoom) ? zoom : this.zoom);
 
-    if (this.isZoomable()) {
-      this.enableZoomSlider();
-    }
-    else {
-      this.disableZoomSlider();
-    }
-  }
+  //   if (this.isZoomable()) {
+  //     this.enableZoomSlider();
+  //   }
+  //   else {
+  //     this.disableZoomSlider();
+  //   }
+  // }
 
-  setZoom(newZoom) {
-    newZoom = this.fixZoom(newZoom);
+  // setZoom(newZoom) {
+  //   // newzoom = this.fixzoom(newzoom);
 
-    const updatedWidth = round(this.imageSize.w * newZoom);
-    const updatedHeight = round(this.imageSize.h * newZoom);
+  //   // const updatedWidth = round(this.imageSize.w * newZoom);
+  //   // const updatedHeight = round(this.imageSize.h * newZoom);
 
-    if (this.imageLoaded) {
-      const oldZoom = this.zoom;
+  //   if (this.imageLoaded) {
+  //     this.$imageBg.panzoom("zoom", newZoom);
+  //     // const oldzoom = this.zoom;
 
-      const newX = this.previewSize.w / 2 - (this.previewSize.w / 2 - this.offset.x) * newZoom / oldZoom;
-      const newY = this.previewSize.h / 2 - (this.previewSize.h / 2 - this.offset.y) * newZoom / oldZoom;
+  //     // const newx = this.previewsize.w / 2 - (this.previewsize.w / 2 - this.offset.x) * newzoom / oldzoom;
+  //     // const newy = this.previewsize.h / 2 - (this.previewsize.h / 2 - this.offset.y) * newzoom / oldzoom;
 
-      this.zoom = newZoom;
-      this.setOffset({ x: newX, y: newY });
-    }
-    else {
-      this.zoom = newZoom;
-    }
+  //     // this.zoom = newzoom;
+  //     // this.setoffset({ x: newx, y: newy });
+  //   }
+  //   this.zoom = newZoom;
 
-    this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
-    this.$zoomSlider.val(this.zoomSliderPos);
+  //   // this.zoomsliderpos = this.zoomer.getsliderpos(this.zoom);
+  //   // this.$zoomslider.val(this.zoomsliderpos);
 
-    this.$preview.css('background-size', `${updatedWidth}px ${updatedHeight}px`);
-    if (this.options.imageBackground) {
-      this.$imageBg.css({
-        width: updatedWidth,
-        height: updatedHeight,
-      });
-    }
+  //   // this.$imageBg.css({
+  //   //   width: updatedWidth,
+  //   //   height: updatedHeight,
+  //   // });
 
-    this.options.onZoomChange(newZoom);
-  }
+  //   this.options.onZoomChange(newZoom);
+  // }
 
-  fixZoom(zoom) {
-    return this.zoomer.fixZoom(zoom);
-  }
+  // fixzoom(zoom) {
+  //   return this.zoomer.fixzoom(zoom);
+  // }
 
   isZoomable() {
-    return this.zoomer.isZoomable();
+    return this.$imageBg.panzoom("option", "disablezoom");
+    // return this.zoomer.iszoomable();
   }
 
   getCroppedImageData(exportOptions) {
@@ -431,12 +444,24 @@ class Cropit {
     };
     exportOptions = $.extend({}, exportDefaults, exportOptions);
 
+    console.log('imageState');
+    console.log(this.getImageState());
     const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
-
+    console.log('exportZoom');
+    console.log(exportZoom);
+    
     const zoomedSize = {
-      w: this.zoom * exportZoom * this.imageSize.w,
-      h: this.zoom * exportZoom * this.imageSize.h,
+      w: this.zoom * exportZoom * this.image.naturalWidth,
+      h: this.zoom * exportZoom * this.image.naturalHeight,
     };
+    console.log('zoomedSize');
+    console.log(zoomedSize);
+    const transform_origin = this.$imageBg
+          .css('transform-origin')
+          .split(' ')
+          .map((s) => { return s.replace('px',''); });
+    console.log('transform-origin');
+    console.log(transform_origin);
 
     const canvas = $('<canvas />')
       .attr({
@@ -451,11 +476,24 @@ class Cropit {
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    var matrix = this.$imageBg.panzoom("getMatrix");
+    canvasContext.translate(transform_origin[0], transform_origin[1]);
+    canvasContext.transform(matrix[0],
+                            matrix[1],
+                            matrix[2],
+                            matrix[3],
+                            matrix[4],
+                            matrix[5]);
+    // canvasContext.drawImage(this.image,
+    //   this.offset.x * exportZoom,
+    //   this.offset.y * exportZoom,
+    //   zoomedSize.w,
+    //   zoomedSize.h);
     canvasContext.drawImage(this.image,
-      this.offset.x * exportZoom,
-      this.offset.y * exportZoom,
-      zoomedSize.w,
-      zoomedSize.h);
+                            0,
+                            0,
+                            zoomedSize.w,
+                            zoomedSize.h);
 
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
@@ -512,7 +550,7 @@ class Cropit {
 
   setExportZoom(exportZoom) {
     this.options.exportZoom = exportZoom;
-    this.setupZoomer();
+    // this.setupZoomer();
   }
 
   getMinZoom() {
@@ -521,7 +559,8 @@ class Cropit {
 
   setMinZoom(minZoom) {
     this.options.minZoom = minZoom;
-    this.setupZoomer();
+    // this.setupZoomer();
+    this.$imageBg.panzoom("option", "minScale", minZoom).panzoom("zoom");
   }
 
   getMaxZoom() {
@@ -530,7 +569,8 @@ class Cropit {
 
   setMaxZoom(maxZoom) {
     this.options.maxZoom = maxZoom;
-    this.setupZoomer();
+    // this.setupZoomer();
+    this.$imageBg.panzoom("option", "maxScale", maxZoom).panzoom("zoom");
   }
 
   getPreviewSize() {
@@ -552,28 +592,24 @@ class Cropit {
       height: this.previewSize.h,
     });
 
-    if (this.options.imageBackground) {
-      this.$imageBgContainer.css({
-        width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-        height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
-      });
-    }
-
-    if (this.imageLoaded) {
-      this.setupZoomer();
-    }
+    this.$imageBgContainer.css({
+      width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
+      height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
+    });
   }
 
   disable() {
     this.unbindListeners();
     this.disableZoomSlider();
     this.$el.addClass(CLASS_NAMES.DISABLED);
+    this.$imageBg.panzoom("disable");
   }
 
   reenable() {
     this.bindListeners();
     this.enableZoomSlider();
     this.$el.removeClass(CLASS_NAMES.DISABLED);
+    this.$imageBg.panzoom("enable");
   }
 
   $(selector) {
