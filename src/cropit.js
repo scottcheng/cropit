@@ -24,9 +24,31 @@ class Cropit {
       this.onImageError.call(this, ERRORS.IMAGE_FAILED_TO_LOAD);
     };
 
-    this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
-    this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
-    this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
+    this.$fileInput = this.options.$fileInput
+      .attr({ accept: 'image/*' });
+    this.$imageBg = $('<img />')
+      .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
+      .attr({ alt: '' })
+      .css({ position: 'absolute' });
+    this.$imageBgContainer = $('<div />')
+      .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
+      .css({
+        position: 'absolute',
+        zIndex: 0,
+      })
+      .prepend(this.$imageBg);
+    this.$preview = this.options.$preview
+      .css({
+        backgroundRepeat: 'no-repeat',
+        position: 'relative',
+      })
+      .append(this.$imageBgContainer);
+    this.$zoomSlider = this.options.$zoomSlider
+      .attr({
+        min: 0,
+        max: 1,
+        step: 0.01,
+      });
     
     this.previewSize = {
       w: this.options.width || this.$preview.width(),
@@ -50,26 +72,16 @@ class Cropit {
       }
     }
     // const $previewContainer = this.options.$previewContainer;
-    this.$imageBg = $('<img />')
-      .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
-      .attr('alt', '')
-      .css('position', 'absolute');
-    this.$imageBgContainer = $('<div />')
-      .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
+    this.$imageBgContainer
       .css({
-        position: 'absolute',
-        // zIndex: 0,
         left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
         top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
         width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
         height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
-        })
-      .append(this.$imageBg);
+      });
     // $previewContainer
     //   .css('position', 'relative')
     //   .prepend(this.$imageBgContainer);
-    this.$preview.css('position', 'relative')
-      .prepend(this.$imageBgContainer);
     
     this.$preview.hover(() => {
       this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
@@ -77,9 +89,9 @@ class Cropit {
       this.$imageBg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
     });
 
-    this.offset = { x: 0, y: 0 };
-    this.setInitialZoom(this.options.initialZoom);
-    this.zoom = this.initialZoom;
+    // this.offset = { x: 0, y: 0 };
+    // this.setInitialZoom(this.options.initialZoom);
+    // this.zoom = this.initialZoom;
 
     this.imageLoaded = false;
 
@@ -92,8 +104,6 @@ class Cropit {
       maxScale: this.options.maxZoom,
       minScale: this.options.minZoom,
       $zoomRange: this.$zoomSlider,
-      onEnd: this.onChangePanZoom.bind(this),
-      onZoom: this.onZoomChange.bind(this),
       contain: 'invert'
     }).panzoom('zoom');
 
@@ -159,24 +169,19 @@ class Cropit {
   onDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-
     const files = Array.prototype.slice.call(e.dataTransfer.files, 0);
     files.some((file) => {
       if (!file.type.match('image')) { return false; }
-
       this.loadFileReader(file);
       return true;
     });
-
     this.$preview.removeClass(CLASS_NAMES.DRAG_HOVERED);
   }
 
   loadImage(imageSrc) {
     if (!imageSrc) { return; }
-
     this.options.onImageLoading();
     this.setImageLoadingClass();
-
     this.preImage.src = imageSrc;
   }
 
@@ -186,15 +191,22 @@ class Cropit {
 
   onPreImageLoaded() {
     if (this.options.smallImage === 'reject' &&
-          (this.preImage.width * this.options.maxZoom < this.previewSize.w * this.options.exportZoom ||
-           this.preImage.height * this.options.maxZoom < this.previewSize.h * this.options.exportZoom)) {
+        (this.preImage.width * this.options.maxZoom
+         < this.previewSize.w * this.options.exportZoom
+         ||
+         this.preImage.height * this.options.maxZoom
+         < this.previewSize.h * this.options.exportZoom)) {
       this.onImageError(ERRORS.SMALL_IMAGE);
       if (this.image.src) { this.setImageLoadedClass(); }
       return;
     }
 
     if (this.options.allowCrossOrigin) {
-      this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
+      if(this.preImage.src.indexOf('data:') === 0) {
+        this.image.crossOrigin = null;
+      } else{
+        this.image.crossOrigin = 'Anonymous';
+      }
     }
 
     this.image.src = this.imageSrc = this.preImage.src;
@@ -205,22 +217,21 @@ class Cropit {
       w: this.image.width,
       h: this.image.height,
     };
-    
 
     // this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
-    if (this.options.imageState && this.options.imageState.offset) {
-      this.offset = this.options.imageState.offset;
-    }
-    else {
-      this.centerImage();
-    }
+    // if (this.options.imageState && this.options.imageState.offset) {
+    //   this.offset = this.options.imageState.offset;
+    // }
+    // else {
+    //   this.centerImage();
+    // }
 
-    this.options.imageState = {};
+    // this.options.imageState = {};
 
     this.$imageBg.attr('src', this.imageSrc)
       .panzoom('resetDimensions');
-    this.zoom = 1; // should fix zoom
-    this.$imageBg.panzoom('zoom', this.zoom);
+    // this.zoom = 1;
+    // this.$imageBg.panzoom('zoom', this.zoom);
 
     this.setImageLoadedClass();
 
@@ -279,25 +290,25 @@ class Cropit {
   //   return false;
   // }
 
-  onChangePanZoom(e, panzoom, matrix, changed) {
-    if(changed) {
-      console.log(matrix);
-      this.offset = { x: matrix[4], y: matrix[5] };
-      this.zoom = matrix[0];
-    }
+  // onChangePanZoom(e, panzoom, matrix, changed) {
+  //   if(changed) {
+  //     console.log(matrix);
+  //     this.offset = { x: matrix[4], y: matrix[5] };
+  //     this.zoom = matrix[0];
+  //   }
     
-    // if (eventPosition) {
-    //   this.setOffset({
-    //     x: this.offset.x + eventPosition.x - this.origin.x,
-    //     y: this.offset.y + eventPosition.y - this.origin.y,
-    //   });
-    // }
+  //   if (eventPosition) {
+  //     this.setOffset({
+  //       x: this.offset.x + eventPosition.x - this.origin.x,
+  //       y: this.offset.y + eventPosition.y - this.origin.y,
+  //     });
+  //   }
 
-    // this.origin = eventPosition;
+  //   this.origin = eventPosition;
 
-    //e.stopPropagation();
-    return false;
-  }
+  //   e.stopPropagation();
+  //   return false;
+  // }
 
   // setOffset(position) {
   //   if (!position || !exists(position.x) || !exists(position.y)) { return; }
@@ -358,11 +369,11 @@ class Cropit {
     // });
   }
 
-  onZoomChange(e, panzoom, scale, opts) {
-    if (!this.imageLoaded || scale === this.zoom) { return; }
+  // onZoomChange(e, panzoom, scale, opts) {
+  //   if (!this.imageLoaded || scale === this.zoom) { return; }
 
-    this.zoom = scale;
-  }
+  //   this.zoom = scale;
+  // }
 
   enableZoomSlider() {
     this.$zoomSlider.removeAttr('disabled');
@@ -443,30 +454,39 @@ class Cropit {
       fillBg: '#fff',
     };
     exportOptions = $.extend({}, exportDefaults, exportOptions);
-
-    console.log('imageState');
-    console.log(this.getImageState());
-    const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
-    console.log('exportZoom');
-    console.log(exportZoom);
-    
-    const zoomedSize = {
-      w: this.zoom * exportZoom * this.image.naturalWidth,
-      h: this.zoom * exportZoom * this.image.naturalHeight,
-    };
-    console.log('zoomedSize');
-    console.log(zoomedSize);
+    const matrix = this.$imageBg.panzoom('getMatrix');
+    const offset = { x: matrix[4] * -1, y: matrix[5] * -1 };
+    const zoom = matrix[0];
+    var exportZoom = this.options.exportZoom;
+    if(exportOptions.originalSize) {
+      exportZoom = 1 / zoom;
+    }
+    console.log('matrix');
+    console.log(matrix);
+    console.log(`exportZoom: ${exportZoom}`);
+    // const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
+    // const zoomedSize = {
+    //   w: this.zoom * exportZoom * this.image.naturalWidth,
+    //   h: this.zoom * exportZoom * this.image.naturalHeight,
+    // };
     const transform_origin = this.$imageBg
           .css('transform-origin')
           .split(' ')
-          .map((s) => { return s.replace('px',''); });
+          .map((s) => { return s.replace('px',''); })
+          .map((s) => { return Number(s) * -1; });
     console.log('transform-origin');
     console.log(transform_origin);
+    const exportSize = {
+      width:  zoom * this.previewSize.w,
+      height: zoom * this.previewSize.h,
+    }
+    console.log('exportSize');
+    console.log(exportSize);
 
     const canvas = $('<canvas />')
       .attr({
-        width: this.previewSize.w * exportZoom,
-        height: this.previewSize.h * exportZoom,
+        width: exportSize.width,
+        height: exportSize.height,
       })
       .get(0);
     const canvasContext = canvas.getContext('2d');
@@ -476,47 +496,42 @@ class Cropit {
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    var matrix = this.$imageBg.panzoom("getMatrix");
-    canvasContext.translate(transform_origin[0], transform_origin[1]);
-    canvasContext.transform(matrix[0],
-                            matrix[1],
-                            matrix[2],
-                            matrix[3],
-                            matrix[4],
-                            matrix[5]);
+    //canvasContext.translate.apply(canvasContext, transform_origin);
+    //canvasContext.setTransform.apply(canvasContext, matrix);
     // canvasContext.drawImage(this.image,
     //   this.offset.x * exportZoom,
     //   this.offset.y * exportZoom,
     //   zoomedSize.w,
     //   zoomedSize.h);
     canvasContext.drawImage(this.image,
-                            0,
-                            0,
-                            zoomedSize.w,
-                            zoomedSize.h);
+                            offset.x,
+                            offset.y,
+                            this.previewSize.w / zoom,
+                            this.previewSize.h / zoom,
+                            0, 0, exportSize.width, exportSize.height);
 
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
 
-  getImageState() {
-    return {
-      src: this.imageSrc,
-      offset: this.offset,
-      zoom: this.zoom,
-    };
-  }
+  // getImageState() {
+  //   return {
+  //     src: this.imageSrc,
+  //     offset: this.offset,
+  //     zoom: this.zoom,
+  //   };
+  // }
 
   getImageSrc() {
     return this.imageSrc;
   }
 
-  getOffset() {
-    return this.offset;
-  }
+  // getOffset() {
+  //   return this.offset;
+  // }
 
-  getZoom() {
-    return this.zoom;
-  }
+  // getZoom() {
+  //   return this.zoom;
+  // }
 
   getImageSize() {
     if (!this.imageSize) { return null; }
@@ -527,31 +542,31 @@ class Cropit {
     };
   }
 
-  getInitialZoom() {
-    return this.options.initialZoom;
-  }
+  // getInitialZoom() {
+  //   return this.options.initialZoom;
+  // }
 
-  setInitialZoom(initialZoomOption) {
-    this.options.initialZoom = initialZoomOption;
-    if (initialZoomOption === 'min') {
-      this.initialZoom = 0; // Will be fixed when image loads
-    }
-    else if (initialZoomOption === 'image') {
-      this.initialZoom = 1;
-    }
-    else {
-      this.initialZoom = 0;
-    }
-  }
+  // setInitialZoom(initialZoomOption) {
+  //   this.options.initialZoom = initialZoomOption;
+  //   if (initialZoomOption === 'min') {
+  //     this.initialZoom = 0; // Will be fixed when image loads
+  //   }
+  //   else if (initialZoomOption === 'image') {
+  //     this.initialZoom = 1;
+  //   }
+  //   else {
+  //     this.initialZoom = 0;
+  //   }
+  // }
 
-  getExportZoom() {
-    return this.options.exportZoom;
-  }
+  // getExportZoom() {
+  //   return this.options.exportZoom;
+  // }
 
-  setExportZoom(exportZoom) {
-    this.options.exportZoom = exportZoom;
-    // this.setupZoomer();
-  }
+  // setExportZoom(exportZoom) {
+  //   this.options.exportZoom = exportZoom;
+  //   // this.setupZoomer();
+  // }
 
   getMinZoom() {
     return this.options.minZoom;
@@ -560,7 +575,9 @@ class Cropit {
   setMinZoom(minZoom) {
     this.options.minZoom = minZoom;
     // this.setupZoomer();
-    this.$imageBg.panzoom("option", "minScale", minZoom).panzoom("zoom");
+    this.$imageBg
+      .panzoom('option', 'minScale', minZoom)
+      .panzoom('zoom');
   }
 
   getMaxZoom() {
@@ -570,7 +587,9 @@ class Cropit {
   setMaxZoom(maxZoom) {
     this.options.maxZoom = maxZoom;
     // this.setupZoomer();
-    this.$imageBg.panzoom("option", "maxScale", maxZoom).panzoom("zoom");
+    this.$imageBg
+      .panzoom('option', 'maxScale', maxZoom)
+      .panzoom('zoom');
   }
 
   getPreviewSize() {

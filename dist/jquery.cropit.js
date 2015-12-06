@@ -217,8 +217,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	      this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
-	      this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
-	      this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
+	      this.$imageBg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND).attr({ alt: '' }).css({ position: 'absolute' });
+	      this.$imageBgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER).css({
+	        position: 'absolute',
+	        zIndex: 0
+	      }).prepend(this.$imageBg);
+	      this.$preview = this.options.$preview.css({
+	        backgroundRepeat: 'no-repeat',
+	        position: 'relative'
+	      }).append(this.$imageBgContainer);
+	      this.$zoomSlider = this.options.$zoomSlider.attr({
+	        min: 0,
+	        max: 1,
+	        step: 0.01
+	      });
 
 	      this.previewSize = {
 	        w: this.options.width || this.$preview.width(),
@@ -245,19 +257,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 	      // const $previewContainer = this.options.$previewContainer;
-	      this.$imageBg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND).attr('alt', '').css('position', 'absolute');
-	      this.$imageBgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER).css({
-	        position: 'absolute',
-	        // zIndex: 0,
+	      this.$imageBgContainer.css({
 	        left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
 	        top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
 	        width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
 	        height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2]
-	      }).append(this.$imageBg);
+	      });
 	      // $previewContainer
 	      //   .css('position', 'relative')
 	      //   .prepend(this.$imageBgContainer);
-	      this.$preview.css('position', 'relative').prepend(this.$imageBgContainer);
 
 	      this.$preview.hover(function () {
 	        _this.$imageBg.addClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
@@ -265,9 +273,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.$imageBg.removeClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
 	      });
 
-	      this.offset = { x: 0, y: 0 };
-	      this.setInitialZoom(this.options.initialZoom);
-	      this.zoom = this.initialZoom;
+	      // this.offset = { x: 0, y: 0 };
+	      // this.setInitialZoom(this.options.initialZoom);
+	      // this.zoom = this.initialZoom;
 
 	      this.imageLoaded = false;
 
@@ -280,8 +288,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        maxScale: this.options.maxZoom,
 	        minScale: this.options.minZoom,
 	        $zoomRange: this.$zoomSlider,
-	        onEnd: this.onChangePanZoom.bind(this),
-	        onZoom: this.onZoomChange.bind(this),
 	        contain: 'invert'
 	      }).panzoom('zoom');
 
@@ -356,17 +362,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      e.preventDefault();
 	      e.stopPropagation();
-
 	      var files = Array.prototype.slice.call(e.dataTransfer.files, 0);
 	      files.some(function (file) {
 	        if (!file.type.match('image')) {
 	          return false;
 	        }
-
 	        _this2.loadFileReader(file);
 	        return true;
 	      });
-
 	      this.$preview.removeClass(_constants.CLASS_NAMES.DRAG_HOVERED);
 	    }
 	  }, {
@@ -375,10 +378,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!imageSrc) {
 	        return;
 	      }
-
 	      this.options.onImageLoading();
 	      this.setImageLoadingClass();
-
 	      this.preImage.src = imageSrc;
 	    }
 	  }, {
@@ -398,7 +399,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      if (this.options.allowCrossOrigin) {
-	        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
+	        if (this.preImage.src.indexOf('data:') === 0) {
+	          this.image.crossOrigin = null;
+	        } else {
+	          this.image.crossOrigin = 'Anonymous';
+	        }
 	      }
 
 	      this.image.src = this.imageSrc = this.preImage.src;
@@ -412,17 +417,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	      // this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
-	      if (this.options.imageState && this.options.imageState.offset) {
-	        this.offset = this.options.imageState.offset;
-	      } else {
-	        this.centerImage();
-	      }
+	      // if (this.options.imageState && this.options.imageState.offset) {
+	      //   this.offset = this.options.imageState.offset;
+	      // }
+	      // else {
+	      //   this.centerImage();
+	      // }
 
-	      this.options.imageState = {};
+	      // this.options.imageState = {};
 
 	      this.$imageBg.attr('src', this.imageSrc).panzoom('resetDimensions');
-	      this.zoom = 1; // should fix zoom
-	      this.$imageBg.panzoom('zoom', this.zoom);
+	      // this.zoom = 1;
+	      // this.$imageBg.panzoom('zoom', this.zoom);
 
 	      this.setImageLoadedClass();
 
@@ -452,7 +458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADING);
 	    }
 	  }, {
-	    key: 'onChangePanZoom',
+	    key: 'centerImage',
 
 	    // getEventPosition(e) {
 	    //   if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0]) {
@@ -482,27 +488,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //   return false;
 	    // }
 
-	    value: function onChangePanZoom(e, panzoom, matrix, changed) {
-	      if (changed) {
-	        console.log(matrix);
-	        this.offset = { x: matrix[4], y: matrix[5] };
-	        this.zoom = matrix[0];
-	      }
+	    // onChangePanZoom(e, panzoom, matrix, changed) {
+	    //   if(changed) {
+	    //     console.log(matrix);
+	    //     this.offset = { x: matrix[4], y: matrix[5] };
+	    //     this.zoom = matrix[0];
+	    //   }
 
-	      // if (eventPosition) {
-	      //   this.setOffset({
-	      //     x: this.offset.x + eventPosition.x - this.origin.x,
-	      //     y: this.offset.y + eventPosition.y - this.origin.y,
-	      //   });
-	      // }
+	    //   if (eventPosition) {
+	    //     this.setOffset({
+	    //       x: this.offset.x + eventPosition.x - this.origin.x,
+	    //       y: this.offset.y + eventPosition.y - this.origin.y,
+	    //     });
+	    //   }
 
-	      // this.origin = eventPosition;
+	    //   this.origin = eventPosition;
 
-	      //e.stopPropagation();
-	      return false;
-	    }
-	  }, {
-	    key: 'centerImage',
+	    //   e.stopPropagation();
+	    //   return false;
+	    // }
 
 	    // setOffset(position) {
 	    //   if (!position || !exists(position.x) || !exists(position.y)) { return; }
@@ -565,16 +569,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // });
 	    }
 	  }, {
-	    key: 'onZoomChange',
-	    value: function onZoomChange(e, panzoom, scale, opts) {
-	      if (!this.imageLoaded || scale === this.zoom) {
-	        return;
-	      }
-
-	      this.zoom = scale;
-	    }
-	  }, {
 	    key: 'enableZoomSlider',
+
+	    // onZoomChange(e, panzoom, scale, opts) {
+	    //   if (!this.imageLoaded || scale === this.zoom) { return; }
+
+	    //   this.zoom = scale;
+	    // }
+
 	    value: function enableZoomSlider() {
 	      this.$zoomSlider.removeAttr('disabled');
 	      this.$imageBg.panzoom('option', 'disableZoom', false);
@@ -660,28 +662,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	        fillBg: '#fff'
 	      };
 	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
-
-	      console.log('imageState');
-	      console.log(this.getImageState());
-	      var exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
-	      console.log('exportZoom');
-	      console.log(exportZoom);
-
-	      var zoomedSize = {
-	        w: this.zoom * exportZoom * this.image.naturalWidth,
-	        h: this.zoom * exportZoom * this.image.naturalHeight
-	      };
-	      console.log('zoomedSize');
-	      console.log(zoomedSize);
+	      var matrix = this.$imageBg.panzoom('getMatrix');
+	      var offset = { x: matrix[4] * -1, y: matrix[5] * -1 };
+	      var zoom = matrix[0];
+	      var exportZoom = this.options.exportZoom;
+	      if (exportOptions.originalSize) {
+	        exportZoom = 1 / zoom;
+	      }
+	      console.log('matrix');
+	      console.log(matrix);
+	      console.log('exportZoom: ' + exportZoom);
+	      // const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
+	      // const zoomedSize = {
+	      //   w: this.zoom * exportZoom * this.image.naturalWidth,
+	      //   h: this.zoom * exportZoom * this.image.naturalHeight,
+	      // };
 	      var transform_origin = this.$imageBg.css('transform-origin').split(' ').map(function (s) {
 	        return s.replace('px', '');
+	      }).map(function (s) {
+	        return Number(s) * -1;
 	      });
 	      console.log('transform-origin');
 	      console.log(transform_origin);
+	      var exportSize = {
+	        width: zoom * this.previewSize.w,
+	        height: zoom * this.previewSize.h
+	      };
+	      console.log('exportSize');
+	      console.log(exportSize);
 
 	      var canvas = (0, _jquery2['default'])('<canvas />').attr({
-	        width: this.previewSize.w * exportZoom,
-	        height: this.previewSize.h * exportZoom
+	        width: exportSize.width,
+	        height: exportSize.height
 	      }).get(0);
 	      var canvasContext = canvas.getContext('2d');
 
@@ -690,44 +702,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 	      }
 
-	      var matrix = this.$imageBg.panzoom('getMatrix');
-	      canvasContext.translate(transform_origin[0], transform_origin[1]);
-	      canvasContext.transform(matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]);
+	      //canvasContext.translate.apply(canvasContext, transform_origin);
+	      //canvasContext.setTransform.apply(canvasContext, matrix);
 	      // canvasContext.drawImage(this.image,
 	      //   this.offset.x * exportZoom,
 	      //   this.offset.y * exportZoom,
 	      //   zoomedSize.w,
 	      //   zoomedSize.h);
-	      canvasContext.drawImage(this.image, 0, 0, zoomedSize.w, zoomedSize.h);
+	      canvasContext.drawImage(this.image, offset.x, offset.y, this.previewSize.w / zoom, this.previewSize.h / zoom, 0, 0, exportSize.width, exportSize.height);
 
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
 	  }, {
-	    key: 'getImageState',
-	    value: function getImageState() {
-	      return {
-	        src: this.imageSrc,
-	        offset: this.offset,
-	        zoom: this.zoom
-	      };
-	    }
-	  }, {
 	    key: 'getImageSrc',
+
+	    // getImageState() {
+	    //   return {
+	    //     src: this.imageSrc,
+	    //     offset: this.offset,
+	    //     zoom: this.zoom,
+	    //   };
+	    // }
+
 	    value: function getImageSrc() {
 	      return this.imageSrc;
 	    }
 	  }, {
-	    key: 'getOffset',
-	    value: function getOffset() {
-	      return this.offset;
-	    }
-	  }, {
-	    key: 'getZoom',
-	    value: function getZoom() {
-	      return this.zoom;
-	    }
-	  }, {
 	    key: 'getImageSize',
+
+	    // getOffset() {
+	    //   return this.offset;
+	    // }
+
+	    // getZoom() {
+	    //   return this.zoom;
+	    // }
+
 	    value: function getImageSize() {
 	      if (!this.imageSize) {
 	        return null;
@@ -739,35 +749,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'getInitialZoom',
-	    value: function getInitialZoom() {
-	      return this.options.initialZoom;
-	    }
-	  }, {
-	    key: 'setInitialZoom',
-	    value: function setInitialZoom(initialZoomOption) {
-	      this.options.initialZoom = initialZoomOption;
-	      if (initialZoomOption === 'min') {
-	        this.initialZoom = 0; // Will be fixed when image loads
-	      } else if (initialZoomOption === 'image') {
-	        this.initialZoom = 1;
-	      } else {
-	        this.initialZoom = 0;
-	      }
-	    }
-	  }, {
-	    key: 'getExportZoom',
-	    value: function getExportZoom() {
-	      return this.options.exportZoom;
-	    }
-	  }, {
-	    key: 'setExportZoom',
-	    value: function setExportZoom(exportZoom) {
-	      this.options.exportZoom = exportZoom;
-	      // this.setupZoomer();
-	    }
-	  }, {
 	    key: 'getMinZoom',
+
+	    // getInitialZoom() {
+	    //   return this.options.initialZoom;
+	    // }
+
+	    // setInitialZoom(initialZoomOption) {
+	    //   this.options.initialZoom = initialZoomOption;
+	    //   if (initialZoomOption === 'min') {
+	    //     this.initialZoom = 0; // Will be fixed when image loads
+	    //   }
+	    //   else if (initialZoomOption === 'image') {
+	    //     this.initialZoom = 1;
+	    //   }
+	    //   else {
+	    //     this.initialZoom = 0;
+	    //   }
+	    // }
+
+	    // getExportZoom() {
+	    //   return this.options.exportZoom;
+	    // }
+
+	    // setExportZoom(exportZoom) {
+	    //   this.options.exportZoom = exportZoom;
+	    //   // this.setupZoomer();
+	    // }
+
 	    value: function getMinZoom() {
 	      return this.options.minZoom;
 	    }
@@ -2128,8 +2137,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).join(' ');
 	};
 	var EVENTS = {
-	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
-	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
+	  // PREVIEW: eventName([
+	  //   'mousedown', 'mouseup', 'mouseleave',
+	  //   'touchstart', 'touchend', 'touchcancel', 'touchleave',
+	  // ]),
+	  // PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
 	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
 	};
 	exports.EVENTS = EVENTS;
