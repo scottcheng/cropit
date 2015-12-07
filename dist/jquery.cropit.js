@@ -1874,11 +1874,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).join(' ');
 	};
 	var EVENTS = {
-	  // PREVIEW: eventName([
-	  //   'mousedown', 'mouseup', 'mouseleave',
-	  //   'touchstart', 'touchend', 'touchcancel', 'touchleave',
-	  // ]),
-	  // PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
 	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
 	};
 	exports.EVENTS = EVENTS;

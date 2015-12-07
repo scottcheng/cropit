@@ -21,10 +21,5 @@ export const ERRORS = {
 
 const eventName = (events) => events.map((e) => `${e}.cropit`).join(' ');
 export const EVENTS = {
-  // PREVIEW: eventName([
-  //   'mousedown', 'mouseup', 'mouseleave',
-  //   'touchstart', 'touchend', 'touchcancel', 'touchleave',
-  // ]),
-  // PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
   ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change']),
 };
