@@ -455,38 +455,44 @@ class Cropit {
     };
     exportOptions = $.extend({}, exportDefaults, exportOptions);
     const matrix = this.$imageBg.panzoom('getMatrix');
-    const offset = { x: matrix[4] * -1, y: matrix[5] * -1 };
+    const offset = { x: parseFloat(matrix[4]),
+                     y: parseFloat(matrix[5]) };
     const zoom = matrix[0];
-    var exportZoom = this.options.exportZoom;
-    if(exportOptions.originalSize) {
-      exportZoom = 1 / zoom;
-    }
+    const image_view = { height: this.previewSize.w,
+                         width:  this.previewSize.h };
+    const image_size = { height: this.image.height,
+                         width:  this.image.width };
     console.log('matrix');
     console.log(matrix);
-    console.log(`exportZoom: ${exportZoom}`);
-    // const exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
-    // const zoomedSize = {
-    //   w: this.zoom * exportZoom * this.image.naturalWidth,
-    //   h: this.zoom * exportZoom * this.image.naturalHeight,
-    // };
-    const transform_origin = this.$imageBg
-          .css('transform-origin')
-          .split(' ')
-          .map((s) => { return s.replace('px',''); })
-          .map((s) => { return Number(s) * -1; });
-    console.log('transform-origin');
-    console.log(transform_origin);
-    const exportSize = {
-      width:  zoom * this.previewSize.w,
-      height: zoom * this.previewSize.h,
-    }
-    console.log('exportSize');
-    console.log(exportSize);
+    console.log('image_view');
+    console.log(image_view);
+    console.log('image_size');
+    console.log(image_size);
+
+    var zoom_offset = { x: 0,
+                        y: 0 };
+    zoom_offset.x = (image_size.width - image_size.width * zoom) / 2;
+    zoom_offset.y = (image_size.height - image_size.height * zoom) / 2;
+
+    const drag_offset = { x: (zoom_offset.x + offset.x) * -1,
+                          y: (zoom_offset.y + offset.y) * -1 };
+    const scale_drag = { x: drag_offset.x * 1/zoom,
+                         y: drag_offset.y * 1/zoom };
+    const scale_image_view = { width: image_view.width * 1/zoom,
+                               height: image_view.height * 1/zoom };
+    console.log('zoom_offset');
+    console.log(zoom_offset);
+    console.log('drag_offset');
+    console.log(drag_offset);
+    console.log('scale_drag');
+    console.log(scale_drag);
+    console.log('scale_image_view');
+    console.log(scale_image_view);    
 
     const canvas = $('<canvas />')
       .attr({
-        width: exportSize.width,
-        height: exportSize.height,
+        width: scale_image_view.width,
+        height: scale_image_view.height,
       })
       .get(0);
     const canvasContext = canvas.getContext('2d');
@@ -504,11 +510,11 @@ class Cropit {
     //   zoomedSize.w,
     //   zoomedSize.h);
     canvasContext.drawImage(this.image,
-                            offset.x,
-                            offset.y,
-                            this.previewSize.w / zoom,
-                            this.previewSize.h / zoom,
-                            0, 0, exportSize.width, exportSize.height);
+                            scale_drag.x,
+                            scale_drag.y,
+                            scale_image_view.width,
+                            scale_image_view.height,
+                            0, 0, scale_image_view.width, scale_image_view.height);
 
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
