@@ -52,7 +52,7 @@ class Cropit {
         max: 1,
         step: 0.01,
       });
-    
+
     this.previewSize = {
       w: this.options.width || this.$preview.width(),
       h: this.options.height || this.$preview.height(),
@@ -81,7 +81,7 @@ class Cropit {
         width: this.previewSize.w + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
         height: this.previewSize.h + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
       });
-    
+
     this.$preview.hover(() => {
       this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
     }, () => {
@@ -96,8 +96,6 @@ class Cropit {
 
     this.$imageBg.panzoom({
       eventNamespace: '.cropit',
-      maxScale: this.options.maxZoom,
-      minScale: this.options.minZoom,
       $zoomRange: this.$zoomSlider,
       contain: 'invert'
     }).panzoom('zoom');
@@ -206,8 +204,24 @@ class Cropit {
       w: this.image.width,
       h: this.image.height,
     };
+    const max_ratio = Math.max(this.previewSize.w / this.imageSize.w,
+                               this.previewSize.h / this.imageSize.h);
+    var min_zoom = max_ratio;
+    var max_zoom = Math.max(max_ratio, 1);
+    console.log(this.imageSize);
+    console.log(this.previewSize);
+    if(min_zoom > 1) {
+      this.$imageBg.css({ width: this.imageSize.w * max_ratio,
+                          height: this.imageSize.h * max_ratio });
+      min_zoom = 1;
+      max_zoom = 1;
+    }
     this.$imageBg.attr('src', this.imageSrc)
-      .panzoom('resetDimensions');
+      .panzoom('option', 'maxScale', max_zoom)
+      .panzoom('option', 'minScale', min_zoom)
+      .panzoom('resetDimensions')
+      .panzoom('option', 'contain', 'invert')
+      .panzoom('zoom', min_zoom);
     this.setImageLoadedClass();
     this.imageLoaded = true;
     this.options.onImageLoaded();
@@ -242,7 +256,7 @@ class Cropit {
 
   enableZoomSlider() {
     this.$zoomSlider.removeAttr('disabled');
-    this.$imageBg.panzoom("option", "disableZoom", false); 
+    this.$imageBg.panzoom("option", "disableZoom", false);
     this.options.onZoomEnabled();
   }
 

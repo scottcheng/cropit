@@ -278,8 +278,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.$imageBg.panzoom({
 	        eventNamespace: '.cropit',
-	        maxScale: this.options.maxZoom,
-	        minScale: this.options.minZoom,
 	        $zoomRange: this.$zoomSlider,
 	        contain: 'invert'
 	      }).panzoom('zoom');
@@ -402,7 +400,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        w: this.image.width,
 	        h: this.image.height
 	      };
-	      this.$imageBg.attr('src', this.imageSrc).panzoom('resetDimensions');
+	      var max_ratio = Math.max(this.previewSize.w / this.imageSize.w, this.previewSize.h / this.imageSize.h);
+	      var min_zoom = max_ratio;
+	      var max_zoom = Math.max(max_ratio, 1);
+	      console.log(this.imageSize);
+	      console.log(this.previewSize);
+	      if (min_zoom > 1) {
+	        this.$imageBg.css({ width: this.imageSize.w * max_ratio,
+	          height: this.imageSize.h * max_ratio });
+	        min_zoom = 1;
+	        max_zoom = 1;
+	      }
+	      this.$imageBg.attr('src', this.imageSrc).panzoom('option', 'maxScale', max_zoom).panzoom('option', 'minScale', min_zoom).panzoom('resetDimensions').panzoom('option', 'contain', 'invert').panzoom('zoom', min_zoom);
 	      this.setImageLoadedClass();
 	      this.imageLoaded = true;
 	      this.options.onImageLoaded();
