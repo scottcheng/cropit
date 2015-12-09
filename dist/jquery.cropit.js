@@ -124,6 +124,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return callOnFirst(this, 'getImageSize');
 	  },
 
+	  exportGeometry: function exportGeometry() {
+	    return callOnFirst(this, 'getExportGeometry');
+	  },
+
 	  prop: function prop(name, value) {
 	    if ((0, _utils.exists)(value)) {
 	      return applyOnEach(this, function (cropit) {
@@ -465,19 +469,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.$imageBg.panzoom('option', 'disablezoom');
 	    }
 	  }, {
-	    key: 'getCroppedImageData',
-	    value: function getCroppedImageData(exportOptions) {
+	    key: 'getExportGeometry',
+	    value: function getExportGeometry() {
 	      if (!this.imageSrc) {
 	        return;
 	      }
-
-	      var exportDefaults = {
-	        type: 'image/png',
-	        quality: 0.75,
-	        originalSize: false,
-	        fillBg: '#fff'
-	      };
-	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
 	      var matrix = this.$imageBg.panzoom('getMatrix');
 	      var offset = { x: parseFloat(matrix[4]),
 	        y: parseFloat(matrix[5]) };
@@ -494,16 +490,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: drag_offset.y * 1 / zoom };
 	      var scale_image_view = { width: image_view.width * 1 / zoom,
 	        height: image_view.height * 1 / zoom };
+	      return {
+	        outputOffset: scale_drag,
+	        outputSize: scale_image_view
+	      };
+	    }
+	  }, {
+	    key: 'getCroppedImageData',
+	    value: function getCroppedImageData(exportOptions) {
+	      if (!this.imageSrc) {
+	        return;
+	      }
+	      var exportDefaults = {
+	        type: 'image/png',
+	        quality: 0.75,
+	        originalSize: false,
+	        fillBg: '#fff'
+	      };
+	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
+	      var geometry = this.getExportGeometry(exportOptions);
 	      var canvas = (0, _jquery2['default'])('<canvas />').attr({
-	        width: scale_image_view.width,
-	        height: scale_image_view.height
+	        width: geometry.outputSize.width,
+	        height: geometry.outputSize.height
 	      }).get(0);
 	      var canvasContext = canvas.getContext('2d');
 	      if (exportOptions.type === 'image/jpeg') {
 	        canvasContext.fillStyle = exportOptions.fillBg;
 	        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 	      }
-	      canvasContext.drawImage(this.image, scale_drag.x, scale_drag.y, scale_image_view.width, scale_image_view.height, 0, 0, scale_image_view.width, scale_image_view.height);
+	      canvasContext.drawImage(this.image, geometry.outputOffset.x, geometry.outputOffset.y, geometry.outputSize.width, geometry.outputSize.height, 0, 0, geometry.outputSize.width, geometry.outputSize.height);
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
 	  }, {

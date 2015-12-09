@@ -270,16 +270,8 @@ class Cropit {
     return this.$imageBg.panzoom("option", "disablezoom");
   }
 
-  getCroppedImageData(exportOptions) {
-    if (!this.imageSrc) { return; }
-
-    const exportDefaults = {
-      type: 'image/png',
-      quality: 0.75,
-      originalSize: false,
-      fillBg: '#fff',
-    };
-    exportOptions = $.extend({}, exportDefaults, exportOptions);
+  getExportGeometry() {
+    if(!this.imageSrc) { return; }
     const matrix = this.$imageBg.panzoom('getMatrix');
     const offset = { x: parseFloat(matrix[4]),
                      y: parseFloat(matrix[5]) };
@@ -288,7 +280,7 @@ class Cropit {
                          width:  this.previewSize.h };
     const image_size = { height: this.image.height,
                          width:  this.image.width };
-    var zoom_offset = { x: (image_size.width - image_size.width * zoom) / 2,
+    const zoom_offset = { x: (image_size.width - image_size.width * zoom) / 2,
                         y: (image_size.height - image_size.height * zoom) / 2 };
     const drag_offset = { x: (zoom_offset.x + offset.x) * -1,
                           y: (zoom_offset.y + offset.y) * -1 };
@@ -296,10 +288,26 @@ class Cropit {
                          y: drag_offset.y * 1/zoom };
     const scale_image_view = { width: image_view.width * 1/zoom,
                                height: image_view.height * 1/zoom };
+    return {
+      outputOffset: scale_drag,
+      outputSize: scale_image_view
+    }
+  }
+
+  getCroppedImageData(exportOptions) {
+    if (!this.imageSrc) { return; }
+    const exportDefaults = {
+      type: 'image/png',
+      quality: 0.75,
+      originalSize: false,
+      fillBg: '#fff',
+    };
+    exportOptions = $.extend({}, exportDefaults, exportOptions);
+    const geometry = this.getExportGeometry(exportOptions);
     const canvas = $('<canvas />')
       .attr({
-        width: scale_image_view.width,
-        height: scale_image_view.height,
+        width: geometry.outputSize.width,
+        height: geometry.outputSize.height,
       })
       .get(0);
     const canvasContext = canvas.getContext('2d');
@@ -308,11 +316,11 @@ class Cropit {
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     }
     canvasContext.drawImage(this.image,
-                            scale_drag.x,
-                            scale_drag.y,
-                            scale_image_view.width,
-                            scale_image_view.height,
-                            0, 0, scale_image_view.width, scale_image_view.height);
+                            geometry.outputOffset.x,
+                            geometry.outputOffset.y,
+                            geometry.outputSize.width,
+                            geometry.outputSize.height,
+                            0, 0, geometry.outputSize.width, geometry.outputSize.height);
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
 
