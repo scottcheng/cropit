@@ -53,6 +53,10 @@ const methods = {
     return callOnFirst(this, 'getImageSize');
   },
 
+  exportGeometry() {
+    return callOnFirst(this, 'getExportGeometry');
+  },
+
   prop(name, value) {
     if (exists(value)) {
       return applyOnEach(this, (cropit) => {
