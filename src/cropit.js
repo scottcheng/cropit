@@ -189,7 +189,7 @@ class Cropit {
     }
 
     if (this.options.allowCrossOrigin) {
-      this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
+      this.image.crossorigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
     }
 
     this.image.src = this.imageSrc = this.preImage.src;
