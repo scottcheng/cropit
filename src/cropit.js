@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import 'exif-js';
+import EXIF from 'exif-js';
 
 import Zoomer from './Zoomer';
 import { CLASS_NAMES, ERRORS, EVENTS } from './constants';

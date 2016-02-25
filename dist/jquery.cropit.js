@@ -181,7 +181,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	__webpack_require__(4);
+	var _exifJs = __webpack_require__(4);
+
+	var _exifJs2 = _interopRequireDefault(_exifJs);
 
 	var _Zoomer = __webpack_require__(5);
 
@@ -404,7 +406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return bytes.buffer;
 	      }
 
-	      var exif = EXIF.readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
+	      var exif = _exifJs2['default'].readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
 
 	      var canvas = document.createElement('canvas');
 	      canvas.width = this.preImage.width;
