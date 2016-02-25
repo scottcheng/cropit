@@ -1,14 +1,14 @@
 /*! cropit - v0.4.5 <https://github.com/scottcheng/cropit> */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"));
+		module.exports = factory(require("jquery"), require("exif-js"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery"], factory);
+		define(["jquery", "exif-js"], factory);
 	else if(typeof exports === 'object')
-		exports["cropit"] = factory(require("jquery"));
+		exports["cropit"] = factory(require("jquery"), require("exif-js"));
 	else
-		root["cropit"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+		root["cropit"] = factory(root["jQuery"], root["EXIF"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -65,9 +65,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _cropit2 = _interopRequireDefault(_cropit);
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
-	var _utils = __webpack_require__(6);
+	var _utils = __webpack_require__(7);
 
 	var applyOnEach = function applyOnEach($el, callback) {
 	  return $el.each(function () {
@@ -181,15 +181,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _Zoomer = __webpack_require__(3);
+	var _exifJs = __webpack_require__(4);
+
+	var _exifJs2 = _interopRequireDefault(_exifJs);
+
+	var _Zoomer = __webpack_require__(5);
 
 	var _Zoomer2 = _interopRequireDefault(_Zoomer);
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
-	var _options = __webpack_require__(5);
+	var _options = __webpack_require__(6);
 
-	var _utils = __webpack_require__(6);
+	var _utils = __webpack_require__(7);
 
 	var Cropit = (function () {
 	  function Cropit(jQuery, element, options) {
@@ -392,7 +396,75 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
 	      }
 
-	      this.image.src = this.imageSrc = this.preImage.src;
+	      function _base64ToArrayBuffer(base64) {
+	        var binary_string = window.atob(base64.split(',')[1]);
+	        var len = binary_string.length;
+	        var bytes = new Uint8Array(len);
+	        for (var i = 0; i < len; i++) {
+	          bytes[i] = binary_string.charCodeAt(i);
+	        }
+	        return bytes.buffer;
+	      }
+
+	      var exif = _exifJs2['default'].readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
+
+	      var canvas = document.createElement('canvas');
+	      canvas.width = this.preImage.width;
+	      canvas.height = this.preImage.height;
+	      var ctx = canvas.getContext('2d');
+	      var x = 0;
+	      var y = 0;
+	      ctx.save();
+
+	      if (exif.Oriendation != 'undefined') {
+
+	        switch (exif.Orientation) {
+	          case 2:
+	            // horizontal flip
+	            ctx.translate(canvas.width, 0);
+	            ctx.scale(-1, 1);
+	            break;
+	          case 3:
+	            // 180° rotate left
+	            ctx.translate(canvas.width, canvas.height);
+	            ctx.rotate(Math.PI);
+	            break;
+	          case 4:
+	            // vertical flip
+	            ctx.translate(0, canvas.height);
+	            ctx.scale(1, -1);
+	            break;
+	          case 5:
+	            // vertical flip + 90 rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.scale(1, -1);
+	            break;
+	          case 6:
+	            // 90° rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.translate(0, -canvas.height);
+	            break;
+	          case 7:
+	            // horizontal flip + 90 rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.translate(canvas.width, -canvas.height);
+	            ctx.scale(-1, 1);
+	            break;
+	          case 8:
+	            // 90° rotate left
+	            ctx.rotate(-0.5 * Math.PI);
+	            ctx.translate(-canvas.width, 0);
+	            break;
+	        }
+
+	        ctx.drawImage(this.preImage, x, y);
+	        ctx.restore();
+	        var finalImage = canvas.toDataURL('image/*', 1);
+
+	        this.image.src = this.imageSrc = finalImage;
+	      } else {
+	        this.image.src = this.imageSrc = this.preImage.src;
+	      }
 	    }
 	  }, {
 	    key: 'onImageLoaded',
@@ -832,6 +904,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	var PLUGIN_KEY = 'cropit';
+
+	exports.PLUGIN_KEY = PLUGIN_KEY;
+	var CLASS_NAMES = {
+	  PREVIEW: 'cropit-image-preview',
+	  PREVIEW_CONTAINER: 'cropit-image-preview-container',
+	  FILE_INPUT: 'cropit-image-input',
+	  ZOOM_SLIDER: 'cropit-image-zoom-input',
+	  IMAGE_BACKGROUND: 'cropit-image-background',
+	  IMAGE_BACKGROUND_CONTAINER: 'cropit-image-background-container',
+	  PREVIEW_HOVERED: 'cropit-preview-hovered',
+	  DRAG_HOVERED: 'cropit-drag-hovered',
+	  IMAGE_LOADING: 'cropit-image-loading',
+	  IMAGE_LOADED: 'cropit-image-loaded',
+	  DISABLED: 'cropit-disabled'
+	};
+
+	exports.CLASS_NAMES = CLASS_NAMES;
+	var ERRORS = {
+	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
+	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
+	};
+
+	exports.ERRORS = ERRORS;
+	var eventName = function eventName(events) {
+	  return events.map(function (e) {
+	    return '' + e + '.cropit';
+	  }).join(' ');
+	};
+	var EVENTS = {
+	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
+	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
+	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
+	};
+	exports.EVENTS = EVENTS;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -914,57 +1035,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var PLUGIN_KEY = 'cropit';
-
-	exports.PLUGIN_KEY = PLUGIN_KEY;
-	var CLASS_NAMES = {
-	  PREVIEW: 'cropit-image-preview',
-	  PREVIEW_CONTAINER: 'cropit-image-preview-container',
-	  FILE_INPUT: 'cropit-image-input',
-	  ZOOM_SLIDER: 'cropit-image-zoom-input',
-	  IMAGE_BACKGROUND: 'cropit-image-background',
-	  IMAGE_BACKGROUND_CONTAINER: 'cropit-image-background-container',
-	  PREVIEW_HOVERED: 'cropit-preview-hovered',
-	  DRAG_HOVERED: 'cropit-drag-hovered',
-	  IMAGE_LOADING: 'cropit-image-loading',
-	  IMAGE_LOADED: 'cropit-image-loaded',
-	  DISABLED: 'cropit-disabled'
-	};
-
-	exports.CLASS_NAMES = CLASS_NAMES;
-	var ERRORS = {
-	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
-	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
-	};
-
-	exports.ERRORS = ERRORS;
-	var eventName = function eventName(events) {
-	  return events.map(function (e) {
-	    return '' + e + '.cropit';
-	  }).join(' ');
-	};
-	var EVENTS = {
-	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
-	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
-	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
-	};
-	exports.EVENTS = EVENTS;
-
-/***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
 	var options = {
 	  elements: [{
@@ -1132,7 +1210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = options;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {

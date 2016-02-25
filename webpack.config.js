@@ -34,6 +34,12 @@ module.exports = {
       commonjs2: 'jquery',
       amd: 'jquery',
     },
+    'exif-js': {
+      root: 'EXIF',
+      commonjs: 'exif-js',
+      commonjs2: 'exif-js',
+      amd: 'exif-js',
+    },
   },
 
   plugins: [

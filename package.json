@@ -47,6 +47,7 @@
     ]
   },
   "dependencies": {
+    "exif-js": "^2.1.1",
     "jquery": ">=1.9"
   },
   "devDependencies": {
