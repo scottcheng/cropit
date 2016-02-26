@@ -204,24 +204,23 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
           cropit._zoom = 1;
-          cropit.setOffset({ x: 0, y: 0 });
-          spyOn(cropit, 'setOffset');
+          cropit._offset = { x: 0, y: 0 };
 
           cropit.onPreviewEvent({
-            type: 'mousedown',
+            type: 'touchstart',
             clientX: -1,
             clientY: -1,
             stopPropagation: () => {},
           });
-          expect(cropit.setOffset).not.toHaveBeenCalled();
 
           cropit.onMove({
-            type: 'mousemove',
+            type: 'touchmove',
             clientX: -3,
             clientY: -2,
             stopPropagation: () => {},
           });
-          expect(cropit.setOffset).toHaveBeenCalledWith({ x: -2, y: -1 });
+
+          expect(cropit.offset).toEqual({ x: -2, y: -1 });
         });
       });
 
@@ -286,8 +285,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
           cropit._zoom = 1;
-          cropit.setOffset({ x: 0, y: 0 });
-          spyOn(cropit, 'setOffset');
+          cropit._offset = { x: 0, y: 0 };
 
           cropit.onPreviewEvent({
             type: 'touchstart',
@@ -295,7 +293,6 @@ describe('Cropit View', () => {
             clientY: -1,
             stopPropagation: () => {},
           });
-          expect(cropit.setOffset).not.toHaveBeenCalled();
 
           cropit.onMove({
             type: 'touchmove',
@@ -303,12 +300,13 @@ describe('Cropit View', () => {
             clientY: -2,
             stopPropagation: () => {},
           });
-          expect(cropit.setOffset).toHaveBeenCalledWith({ x: -2, y: -1 });
+
+          expect(cropit.offset).toEqual({ x: -2, y: -1 });
         });
       });
     });
 
-    describe('#setOffset', () => {
+    describe('#set offset', () => {
       beforeEach(() => {
         $el.cropit({ width: 2, height: 2 });
         cropit = $el.data(PLUGIN_KEY);
@@ -321,7 +319,7 @@ describe('Cropit View', () => {
         const $preview = $el.find('.cropit-image-preview');
         expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
 
-        cropit.setOffset({ x: -1, y: -1 });
+        cropit.offset = { x: -1, y: -1 };
         expect($preview.css('backgroundPosition')).toBe('-1px -1px');
       });
     });
@@ -485,7 +483,7 @@ describe('Cropit View', () => {
       });
     });
 
-    describe('#setOffset', () => {
+    describe('#set offset', () => {
       it('updates background image position', () => {
         $el.cropit({ width: 2, height: 2, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
@@ -496,7 +494,7 @@ describe('Cropit View', () => {
         expect($imageBg.css('left')).not.toBe('-1px');
         expect($imageBg.css('top')).not.toBe('-1px');
 
-        cropit.setOffset({ x: -1, y: -1 });
+        cropit.offset = { x: -1, y: -1 };
         expect($imageBg.css('left')).toBe('-1px');
         expect($imageBg.css('top')).toBe('-1px');
       });
@@ -516,7 +514,7 @@ describe('Cropit View', () => {
         expect($imageBg.css('left')).not.toBe('-1px');
         expect($imageBg.css('top')).not.toBe('-1px');
 
-        cropit.setOffset({ x: -3, y: -3 });
+        cropit.offset = { x: -3, y: -3 };
         expect($imageBg.css('left')).toBe('-1px');
         expect($imageBg.css('top')).toBe('-1px');
       });

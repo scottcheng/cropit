@@ -402,7 +402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function onImageLoaded() {
 	      this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this._initialZoom);
 	      if (this.options.imageState && this.options.imageState.offset) {
-	        this.setOffset(this.options.imageState.offset);
+	        this.offset = this.options.imageState.offset;
 	      } else {
 	        this.centerImage();
 	      }
@@ -478,34 +478,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var eventPosition = this.getEventPosition(e);
 
 	      if (this.moveContinue && eventPosition) {
-	        this.setOffset({
+	        this.offset = {
 	          x: this.offset.x + eventPosition.x - this.origin.x,
 	          y: this.offset.y + eventPosition.y - this.origin.y
-	        });
+	        };
 	      }
 
 	      this.origin = eventPosition;
 
 	      e.stopPropagation();
 	      return false;
-	    }
-	  }, {
-	    key: 'setOffset',
-	    value: function setOffset(position) {
-	      if (!position || !(0, _utils.exists)(position.x) || !(0, _utils.exists)(position.y)) {
-	        return;
-	      }
-
-	      this.offset = this.fixOffset(position);
-	      this.$preview.css('background-position', '' + this.offset.x + 'px ' + this.offset.y + 'px');
-	      if (this.options.imageBackground) {
-	        this.$imageBg.css({
-	          left: this.offset.x + this.imageBgBorderWidthArray[3],
-	          top: this.offset.y + this.imageBgBorderWidthArray[0]
-	        });
-	      }
-
-	      this.options.onOffsetChange(position);
 	    }
 	  }, {
 	    key: 'fixOffset',
@@ -542,10 +524,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      this.setOffset({
+	      this.offset = {
 	        x: (this.previewSize.width - this.image.width * this.zoom) / 2,
 	        y: (this.previewSize.height - this.image.height * this.zoom) / 2
-	      });
+	      };
 	    }
 	  }, {
 	    key: 'onZoomSliderChange',
@@ -649,11 +631,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'getOffset',
-	    value: function getOffset() {
-	      return this.offset;
-	    }
-	  }, {
 	    key: 'disable',
 	    value: function disable() {
 	      this.unbindListeners();
@@ -676,6 +653,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.$el.find(selector);
 	    }
 	  }, {
+	    key: 'offset',
+	    set: function (position) {
+	      if (!position || !(0, _utils.exists)(position.x) || !(0, _utils.exists)(position.y)) {
+	        return;
+	      }
+
+	      this._offset = this.fixOffset(position);
+	      this.$preview.css('background-position', '' + this.offset.x + 'px ' + this.offset.y + 'px');
+	      if (this.options.imageBackground) {
+	        this.$imageBg.css({
+	          left: this.offset.x + this.imageBgBorderWidthArray[3],
+	          top: this.offset.y + this.imageBgBorderWidthArray[0]
+	        });
+	      }
+
+	      this.options.onOffsetChange(position);
+	    },
+	    get: function () {
+	      return this._offset;
+	    }
+	  }, {
 	    key: 'zoom',
 	    set: function (newZoom) {
 	      newZoom = this.fixZoom(newZoom);
@@ -690,7 +688,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
 	        this._zoom = newZoom;
-	        this.setOffset({ x: newX, y: newY });
+	        this.offset = { x: newX, y: newY };
 	      } else {
 	        this._zoom = newZoom;
 	      }

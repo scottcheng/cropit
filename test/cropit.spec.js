@@ -324,7 +324,7 @@ describe('Cropit', () => {
       cropit.image = { width: 12, height: 8 };
       cropit._zoom = 0.5;
 
-      cropit.setOffset({ x: 0, y: 1 });
+      cropit.offset = { x: 0, y: 1 };
       expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
 
       cropit.centerImage();
@@ -372,20 +372,12 @@ describe('Cropit', () => {
     });
   });
 
-  describe('#getOffset', () => {
-    it('returns offset', () => {
-      cropit = newCropit();
-      cropit.offset = { x: -2, y: -2 };
-      expect(cropit.getOffset()).toEqual({ x: -2, y: -2 });
-    });
-  });
-
   describe('#set previewSize', () => {
     it('updates zoomer if image is loaded', () => {
       cropit = newCropit();
       cropit.imageLoaded = true;
       cropit.image = { width: 2, height: 2 };
-      cropit.offset = { x: 0, y: 0 };
+      cropit._offset = { x: 0, y: 0 };
       spyOn(cropit.zoomer, 'setup');
       cropit.previewSize = { width: 1, height: 1 };
       expect(cropit.zoomer.setup).toHaveBeenCalled();

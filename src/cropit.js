@@ -189,7 +189,7 @@ class Cropit {
   onImageLoaded() {
     this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this._initialZoom);
     if (this.options.imageState && this.options.imageState.offset) {
-      this.setOffset(this.options.imageState.offset);
+      this.offset = this.options.imageState.offset;
     }
     else {
       this.centerImage();
@@ -263,10 +263,10 @@ class Cropit {
     const eventPosition = this.getEventPosition(e);
 
     if (this.moveContinue && eventPosition) {
-      this.setOffset({
+      this.offset = {
         x: this.offset.x + eventPosition.x - this.origin.x,
         y: this.offset.y + eventPosition.y - this.origin.y,
-      });
+      };
     }
 
     this.origin = eventPosition;
@@ -275,10 +275,10 @@ class Cropit {
     return false;
   }
 
-  setOffset(position) {
+  set offset(position) {
     if (!position || !exists(position.x) || !exists(position.y)) { return; }
 
-    this.offset = this.fixOffset(position);
+    this._offset = this.fixOffset(position);
     this.$preview.css('background-position', `${this.offset.x}px ${this.offset.y}px`);
     if (this.options.imageBackground) {
       this.$imageBg.css({
@@ -324,10 +324,10 @@ class Cropit {
   centerImage() {
     if (!this.image.width || !this.image.height || !this.zoom) { return; }
 
-    this.setOffset({
+    this.offset = {
       x: (this.previewSize.width - this.image.width * this.zoom) / 2,
       y: (this.previewSize.height - this.image.height * this.zoom) / 2,
-    });
+    };
   }
 
   onZoomSliderChange() {
@@ -381,7 +381,7 @@ class Cropit {
       const newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
       this._zoom = newZoom;
-      this.setOffset({ x: newX, y: newY });
+      this.offset = { x: newX, y: newY };
     }
     else {
       this._zoom = newZoom;
@@ -465,8 +465,8 @@ class Cropit {
     this.loadImage(imageSrc);
   }
 
-  getOffset() {
-    return this.offset;
+  get offset() {
+    return this._offset;
   }
 
   get zoom() {
