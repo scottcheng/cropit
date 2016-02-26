@@ -75,7 +75,7 @@ class Cropit {
       });
     }
 
-    this.setInitialZoom(this.options.initialZoom);
+    this.initialZoom = this.options.initialZoom;
 
     this.imageLoaded = false;
 
@@ -187,7 +187,7 @@ class Cropit {
   }
 
   onImageLoaded() {
-    this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
+    this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this._initialZoom);
     if (this.options.imageState && this.options.imageState.offset) {
       this.setOffset(this.options.imageState.offset);
     }
@@ -480,46 +480,46 @@ class Cropit {
     };
   }
 
-  getInitialZoom() {
+  get initialZoom() {
     return this.options.initialZoom;
   }
 
-  setInitialZoom(initialZoomOption) {
+  set initialZoom(initialZoomOption) {
     this.options.initialZoom = initialZoomOption;
     if (initialZoomOption === 'min') {
-      this.initialZoom = 0; // Will be fixed when image loads
+      this._initialZoom = 0; // Will be fixed when image loads
     }
     else if (initialZoomOption === 'image') {
-      this.initialZoom = 1;
+      this._initialZoom = 1;
     }
     else {
-      this.initialZoom = 0;
+      this._initialZoom = 0;
     }
   }
 
-  getExportZoom() {
+  get exportZoom() {
     return this.options.exportZoom;
   }
 
-  setExportZoom(exportZoom) {
+  set exportZoom(exportZoom) {
     this.options.exportZoom = exportZoom;
     this.setupZoomer();
   }
 
-  getMinZoom() {
+  get minZoom() {
     return this.options.minZoom;
   }
 
-  setMinZoom(minZoom) {
+  set minZoom(minZoom) {
     this.options.minZoom = minZoom;
     this.setupZoomer();
   }
 
-  getMaxZoom() {
+  get maxZoom() {
     return this.options.maxZoom;
   }
 
-  setMaxZoom(maxZoom) {
+  set maxZoom(maxZoom) {
     this.options.maxZoom = maxZoom;
     this.setupZoomer();
   }

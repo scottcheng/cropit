@@ -272,7 +272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 
-	      this.setInitialZoom(this.options.initialZoom);
+	      this.initialZoom = this.options.initialZoom;
 
 	      this.imageLoaded = false;
 
@@ -400,7 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onImageLoaded',
 	    value: function onImageLoaded() {
-	      this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this.initialZoom);
+	      this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this._initialZoom);
 	      if (this.options.imageState && this.options.imageState.offset) {
 	        this.setOffset(this.options.imageState.offset);
 	      } else {
@@ -692,56 +692,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.zoom;
 	    }
 	  }, {
-	    key: 'getInitialZoom',
-	    value: function getInitialZoom() {
-	      return this.options.initialZoom;
-	    }
-	  }, {
-	    key: 'setInitialZoom',
-	    value: function setInitialZoom(initialZoomOption) {
-	      this.options.initialZoom = initialZoomOption;
-	      if (initialZoomOption === 'min') {
-	        this.initialZoom = 0; // Will be fixed when image loads
-	      } else if (initialZoomOption === 'image') {
-	        this.initialZoom = 1;
-	      } else {
-	        this.initialZoom = 0;
-	      }
-	    }
-	  }, {
-	    key: 'getExportZoom',
-	    value: function getExportZoom() {
-	      return this.options.exportZoom;
-	    }
-	  }, {
-	    key: 'setExportZoom',
-	    value: function setExportZoom(exportZoom) {
-	      this.options.exportZoom = exportZoom;
-	      this.setupZoomer();
-	    }
-	  }, {
-	    key: 'getMinZoom',
-	    value: function getMinZoom() {
-	      return this.options.minZoom;
-	    }
-	  }, {
-	    key: 'setMinZoom',
-	    value: function setMinZoom(minZoom) {
-	      this.options.minZoom = minZoom;
-	      this.setupZoomer();
-	    }
-	  }, {
-	    key: 'getMaxZoom',
-	    value: function getMaxZoom() {
-	      return this.options.maxZoom;
-	    }
-	  }, {
-	    key: 'setMaxZoom',
-	    value: function setMaxZoom(maxZoom) {
-	      this.options.maxZoom = maxZoom;
-	      this.setupZoomer();
-	    }
-	  }, {
 	    key: 'disable',
 	    value: function disable() {
 	      this.unbindListeners();
@@ -778,6 +728,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: this.image.width,
 	        height: this.image.height
 	      };
+	    }
+	  }, {
+	    key: 'initialZoom',
+	    get: function () {
+	      return this.options.initialZoom;
+	    },
+	    set: function (initialZoomOption) {
+	      this.options.initialZoom = initialZoomOption;
+	      if (initialZoomOption === 'min') {
+	        this._initialZoom = 0; // Will be fixed when image loads
+	      } else if (initialZoomOption === 'image') {
+	        this._initialZoom = 1;
+	      } else {
+	        this._initialZoom = 0;
+	      }
+	    }
+	  }, {
+	    key: 'exportZoom',
+	    get: function () {
+	      return this.options.exportZoom;
+	    },
+	    set: function (exportZoom) {
+	      this.options.exportZoom = exportZoom;
+	      this.setupZoomer();
+	    }
+	  }, {
+	    key: 'minZoom',
+	    get: function () {
+	      return this.options.minZoom;
+	    },
+	    set: function (minZoom) {
+	      this.options.minZoom = minZoom;
+	      this.setupZoomer();
+	    }
+	  }, {
+	    key: 'maxZoom',
+	    get: function () {
+	      return this.options.maxZoom;
+	    },
+	    set: function (maxZoom) {
+	      this.options.maxZoom = maxZoom;
+	      this.setupZoomer();
 	    }
 	  }, {
 	    key: 'previewSize',
