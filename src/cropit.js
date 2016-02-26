@@ -116,11 +116,11 @@ class Cropit {
     this.options.onFileChange(e);
 
     if (this.$fileInput.get(0).files) {
-      this.loadFileReader(this.$fileInput.get(0).files[0]);
+      this.loadFile(this.$fileInput.get(0).files[0]);
     }
   }
 
-  loadFileReader(file) {
+  loadFile(file) {
     const fileReader = new FileReader();
     if (file && file.type.match('image')) {
       fileReader.readAsDataURL(file);
@@ -154,7 +154,7 @@ class Cropit {
     files.some((file) => {
       if (!file.type.match('image')) { return false; }
 
-      this.loadFileReader(file);
+      this.loadFile(file);
       return true;
     });
 
@@ -167,7 +167,22 @@ class Cropit {
     this.options.onImageLoading();
     this.setImageLoadingClass();
 
-    this.preImage.src = imageSrc;
+    if (imageSrc.indexOf('data') === 0) {
+      this.preImage.src = imageSrc;
+    } else {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = (e) => {
+        if (e.target.status >= 300) {
+          this.onImageError.call(this, ERRORS.IMAGE_FAILED_TO_LOAD);
+          return;
+        }
+
+        this.loadFile(e.target.response);
+      };
+      xhr.open('GET', imageSrc);
+      xhr.responseType = 'blob';
+      xhr.send();
+    }
   }
 
   onPreImageLoaded() {

@@ -296,12 +296,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.options.onFileChange(e);
 
 	      if (this.$fileInput.get(0).files) {
-	        this.loadFileReader(this.$fileInput.get(0).files[0]);
+	        this.loadFile(this.$fileInput.get(0).files[0]);
 	      }
 	    }
 	  }, {
-	    key: 'loadFileReader',
-	    value: function loadFileReader(file) {
+	    key: 'loadFile',
+	    value: function loadFile(file) {
 	      var fileReader = new FileReader();
 	      if (file && file.type.match('image')) {
 	        fileReader.readAsDataURL(file);
@@ -342,7 +342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return false;
 	        }
 
-	        _this2.loadFileReader(file);
+	        _this2.loadFile(file);
 	        return true;
 	      });
 
@@ -351,6 +351,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'loadImage',
 	    value: function loadImage(imageSrc) {
+	      var _this3 = this;
+
 	      if (!imageSrc) {
 	        return;
 	      }
@@ -358,7 +360,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.options.onImageLoading();
 	      this.setImageLoadingClass();
 
-	      this.preImage.src = imageSrc;
+	      if (imageSrc.indexOf('data') === 0) {
+	        this.preImage.src = imageSrc;
+	      } else {
+	        var xhr = new XMLHttpRequest();
+	        xhr.onload = function (e) {
+	          if (e.target.status >= 300) {
+	            _this3.onImageError.call(_this3, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
+	            return;
+	          }
+
+	          _this3.loadFile(e.target.response);
+	        };
+	        xhr.open('GET', imageSrc);
+	        xhr.responseType = 'blob';
+	        xhr.send();
+	      }
 	    }
 	  }, {
 	    key: 'onPreImageLoaded',
