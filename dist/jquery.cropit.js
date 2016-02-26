@@ -559,7 +559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (newZoom === this.zoom) {
 	        return;
 	      }
-	      this.setZoom(newZoom);
+	      this.zoom = newZoom;
 	    }
 	  }, {
 	    key: 'enableZoomSlider',
@@ -584,46 +584,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        minZoom: this.options.minZoom,
 	        smallImage: this.options.smallImage
 	      });
-	      this.setZoom((0, _utils.exists)(zoom) ? zoom : this.zoom);
+	      this.zoom = (0, _utils.exists)(zoom) ? zoom : this._zoom;
 
 	      if (this.isZoomable()) {
 	        this.enableZoomSlider();
 	      } else {
 	        this.disableZoomSlider();
 	      }
-	    }
-	  }, {
-	    key: 'setZoom',
-	    value: function setZoom(newZoom) {
-	      newZoom = this.fixZoom(newZoom);
-
-	      var updatedWidth = (0, _utils.round)(this.image.width * newZoom);
-	      var updatedHeight = (0, _utils.round)(this.image.height * newZoom);
-
-	      if (this.imageLoaded) {
-	        var oldZoom = this.zoom;
-
-	        var newX = this.previewSize.width / 2 - (this.previewSize.width / 2 - this.offset.x) * newZoom / oldZoom;
-	        var newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
-
-	        this.zoom = newZoom;
-	        this.setOffset({ x: newX, y: newY });
-	      } else {
-	        this.zoom = newZoom;
-	      }
-
-	      this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
-	      this.$zoomSlider.val(this.zoomSliderPos);
-
-	      this.$preview.css('background-size', '' + updatedWidth + 'px ' + updatedHeight + 'px');
-	      if (this.options.imageBackground) {
-	        this.$imageBg.css({
-	          width: updatedWidth,
-	          height: updatedHeight
-	        });
-	      }
-
-	      this.options.onZoomChange(newZoom);
 	    }
 	  }, {
 	    key: 'fixZoom',
@@ -687,11 +654,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.offset;
 	    }
 	  }, {
-	    key: 'getZoom',
-	    value: function getZoom() {
-	      return this.zoom;
-	    }
-	  }, {
 	    key: 'disable',
 	    value: function disable() {
 	      this.unbindListeners();
@@ -712,6 +674,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return null;
 	      }
 	      return this.$el.find(selector);
+	    }
+	  }, {
+	    key: 'zoom',
+	    set: function (newZoom) {
+	      newZoom = this.fixZoom(newZoom);
+
+	      var updatedWidth = (0, _utils.round)(this.image.width * newZoom);
+	      var updatedHeight = (0, _utils.round)(this.image.height * newZoom);
+
+	      if (this.imageLoaded) {
+	        var oldZoom = this.zoom;
+
+	        var newX = this.previewSize.width / 2 - (this.previewSize.width / 2 - this.offset.x) * newZoom / oldZoom;
+	        var newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
+
+	        this._zoom = newZoom;
+	        this.setOffset({ x: newX, y: newY });
+	      } else {
+	        this._zoom = newZoom;
+	      }
+
+	      this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
+	      this.$zoomSlider.val(this.zoomSliderPos);
+
+	      this.$preview.css('background-size', '' + updatedWidth + 'px ' + updatedHeight + 'px');
+	      if (this.options.imageBackground) {
+	        this.$imageBg.css({
+	          width: updatedWidth,
+	          height: updatedHeight
+	        });
+	      }
+
+	      this.options.onZoomChange(newZoom);
+	    },
+	    get: function () {
+	      return this._zoom;
 	    }
 	  }, {
 	    key: 'imageSrc',

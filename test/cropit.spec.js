@@ -259,28 +259,28 @@ describe('Cropit', () => {
     describe('fixes x', () => {
       it('fits image to left if image width is less than preview', () => {
         cropit.image = { width: 1 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ x: -1 });
         expect(offset.x).toBe(0);
       });
 
       it('fits image to left', () => {
         cropit.image = { width: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ x: 1 });
         expect(offset.x).toBe(0);
       });
 
       it('fits image to right', () => {
         cropit.image = { width: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ x: -2 });
         expect(offset.x).toBe(-1);
       });
 
       it('rounds x', () => {
         cropit.image = { width: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ x: -0.12121 });
         expect(offset.x).toBe(-0.12);
       });
@@ -289,28 +289,28 @@ describe('Cropit', () => {
     describe('fixes y', () => {
       it('fits image to top if image height is less than preview', () => {
         cropit.image = { height: 1 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ y: -1 });
         expect(offset.y).toBe(0);
       });
 
       it('fits image to top', () => {
         cropit.image = { height: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ y: 1 });
         expect(offset.y).toBe(0);
       });
 
       it('fits image to bottom', () => {
         cropit.image = { height: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ y: -2 });
         expect(offset.y).toBe(-1);
       });
 
       it('rounds y', () => {
         cropit.image = { height: 4 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         const offset = cropit.fixOffset({ y: -0.12121 });
         expect(offset.y).toBe(-0.12);
       });
@@ -322,7 +322,7 @@ describe('Cropit', () => {
       cropit = newCropit({ width: 4, height: 2 });
       cropit.imageLoaded = true;
       cropit.image = { width: 12, height: 8 };
-      cropit.zoom = 0.5;
+      cropit._zoom = 0.5;
 
       cropit.setOffset({ x: 0, y: 1 });
       expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
@@ -364,7 +364,7 @@ describe('Cropit', () => {
       cropit = newCropit();
       cropit.image = { src: IMAGE_DATA };
       cropit.offset = { x: -1, y: -1 };
-      cropit.zoom = 0.5;
+      cropit._zoom = 0.5;
       const imageState = cropit.getImageState();
       expect(imageState.src).toBe(IMAGE_DATA);
       expect(imageState.offset).toEqual({ x: -1, y: -1 });
@@ -377,14 +377,6 @@ describe('Cropit', () => {
       cropit = newCropit();
       cropit.offset = { x: -2, y: -2 };
       expect(cropit.getOffset()).toEqual({ x: -2, y: -2 });
-    });
-  });
-
-  describe('#getZoom', () => {
-    it('returns zoom', () => {
-      cropit = newCropit();
-      cropit.zoom = 0.75;
-      expect(cropit.getZoom()).toBe(0.75);
     });
   });
 

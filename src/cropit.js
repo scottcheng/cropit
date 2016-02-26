@@ -336,7 +336,7 @@ class Cropit {
     this.zoomSliderPos = Number(this.$zoomSlider.val());
     const newZoom = this.zoomer.getZoom(this.zoomSliderPos);
     if (newZoom === this.zoom) { return; }
-    this.setZoom(newZoom);
+    this.zoom = newZoom;
   }
 
   enableZoomSlider() {
@@ -358,7 +358,7 @@ class Cropit {
       minZoom: this.options.minZoom,
       smallImage: this.options.smallImage,
     });
-    this.setZoom(exists(zoom) ? zoom : this.zoom);
+    this.zoom = exists(zoom) ? zoom : this._zoom;
 
     if (this.isZoomable()) {
       this.enableZoomSlider();
@@ -368,7 +368,7 @@ class Cropit {
     }
   }
 
-  setZoom(newZoom) {
+  set zoom(newZoom) {
     newZoom = this.fixZoom(newZoom);
 
     const updatedWidth = round(this.image.width * newZoom);
@@ -380,11 +380,11 @@ class Cropit {
       const newX = this.previewSize.width / 2 - (this.previewSize.width / 2 - this.offset.x) * newZoom / oldZoom;
       const newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
-      this.zoom = newZoom;
+      this._zoom = newZoom;
       this.setOffset({ x: newX, y: newY });
     }
     else {
-      this.zoom = newZoom;
+      this._zoom = newZoom;
     }
 
     this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
@@ -469,8 +469,8 @@ class Cropit {
     return this.offset;
   }
 
-  getZoom() {
-    return this.zoom;
+  get zoom() {
+    return this._zoom;
   }
 
   get imageSize() {

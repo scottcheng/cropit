@@ -203,7 +203,7 @@ describe('Cropit View', () => {
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
-          cropit.zoom = 1;
+          cropit._zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
 
@@ -285,7 +285,7 @@ describe('Cropit View', () => {
           cropit = $el.data(PLUGIN_KEY);
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
-          cropit.zoom = 1;
+          cropit._zoom = 1;
           cropit.setOffset({ x: 0, y: 0 });
           spyOn(cropit, 'setOffset');
 
@@ -313,7 +313,7 @@ describe('Cropit View', () => {
         $el.cropit({ width: 2, height: 2 });
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { width: 8, height: 6 };
-        cropit.zoom = 1;
+        cropit._zoom = 1;
         cropit.imageLoaded = true;
       });
 
@@ -359,7 +359,7 @@ describe('Cropit View', () => {
           $el.cropit({ width: 2, height: 2 });
           cropit = $el.data(PLUGIN_KEY);
           cropit.image = { width: 8, height: 6 };
-          cropit.zoom = 1;
+          cropit._zoom = 1;
           cropit.imageLoaded = true;
           cropit.setZoom = () => {};
         });
@@ -373,17 +373,10 @@ describe('Cropit View', () => {
           cropit.onZoomSliderChange();
           expect(cropit.zoomSliderPos).toBe(1);
         });
-
-        it('calls setZoom', () => {
-          spyOn(cropit, 'setZoom');
-          cropit.zoomer.getZoom = jest.genMockFunction().mockReturnValueOnce(0.5);
-          cropit.onZoomSliderChange();
-          expect(cropit.setZoom).toHaveBeenCalled();
-        });
       });
     });
 
-    describe('#setZoom', () => {
+    describe('#set zoom', () => {
       let $preview = null;
 
       beforeEach(() => {
@@ -391,7 +384,7 @@ describe('Cropit View', () => {
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { width: 8, height: 12 };
         cropit.offset = { x: 0, y: 0 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         cropit.imageLoaded = true;
         cropit.zoomer.minZoom = 0.5;
         cropit.zoomer.maxZoom = 1;
@@ -405,7 +398,7 @@ describe('Cropit View', () => {
         expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
         expect($preview.css('backgroundSize')).not.toBe('8px 12px');
 
-        cropit.setZoom(1);
+        cropit.zoom = 1;
         expect(cropit.zoom).toBe(1);
         expect(cropit.offset).toEqual({ x: -1, y: -1 });
         expect($preview.css('backgroundPosition')).toBe('-1px -1px');
@@ -418,7 +411,7 @@ describe('Cropit View', () => {
         expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
         expect($preview.css('backgroundSize')).not.toBe('8px 12px');
 
-        cropit.setZoom(1.5);
+        cropit.zoom = 1.5;
         expect(cropit.zoom).toBe(1);
         expect(cropit.offset).toEqual({ x: -1, y: -1 });
         expect($preview.css('backgroundPosition')).toBe('-1px -1px');
@@ -497,7 +490,7 @@ describe('Cropit View', () => {
         $el.cropit({ width: 2, height: 2, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { width: 8, height: 6 };
-        cropit.zoom = 1;
+        cropit._zoom = 1;
 
         const $imageBg = $el.find('img.cropit-image-background');
         expect($imageBg.css('left')).not.toBe('-1px');
@@ -517,7 +510,7 @@ describe('Cropit View', () => {
         });
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { width: 8, height: 6 };
-        cropit.zoom = 1;
+        cropit._zoom = 1;
 
         const $imageBg = $el.find('img.cropit-image-background');
         expect($imageBg.css('left')).not.toBe('-1px');
@@ -535,7 +528,7 @@ describe('Cropit View', () => {
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { width: 8, height: 12 };
         cropit.offset = { x: 0, y: 0 };
-        cropit.zoom = 0.5;
+        cropit._zoom = 0.5;
         cropit.imageLoaded = true;
         cropit.zoomer.minZoom = 0.5;
         cropit.zoomer.maxZoom = 1;
@@ -544,7 +537,7 @@ describe('Cropit View', () => {
         expect($imageBg.width()).not.toBe(8);
         expect($imageBg.height()).not.toBe(12);
 
-        cropit.setZoom(1);
+        cropit.zoom = 1;
         expect($imageBg.width()).toBe(8);
         expect($imageBg.height()).toBe(12);
       });
