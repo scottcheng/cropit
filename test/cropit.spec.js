@@ -359,13 +359,13 @@ describe('Cropit', () => {
     });
   });
 
-  describe('#getImageState', () => {
+  describe('#get imageState', () => {
     it('returns image state', () => {
       cropit = newCropit();
       cropit.image = { src: IMAGE_DATA };
       cropit.offset = { x: -1, y: -1 };
       cropit._zoom = 0.5;
-      const imageState = cropit.getImageState();
+      const imageState = cropit.imageState;
       expect(imageState.src).toBe(IMAGE_DATA);
       expect(imageState.offset).toEqual({ x: -1, y: -1 });
       expect(imageState.zoom).toBe(0.5);

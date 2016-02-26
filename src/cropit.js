@@ -449,7 +449,7 @@ class Cropit {
     return canvas.toDataURL(exportOptions.type, exportOptions.quality);
   }
 
-  getImageState() {
+  get imageState() {
     return {
       src: this.image.src,
       offset: this.offset,

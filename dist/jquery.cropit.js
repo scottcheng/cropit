@@ -116,35 +116,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return callOnFirst(this, 'getCroppedImageData', options);
 	  },
 
-	  imageState: function imageState() {
-	    return callOnFirst(this, 'getImageState');
-	  },
-
-	  imageSize: function imageSize() {
-	    return callOnFirst(this, 'getImageSize');
-	  },
-
 	  prop: function prop(name, value) {
 	    var capitalizedName = (0, _utils.capitalize)(name);
 	    if ((0, _utils.exists)(value)) {
 	      return applyOnEach(this, function (cropit) {
-	        if (_cropit2['default'].prototype['set' + capitalizedName]) {
-	          // This is an interim solution.
-	          // Remove when all properties are moved to getters/setters.
-	          cropit['set' + capitalizedName](value);
-	        } else {
-	          cropit[name] = value;
-	        }
+	        cropit[name] = value;
 	      });
 	    } else {
-	      if (_cropit2['default'].prototype['get' + capitalizedName]) {
-	        // This is an interim solution.
-	        // Remove when all properties are moved to getters/setters.
-	        return callOnFirst(this, 'get' + capitalizedName);
-	      } else {
-	        var cropit = this.first().data(_constants.PLUGIN_KEY);
-	        return cropit[name];
-	      }
+	      var cropit = this.first().data(_constants.PLUGIN_KEY);
+	      return cropit[name];
 	    }
 	  },
 
@@ -164,7 +144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	_jquery2['default'].fn.cropit = function (method) {
 	  if (methods[method]) {
 	    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-	  } else if (['imageSrc', 'offset', 'previewSize', 'zoom', 'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
+	  } else if (['imageState', 'imageSrc', 'offset', 'previewSize', 'imageSize', 'zoom', 'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
 	    return methods.prop.apply(this, arguments);
 	  } else {
 	    return methods.init.apply(this, arguments);
@@ -622,15 +602,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
 	  }, {
-	    key: 'getImageState',
-	    value: function getImageState() {
-	      return {
-	        src: this.image.src,
-	        offset: this.offset,
-	        zoom: this.zoom
-	      };
-	    }
-	  }, {
 	    key: 'disable',
 	    value: function disable() {
 	      this.unbindListeners();
@@ -708,6 +679,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    get: function () {
 	      return this._zoom;
+	    }
+	  }, {
+	    key: 'imageState',
+	    get: function () {
+	      return {
+	        src: this.image.src,
+	        offset: this.offset,
+	        zoom: this.zoom
+	      };
 	    }
 	  }, {
 	    key: 'imageSrc',

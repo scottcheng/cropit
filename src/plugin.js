@@ -45,38 +45,16 @@ const methods = {
     return callOnFirst(this, 'getCroppedImageData', options);
   },
 
-  imageState() {
-    return callOnFirst(this, 'getImageState');
-  },
-
-  imageSize() {
-    return callOnFirst(this, 'getImageSize');
-  },
-
   prop(name, value) {
     const capitalizedName = capitalize(name);
     if (exists(value)) {
       return applyOnEach(this, (cropit) => {
-        if (Cropit.prototype[`set${capitalizedName}`]) {
-          // This is an interim solution.
-          // Remove when all properties are moved to getters/setters.
-          cropit[`set${capitalizedName}`](value);
-        }
-        else {
-          cropit[name] = value;
-        }
+        cropit[name] = value;
       });
     }
     else {
-      if (Cropit.prototype[`get${capitalizedName}`]) {
-        // This is an interim solution.
-        // Remove when all properties are moved to getters/setters.
-        return callOnFirst(this, `get${capitalizedName}`);
-      }
-      else {
-        const cropit = this.first().data(PLUGIN_KEY);
-        return cropit[name];
-      }
+      const cropit = this.first().data(PLUGIN_KEY);
+      return cropit[name];
     }
   },
 
@@ -97,7 +75,7 @@ $.fn.cropit = function(method) {
   if (methods[method]) {
     return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
   }
-  else if (['imageSrc', 'offset', 'previewSize', 'zoom',
+  else if (['imageState', 'imageSrc', 'offset', 'previewSize', 'imageSize', 'zoom',
             'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
     return methods.prop.apply(this, arguments);
   }
