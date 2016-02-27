@@ -24,8 +24,8 @@ class Cropit {
       this.onImageError.call(this, ERRORS.IMAGE_FAILED_TO_LOAD);
     };
 
+    this.$preview = this.options.$preview.css('position', 'relative');
     this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
-    this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
     this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
     this.previewSize = {
@@ -33,45 +33,66 @@ class Cropit {
       height: this.options.height || this.$preview.height(),
     };
 
+    this.$image = $('<img />')
+      .addClass(CLASS_NAMES.PREVIEW_IMAGE)
+      .attr('alt', '')
+      .css({
+        transformOrigin: 'top left',
+        webkitTransformOrigin: 'top left',
+        willChange: 'transform',
+      });
+    const $imageContainer = $('<div />')
+      .addClass(CLASS_NAMES.PREVIEW_IMAGE_CONTAINER)
+      .css({
+        position: 'absolute',
+        overflow: 'hidden',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+      })
+      .append(this.$image);
+    this.$preview.append($imageContainer);
+
     if (this.options.imageBackground) {
       if ($.isArray(this.options.imageBackgroundBorderWidth)) {
-        this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
+        this.bgBorderWidthArray = this.options.imageBackgroundBorderWidth;
       }
       else {
-        this.imageBgBorderWidthArray = [];
-        [0, 1, 2, 3].forEach((i) => {
-          this.imageBgBorderWidthArray[i] = this.options.imageBackgroundBorderWidth;
-        });
+        this.bgBorderWidthArray = [0, 1, 2, 3].map(() => this.options.imageBackgroundBorderWidth);
       }
 
-      const $previewContainer = this.options.$previewContainer;
-      this.$imageBg = $('<img />')
-        .addClass(CLASS_NAMES.IMAGE_BACKGROUND)
+      this.$bg = $('<img />')
+        .addClass(CLASS_NAMES.PREVIEW_BACKGROUND)
         .attr('alt', '')
-        .css('position', 'absolute');
-      this.$imageBgContainer = $('<div />')
-        .addClass(CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER)
+        .css({
+          position: 'relative',
+          left: this.bgBorderWidthArray[3],
+          top: this.bgBorderWidthArray[0],
+          transformOrigin: 'top left',
+          webkitTransformOrigin: 'top left',
+          willChange: 'transform',
+        });
+      this.$bgContainer = $('<div />')
+        .addClass(CLASS_NAMES.PREVIEW_BACKGROUND_CONTAINER)
         .css({
           position: 'absolute',
           zIndex: 0,
-          left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
-          top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
-          width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-          height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
+          top: -this.bgBorderWidthArray[0],
+          right: -this.bgBorderWidthArray[1],
+          bottom: -this.bgBorderWidthArray[2],
+          left: -this.bgBorderWidthArray[3],
         })
-        .append(this.$imageBg);
-      if (this.imageBgBorderWidthArray[0] > 0) {
-        this.$imageBgContainer.css('overflow', 'hidden');
+        .append(this.$bg);
+      if (this.bgBorderWidthArray[0] > 0) {
+        this.$bgContainer.css('overflow', 'hidden');
       }
-      $previewContainer
-        .css('position', 'relative')
-        .prepend(this.$imageBgContainer);
-      this.$preview.css('position', 'relative');
+      this.$preview.prepend(this.$bgContainer);
 
       this.$preview.hover(() => {
-        this.$imageBg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
+        this.$bg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
       }, () => {
-        this.$imageBg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
+        this.$bg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
       });
     }
 
@@ -169,7 +190,8 @@ class Cropit {
 
     if (imageSrc.indexOf('data') === 0) {
       this.preImage.src = imageSrc;
-    } else {
+    }
+    else {
       const xhr = new XMLHttpRequest();
       xhr.onload = (e) => {
         if (e.target.status >= 300) {
@@ -212,9 +234,9 @@ class Cropit {
 
     this.options.imageState = {};
 
-    this.$preview.css('background-image', `url(${this.image.src})`);
+    this.$image.attr('src', this.image.src);
     if (this.options.imageBackground) {
-      this.$imageBg.attr('src', this.image.src);
+      this.$bg.attr('src', this.image.src);
     }
 
     this.setImageLoadedClass();
@@ -294,13 +316,7 @@ class Cropit {
     if (!position || !exists(position.x) || !exists(position.y)) { return; }
 
     this._offset = this.fixOffset(position);
-    this.$preview.css('background-position', `${this.offset.x}px ${this.offset.y}px`);
-    if (this.options.imageBackground) {
-      this.$imageBg.css({
-        left: this.offset.x + this.imageBgBorderWidthArray[3],
-        top: this.offset.y + this.imageBgBorderWidthArray[0],
-      });
-    }
+    this.renderImage();
 
     this.options.onOffsetChange(position);
   }
@@ -386,9 +402,6 @@ class Cropit {
   set zoom(newZoom) {
     newZoom = this.fixZoom(newZoom);
 
-    const updatedWidth = round(this.image.width * newZoom);
-    const updatedHeight = round(this.image.height * newZoom);
-
     if (this.imageLoaded) {
       const oldZoom = this.zoom;
 
@@ -396,7 +409,7 @@ class Cropit {
       const newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
       this._zoom = newZoom;
-      this.offset = { x: newX, y: newY };
+      this.offset = { x: newX, y: newY }; // Triggers renderImage()
     }
     else {
       this._zoom = newZoom;
@@ -404,14 +417,6 @@ class Cropit {
 
     this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
     this.$zoomSlider.val(this.zoomSliderPos);
-
-    this.$preview.css('background-size', `${updatedWidth}px ${updatedHeight}px`);
-    if (this.options.imageBackground) {
-      this.$imageBg.css({
-        width: updatedWidth,
-        height: updatedHeight,
-      });
-    }
 
     this.options.onZoomChange(newZoom);
   }
@@ -422,6 +427,21 @@ class Cropit {
 
   isZoomable() {
     return this.zoomer.isZoomable();
+  }
+
+  renderImage() {
+    const transformation = `translate(${this.offset.x}px, ${this.offset.y}px) scale(${this.zoom})`;
+
+    this.$image.css({
+      transform: transformation,
+      webkitTransform: transformation,
+    });
+    if (this.options.imageBackground) {
+      this.$bg.css({
+        transform: transformation,
+        webkitTransform: transformation,
+      });
+    }
   }
 
   getCroppedImageData(exportOptions) {
@@ -554,13 +574,6 @@ class Cropit {
       width: this.previewSize.width,
       height: this.previewSize.height,
     });
-
-    if (this.options.imageBackground && this.$imageBgContainer) {
-      this.$imageBgContainer.css({
-        width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-        height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2],
-      });
-    }
 
     if (this.imageLoaded) {
       this.setupZoomer();

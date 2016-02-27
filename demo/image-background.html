@@ -6,7 +6,7 @@
     <script src="../dist/jquery.cropit.js"></script>
 
     <style>
-      .cropit-image-preview {
+      .cropit-preview {
         background-color: #f8f8f8;
         background-size: cover;
         border: 5px solid #ccc;
@@ -17,7 +17,7 @@
         cursor: move;
       }
 
-      .cropit-image-background {
+      .cropit-preview-background {
         opacity: .2;
         cursor: auto;
       }
@@ -41,10 +41,7 @@
   <body>
     <div class="image-editor">
       <input type="file" class="cropit-image-input">
-      <!-- .cropit-image-preview-container is needed for background image to work -->
-      <div class="cropit-image-preview-container">
-        <div class="cropit-image-preview"></div>
-      </div>
+      <div class="cropit-preview"></div>
       <div class="image-size-label">
         Resize image
       </div>

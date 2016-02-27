@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 import Cropit from './cropit';
 import { PLUGIN_KEY } from './constants';
-import { exists, capitalize } from './utils';
+import { exists } from './utils';
 
 const applyOnEach = ($el, callback) => {
   return $el.each(function() {
@@ -46,7 +46,6 @@ const methods = {
   },
 
   prop(name, value) {
-    const capitalizedName = capitalize(name);
     if (exists(value)) {
       return applyOnEach(this, (cropit) => {
         cropit[name] = value;

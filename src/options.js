@@ -17,11 +17,6 @@ const options = {
       description: 'Range input element that controls image zoom.',
       defaultSelector: `input.${CLASS_NAMES.ZOOM_SLIDER}`,
     },
-    {
-      name: '$previewContainer',
-      description: 'Preview container. Only needed when `imageBackground` is true.',
-      defaultSelector: `.${CLASS_NAMES.PREVIEW_CONTAINER}`,
-    },
   ].map((o) => {
     o.type = 'jQuery element';
     o.default = `$imageCropper.find('${o.defaultSelector}')`;

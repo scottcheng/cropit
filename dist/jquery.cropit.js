@@ -117,7 +117,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  prop: function prop(name, value) {
-	    var capitalizedName = (0, _utils.capitalize)(name);
 	    if ((0, _utils.exists)(value)) {
 	      return applyOnEach(this, function (cropit) {
 	        cropit[name] = value;
@@ -210,8 +209,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.onImageError.call(_this, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
 	      };
 
+	      this.$preview = this.options.$preview.css('position', 'relative');
 	      this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
-	      this.$preview = this.options.$preview.css({ backgroundRepeat: 'no-repeat' });
 	      this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
 	      this.previewSize = {
@@ -219,36 +218,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height: this.options.height || this.$preview.height()
 	      };
 
+	      this.$image = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE).attr('alt', '').css({
+	        transformOrigin: 'top left',
+	        webkitTransformOrigin: 'top left',
+	        willChange: 'transform'
+	      });
+	      var $imageContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE_CONTAINER).css({
+	        position: 'absolute',
+	        overflow: 'hidden',
+	        left: 0,
+	        top: 0,
+	        width: '100%',
+	        height: '100%'
+	      }).append(this.$image);
+	      this.$preview.append($imageContainer);
+
 	      if (this.options.imageBackground) {
 	        if (_jquery2['default'].isArray(this.options.imageBackgroundBorderWidth)) {
-	          this.imageBgBorderWidthArray = this.options.imageBackgroundBorderWidth;
+	          this.bgBorderWidthArray = this.options.imageBackgroundBorderWidth;
 	        } else {
-	          this.imageBgBorderWidthArray = [];
-	          [0, 1, 2, 3].forEach(function (i) {
-	            _this.imageBgBorderWidthArray[i] = _this.options.imageBackgroundBorderWidth;
+	          this.bgBorderWidthArray = [0, 1, 2, 3].map(function () {
+	            return _this.options.imageBackgroundBorderWidth;
 	          });
 	        }
 
-	        var $previewContainer = this.options.$previewContainer;
-	        this.$imageBg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND).attr('alt', '').css('position', 'absolute');
-	        this.$imageBgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.IMAGE_BACKGROUND_CONTAINER).css({
+	        this.$bg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND).attr('alt', '').css({
+	          position: 'relative',
+	          left: this.bgBorderWidthArray[3],
+	          top: this.bgBorderWidthArray[0],
+	          transformOrigin: 'top left',
+	          webkitTransformOrigin: 'top left',
+	          willChange: 'transform'
+	        });
+	        this.$bgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND_CONTAINER).css({
 	          position: 'absolute',
 	          zIndex: 0,
-	          left: -this.imageBgBorderWidthArray[3] + window.parseInt(this.$preview.css('border-left-width') || 0),
-	          top: -this.imageBgBorderWidthArray[0] + window.parseInt(this.$preview.css('border-top-width') || 0),
-	          width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-	          height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2]
-	        }).append(this.$imageBg);
-	        if (this.imageBgBorderWidthArray[0] > 0) {
-	          this.$imageBgContainer.css('overflow', 'hidden');
+	          top: -this.bgBorderWidthArray[0],
+	          right: -this.bgBorderWidthArray[1],
+	          bottom: -this.bgBorderWidthArray[2],
+	          left: -this.bgBorderWidthArray[3]
+	        }).append(this.$bg);
+	        if (this.bgBorderWidthArray[0] > 0) {
+	          this.$bgContainer.css('overflow', 'hidden');
 	        }
-	        $previewContainer.css('position', 'relative').prepend(this.$imageBgContainer);
-	        this.$preview.css('position', 'relative');
+	        this.$preview.prepend(this.$bgContainer);
 
 	        this.$preview.hover(function () {
-	          _this.$imageBg.addClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
+	          _this.$bg.addClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
 	        }, function () {
-	          _this.$imageBg.removeClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
+	          _this.$bg.removeClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
 	        });
 	      }
 
@@ -406,9 +424,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.options.imageState = {};
 
-	      this.$preview.css('background-image', 'url(' + this.image.src + ')');
+	      this.$image.attr('src', this.image.src);
 	      if (this.options.imageBackground) {
-	        this.$imageBg.attr('src', this.image.src);
+	        this.$bg.attr('src', this.image.src);
 	      }
 
 	      this.setImageLoadedClass();
@@ -582,6 +600,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.zoomer.isZoomable();
 	    }
 	  }, {
+	    key: 'renderImage',
+	    value: function renderImage() {
+	      var transformation = 'translate(' + this.offset.x + 'px, ' + this.offset.y + 'px) scale(' + this.zoom + ')';
+
+	      this.$image.css({
+	        transform: transformation,
+	        webkitTransform: transformation
+	      });
+	      if (this.options.imageBackground) {
+	        this.$bg.css({
+	          transform: transformation,
+	          webkitTransform: transformation
+	        });
+	      }
+	    }
+	  }, {
 	    key: 'getCroppedImageData',
 	    value: function getCroppedImageData(exportOptions) {
 	      if (!this.image.src) {
@@ -648,13 +682,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      this._offset = this.fixOffset(position);
-	      this.$preview.css('background-position', '' + this.offset.x + 'px ' + this.offset.y + 'px');
-	      if (this.options.imageBackground) {
-	        this.$imageBg.css({
-	          left: this.offset.x + this.imageBgBorderWidthArray[3],
-	          top: this.offset.y + this.imageBgBorderWidthArray[0]
-	        });
-	      }
+	      this.renderImage();
 
 	      this.options.onOffsetChange(position);
 	    },
@@ -666,9 +694,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    set: function (newZoom) {
 	      newZoom = this.fixZoom(newZoom);
 
-	      var updatedWidth = (0, _utils.round)(this.image.width * newZoom);
-	      var updatedHeight = (0, _utils.round)(this.image.height * newZoom);
-
 	      if (this.imageLoaded) {
 	        var oldZoom = this.zoom;
 
@@ -676,21 +701,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var newY = this.previewSize.height / 2 - (this.previewSize.height / 2 - this.offset.y) * newZoom / oldZoom;
 
 	        this._zoom = newZoom;
-	        this.offset = { x: newX, y: newY };
+	        this.offset = { x: newX, y: newY }; // Triggers renderImage()
 	      } else {
 	        this._zoom = newZoom;
 	      }
 
 	      this.zoomSliderPos = this.zoomer.getSliderPos(this.zoom);
 	      this.$zoomSlider.val(this.zoomSliderPos);
-
-	      this.$preview.css('background-size', '' + updatedWidth + 'px ' + updatedHeight + 'px');
-	      if (this.options.imageBackground) {
-	        this.$imageBg.css({
-	          width: updatedWidth,
-	          height: updatedHeight
-	        });
-	      }
 
 	      this.options.onZoomChange(newZoom);
 	    },
@@ -782,13 +799,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: this.previewSize.width,
 	        height: this.previewSize.height
 	      });
-
-	      if (this.options.imageBackground && this.$imageBgContainer) {
-	        this.$imageBgContainer.css({
-	          width: this.previewSize.width + this.imageBgBorderWidthArray[1] + this.imageBgBorderWidthArray[3],
-	          height: this.previewSize.height + this.imageBgBorderWidthArray[0] + this.imageBgBorderWidthArray[2]
-	        });
-	      }
 
 	      if (this.imageLoaded) {
 	        this.setupZoomer();
@@ -901,12 +911,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.PLUGIN_KEY = PLUGIN_KEY;
 	var CLASS_NAMES = {
-	  PREVIEW: 'cropit-image-preview',
-	  PREVIEW_CONTAINER: 'cropit-image-preview-container',
+	  PREVIEW: 'cropit-preview',
+	  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
+	  PREVIEW_IMAGE: 'cropit-preview-image',
+	  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
+	  PREVIEW_BACKGROUND: 'cropit-preview-background',
 	  FILE_INPUT: 'cropit-image-input',
 	  ZOOM_SLIDER: 'cropit-image-zoom-input',
-	  IMAGE_BACKGROUND: 'cropit-image-background',
-	  IMAGE_BACKGROUND_CONTAINER: 'cropit-image-background-container',
+
 	  PREVIEW_HOVERED: 'cropit-preview-hovered',
 	  DRAG_HOVERED: 'cropit-drag-hovered',
 	  IMAGE_LOADING: 'cropit-image-loading',
@@ -956,10 +968,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name: '$zoomSlider',
 	    description: 'Range input element that controls image zoom.',
 	    defaultSelector: 'input.' + _constants.CLASS_NAMES.ZOOM_SLIDER
-	  }, {
-	    name: '$previewContainer',
-	    description: 'Preview container. Only needed when `imageBackground` is true.',
-	    defaultSelector: '.' + _constants.CLASS_NAMES.PREVIEW_CONTAINER
 	  }].map(function (o) {
 	    o.type = 'jQuery element';
 	    o['default'] = '$imageCropper.find(\'' + o.defaultSelector + '\')';
@@ -1123,12 +1131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var round = function round(x) {
 	  return +(Math.round(x * 100) + 'e-2');
 	};
-
 	exports.round = round;
-	var capitalize = function capitalize(s) {
-	  return s.charAt(0).toUpperCase() + s.slice(1);
-	};
-	exports.capitalize = capitalize;
 
 /***/ }
 /******/ ])

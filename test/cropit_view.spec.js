@@ -8,11 +8,10 @@ jest
 import fs from 'fs';
 import $ from 'jquery';
 
-import { PLUGIN_KEY } from '../src/constants';
+import { CLASS_NAMES, PLUGIN_KEY } from '../src/constants';
 import Cropit from '../src/cropit';
 import '../src/plugin';
 
-const IMAGE_URL = 'http://example.com/image.jpg';
 const IMAGE_DATA = 'data:image/png;base64,image-data...';
 
 const FIXTURES = {
@@ -32,7 +31,7 @@ describe('Cropit View', () => {
   describe('basic', () => {
     describe('#init', () => {
       it('sets preview size from options', () => {
-        const $preview = $el.find('.cropit-image-preview');
+        const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
         $preview.css({ width: 1, height: 1 });
         expect($preview.width()).not.toBe(2);
         expect($preview.height()).not.toBe(2);
@@ -42,17 +41,8 @@ describe('Cropit View', () => {
         expect($preview.height()).toBe(2);
       });
 
-      it('sets preview background-repeat to no-repeat', () => {
-        const $preview = $el.find('.cropit-image-preview');
-        $preview.css({ backgroundRepeat: 'repeat' });
-        expect($preview.css('background-repeat')).not.toBe('no-repeat');
-
-        $el.cropit();
-        expect($preview.css('background-repeat')).toBe('no-repeat');
-      });
-
       it('sets min, max and step attributes on zoom slider', () => {
-        const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+        const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
         $zoomSlider.attr({ min: 2, max: 3, step: 0.5 });
         expect($zoomSlider.attr('min')).not.toBe('0');
         expect($zoomSlider.attr('max')).not.toBe('1');
@@ -69,7 +59,7 @@ describe('Cropit View', () => {
       it('is invoked when file input changes', () => {
         spyOn(Cropit.prototype, 'onFileChange');
         $el.cropit();
-        const $fileInput = $el.find('input.cropit-image-input');
+        const $fileInput = $el.find(`.${CLASS_NAMES.FILE_INPUT}`);
 
         $fileInput.trigger('change');
         expect(Cropit.prototype.onFileChange).toHaveBeenCalled();
@@ -104,12 +94,12 @@ describe('Cropit View', () => {
           cropit.image = { src: IMAGE_DATA };
         });
 
-        it('sets preview background', () => {
-          const $preview = $el.find('.cropit-image-preview');
-          expect($preview.css('backgroundImage')).not.toBe(`url(${IMAGE_DATA})`);
+        it('sets preview image', () => {
+          const $image = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE}`);
+          expect($image.attr('src')).not.toBe(IMAGE_DATA);
 
           cropit.onImageLoaded();
-          expect($preview.css('backgroundImage')).toBe(`url(${IMAGE_DATA})`);
+          expect($image.attr('src')).toBe(IMAGE_DATA);
         });
 
         it('sets up zoomer', () => {
@@ -120,7 +110,7 @@ describe('Cropit View', () => {
         });
 
         it('updates zoom slider', () => {
-          const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+          const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
           $zoomSlider.val(1);
           cropit.zoomer.getSliderPos = () => 0.5;
           expect(Number($zoomSlider.val())).not.toBe(0.5);
@@ -156,7 +146,7 @@ describe('Cropit View', () => {
         it('is invoked on mousedown on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('mousedown');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -165,7 +155,7 @@ describe('Cropit View', () => {
         it('is invoked on mouseup on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('mouseup');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -174,7 +164,7 @@ describe('Cropit View', () => {
         it('is invoked on mouseleave on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('mouseleave');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -186,7 +176,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
 
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           spyOn(Cropit.prototype, 'onMove');
           cropit.onPreviewEvent({
@@ -228,7 +218,7 @@ describe('Cropit View', () => {
         it('is invoked on touchstart on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('touchstart');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -237,7 +227,7 @@ describe('Cropit View', () => {
         it('is invoked on touchend on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('touchend');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -246,7 +236,7 @@ describe('Cropit View', () => {
         it('is invoked on touchcancel on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('touchcancel');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -255,7 +245,7 @@ describe('Cropit View', () => {
         it('is invoked on touchleave on preview', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           $preview.trigger('touchleave');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
@@ -267,7 +257,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
 
-          const $preview = $el.find('.cropit-image-preview');
+          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
 
           spyOn(Cropit.prototype, 'onMove');
           cropit.onPreviewEvent({
@@ -306,29 +296,11 @@ describe('Cropit View', () => {
       });
     });
 
-    describe('#set offset', () => {
-      beforeEach(() => {
-        $el.cropit({ width: 2, height: 2 });
-        cropit = $el.data(PLUGIN_KEY);
-        cropit.image = { width: 8, height: 6 };
-        cropit._zoom = 1;
-        cropit.imageLoaded = true;
-      });
-
-      it('moves preview image', () => {
-        const $preview = $el.find('.cropit-image-preview');
-        expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
-
-        cropit.offset = { x: -1, y: -1 };
-        expect($preview.css('backgroundPosition')).toBe('-1px -1px');
-      });
-    });
-
     describe('#onZoomSliderChange', () => {
       it('is invoked mousemove on zoom slider', () => {
         spyOn(Cropit.prototype, 'onZoomSliderChange');
         $el.cropit();
-        const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+        const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
 
         $zoomSlider.trigger('mousemove');
         expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled();
@@ -337,7 +309,7 @@ describe('Cropit View', () => {
       it('is invoked touchmove on zoom slider', () => {
         spyOn(Cropit.prototype, 'onZoomSliderChange');
         $el.cropit();
-        const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+        const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
 
         $zoomSlider.trigger('touchmove');
         expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled();
@@ -346,7 +318,7 @@ describe('Cropit View', () => {
       it('is invoked change on zoom slider', () => {
         spyOn(Cropit.prototype, 'onZoomSliderChange');
         $el.cropit();
-        const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+        const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
 
         $zoomSlider.trigger('change');
         expect(Cropit.prototype.onZoomSliderChange).toHaveBeenCalled();
@@ -366,54 +338,11 @@ describe('Cropit View', () => {
           cropit.zoomSliderPos = 0;
           expect(cropit.zoomSliderPos).not.toBe(1);
 
-          const $zoomSlider = $el.find('input.cropit-image-zoom-input');
+          const $zoomSlider = $el.find(`.${CLASS_NAMES.ZOOM_SLIDER}`);
           $zoomSlider.val(1);
           cropit.onZoomSliderChange();
           expect(cropit.zoomSliderPos).toBe(1);
         });
-      });
-    });
-
-    describe('#set zoom', () => {
-      let $preview = null;
-
-      beforeEach(() => {
-        $el.cropit({ width: 2, height: 2 });
-        cropit = $el.data(PLUGIN_KEY);
-        cropit.image = { width: 8, height: 12 };
-        cropit.offset = { x: 0, y: 0 };
-        cropit._zoom = 0.5;
-        cropit.imageLoaded = true;
-        cropit.zoomer.minZoom = 0.5;
-        cropit.zoomer.maxZoom = 1;
-
-        $preview = $el.find('.cropit-image-preview');
-      });
-
-      it('zooms preview image', () => {
-        expect(cropit.zoom).not.toBe(1);
-        expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
-        expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
-        expect($preview.css('backgroundSize')).not.toBe('8px 12px');
-
-        cropit.zoom = 1;
-        expect(cropit.zoom).toBe(1);
-        expect(cropit.offset).toEqual({ x: -1, y: -1 });
-        expect($preview.css('backgroundPosition')).toBe('-1px -1px');
-        expect($preview.css('backgroundSize')).toBe('8px 12px');
-      });
-
-      it('keeps zoom in proper range', () => {
-        expect(cropit.zoom).not.toBe(1);
-        expect(cropit.offset).not.toEqual({ x: -1, y: -1 });
-        expect($preview.css('backgroundPosition')).not.toBe('-1px -1px');
-        expect($preview.css('backgroundSize')).not.toBe('8px 12px');
-
-        cropit.zoom = 1.5;
-        expect(cropit.zoom).toBe(1);
-        expect(cropit.offset).toEqual({ x: -1, y: -1 });
-        expect($preview.css('backgroundPosition')).toBe('-1px -1px');
-        expect($preview.css('backgroundSize')).toBe('8px 12px');
       });
     });
   });
@@ -427,46 +356,15 @@ describe('Cropit View', () => {
     describe('#init', () => {
       it('inserts background image', () => {
         $el.cropit({ width: 1, height: 1, imageBackground: true });
-        const $imageBg = $el.find('img.cropit-image-background');
+        const $imageBg = $el.find(`.${CLASS_NAMES.PREVIEW_BACKGROUND}`);
         expect($imageBg.length).toBeTruthy();
-        expect($imageBg.css('position')).toBe('absolute');
       });
 
       it('inserts background image container', () => {
         $el.cropit({ width: 1, height: 1, imageBackground: true });
-        const $imageBgContainer = $el.find('.cropit-image-background-container');
+        const $imageBgContainer = $el.find(`.${CLASS_NAMES.PREVIEW_BACKGROUND_CONTAINER}`);
         expect($imageBgContainer.length).toBeTruthy();
         expect($imageBgContainer.css('position')).toBe('absolute');
-      });
-
-      it('offsets background image when border is specified', () => {
-        $el.cropit({
-          width: 1,
-          height: 1,
-          imageBackground: true,
-          imageBackgroundBorderWidth: [1, 2, 3, 4],
-        });
-        const $preview = $el.find('.cropit-image-preview');
-        const $imageBgContainer = $el.find('.cropit-image-background-container');
-        expect($imageBgContainer.css('left')).toBe('-4px');
-        expect($imageBgContainer.css('top')).toBe('-1px');
-        expect($imageBgContainer.css('width')).toBe(`${$preview.width() + 2 + 4}px`);
-        expect($imageBgContainer.css('height')).toBe(`${$preview.height() + 1 + 3}px`);
-      });
-
-      it('takes numeric background image border size to make uniform border size', () => {
-        $el.cropit({
-          width: 1,
-          height: 1,
-          imageBackground: true,
-          imageBackgroundBorderWidth: 3,
-        });
-        const $preview = $el.find('.cropit-image-preview');
-        const $imageBgContainer = $el.find('.cropit-image-background-container');
-        expect($imageBgContainer.css('left')).toBe('-3px');
-        expect($imageBgContainer.css('top')).toBe('-3px');
-        expect($imageBgContainer.css('width')).toBe(`${$preview.width() + 2 * 3}px`);
-        expect($imageBgContainer.css('height')).toBe(`${$preview.height() + 2 * 3}px`);
       });
     });
 
@@ -475,69 +373,11 @@ describe('Cropit View', () => {
         $el.cropit({ width: 1, height: 1, imageBackground: true });
         cropit = $el.data(PLUGIN_KEY);
         cropit.image = { src: IMAGE_DATA };
-        const $imageBg = $el.find('img.cropit-image-background');
+        const $imageBg = $el.find(`.${CLASS_NAMES.PREVIEW_BACKGROUND}`);
         expect($imageBg.attr('src')).not.toBe(IMAGE_DATA);
 
         cropit.onImageLoaded();
         expect($imageBg.attr('src')).toBe(IMAGE_DATA);
-      });
-    });
-
-    describe('#set offset', () => {
-      it('updates background image position', () => {
-        $el.cropit({ width: 2, height: 2, imageBackground: true });
-        cropit = $el.data(PLUGIN_KEY);
-        cropit.image = { width: 8, height: 6 };
-        cropit._zoom = 1;
-
-        const $imageBg = $el.find('img.cropit-image-background');
-        expect($imageBg.css('left')).not.toBe('-1px');
-        expect($imageBg.css('top')).not.toBe('-1px');
-
-        cropit.offset = { x: -1, y: -1 };
-        expect($imageBg.css('left')).toBe('-1px');
-        expect($imageBg.css('top')).toBe('-1px');
-      });
-
-      it('adds background image border size to background image offset', () => {
-        $el.cropit({
-          width: 2,
-          height: 2,
-          imageBackground: true,
-          imageBackgroundBorderWidth: 2,
-        });
-        cropit = $el.data(PLUGIN_KEY);
-        cropit.image = { width: 8, height: 6 };
-        cropit._zoom = 1;
-
-        const $imageBg = $el.find('img.cropit-image-background');
-        expect($imageBg.css('left')).not.toBe('-1px');
-        expect($imageBg.css('top')).not.toBe('-1px');
-
-        cropit.offset = { x: -3, y: -3 };
-        expect($imageBg.css('left')).toBe('-1px');
-        expect($imageBg.css('top')).toBe('-1px');
-      });
-    });
-
-    describe('#setZoom', () => {
-      it('zooms background image', () => {
-        $el.cropit({ width: 2, height: 2, imageBackground: true });
-        cropit = $el.data(PLUGIN_KEY);
-        cropit.image = { width: 8, height: 12 };
-        cropit.offset = { x: 0, y: 0 };
-        cropit._zoom = 0.5;
-        cropit.imageLoaded = true;
-        cropit.zoomer.minZoom = 0.5;
-        cropit.zoomer.maxZoom = 1;
-
-        const $imageBg = $el.find('img.cropit-image-background');
-        expect($imageBg.width()).not.toBe(8);
-        expect($imageBg.height()).not.toBe(12);
-
-        cropit.zoom = 1;
-        expect($imageBg.width()).toBe(8);
-        expect($imageBg.height()).toBe(12);
       });
     });
   });
