@@ -102,12 +102,6 @@ const options = {
         When set to \`'stretch'\`, the minimum zoom of small images would follow \`minZoom\` option.`,
       default: 'reject',
     },
-    {
-      name: 'allowCrossOrigin',
-      type: 'boolean',
-      description: 'Set to true if you need to crop image served from other domains.',
-      default: false,
-    },
   ],
 
   callbacks: [

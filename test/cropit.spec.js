@@ -138,27 +138,6 @@ describe('Cropit', () => {
       cropit.onPreImageLoaded();
       expect(cropit.image.src).toBe(IMAGE_DATA);
     });
-
-    it('enables cross origin image source if allowCrossOrigin is true and image source is url', () => {
-      cropit = newCropit({ width: 1, height: 1, allowCrossOrigin: true });
-      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
-
-      cropit.preImage = { src: IMAGE_URL };
-      cropit.onPreImageLoaded();
-      expect(cropit.image.crossOrigin).toBe('Anonymous');
-
-      cropit.preImage = { src: IMAGE_DATA };
-      cropit.onPreImageLoaded();
-      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
-    });
-
-    it('disables cross origin image source if allowCrossOrigin is false', () => {
-      cropit = newCropit({ width: 1, height: 1, allowCrossOrigin: false });
-
-      cropit.preImage = { src: IMAGE_URL };
-      cropit.onPreImageLoaded();
-      expect(cropit.image.crossOrigin).not.toBe('Anonymous');
-    });
   });
 
   describe('#onImageLoaded', () => {

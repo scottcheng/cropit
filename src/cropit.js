@@ -216,10 +216,6 @@ class Cropit {
       return;
     }
 
-    if (this.options.allowCrossOrigin) {
-      this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
-    }
-
     this.image.src = this.preImage.src;
   }
 
