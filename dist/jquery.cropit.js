@@ -388,10 +388,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      if (this.options.allowCrossOrigin) {
-	        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
-	      }
-
 	      this.image.src = this.preImage.src;
 	    }
 	  }, {
@@ -1021,11 +1017,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    type: 'string',
 	    description: 'When set to `\'reject\'`, `onImageError` would be called when cropit loads an image that is smaller than the container.\n        When set to `\'allow\'`, images smaller than the container can be zoomed down to its original size, overiding `minZoom` option.\n        When set to `\'stretch\'`, the minimum zoom of small images would follow `minZoom` option.',
 	    'default': 'reject'
-	  }, {
-	    name: 'allowCrossOrigin',
-	    type: 'boolean',
-	    description: 'Set to true if you need to crop image served from other domains.',
-	    'default': false
 	  }],
 
 	  callbacks: [{
