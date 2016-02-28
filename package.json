@@ -53,10 +53,11 @@
     "babel-core": "~5.5.8",
     "babel-jest": "~5.3.0",
     "babel-loader": "~5.1.4",
-    "jest-cli": "^0.8.2",
+    "jest-cli": "~0.4.12",
     "jshint-stylish": "~2.0.0",
     "lodash": "~3.9.3",
     "node-libs-browser": "~0.5.2",
+    "pica": "^1.0.7",
     "webpack": "~1.9.11",
     "webpack-dev-server": "~1.9.0"
   },
