@@ -107,10 +107,6 @@ pre
 .splash, .demos .demo-wrapper
   .cropit-preview-background
     opacity .2
-    transition opacity .25s
-  .cropit-preview:hover
-    .cropit-preview-background
-      opacity .4
   .cropit-preview
     position relative
     .spinner
@@ -120,7 +116,8 @@ pre
       .spinner
         opacity 1
     &.cropit-image-loaded
-      cursor move
+      .cropit-preview-image-container
+        cursor move
     .error-msg
       absolute top left
       width 100%
@@ -133,42 +130,57 @@ pre
     &.has-error
       .error-msg
         opacity 1
-  .slider-wrapper
-    transition opacity .25s
-    &.disabled
-      opacity .2
-    *
-      vertical-align middle
-    .small-image
+  .controls-wrapper
+    position relative
+    .rotation-btns, .slider-wrapper
+      display inline-block
+    .rotation-btns
+      *
+        vertical-align middle
       font-size 16px
-    .large-image
-      font-size 24px
-    .cropit-image-zoom-input
-      width 130px
-      margin 0 20px
-      position relative
-      &.custom
-        slider()
-          appearance none
-          height 5px
-          background gray-lighter
-          border-radius 5px
-          outline none
-        slider-thumb()
-          appearance none
-          size 15px
-          background gray
-          border-radius 50%
-          transition background .25s
-          &:active
-            background gray-light
-        slider()
-        &::-moz-range-track
+      margin-right 40px
+      .icon:first-child
+        margin-right 20px
+      .icon
+        transition color .25s
+        cursor pointer
+        &:hover
+          color gray
+    .slider-wrapper
+      transition opacity .25s
+      &.disabled
+        opacity .2
+      *
+        vertical-align middle
+      .small-image
+        font-size 16px
+      .large-image
+        font-size 24px
+      .cropit-image-zoom-input
+        width 130px
+        margin 0 20px
+        &.custom
           slider()
-        &::-webkit-slider-thumb
+            appearance none
+            height 5px
+            background gray-lighter
+            border-radius 5px
+            outline none
           slider-thumb()
-        &::-moz-range-thumb
-          slider-thumb()
+            appearance none
+            size 15px
+            background gray
+            border-radius 50%
+            transition background .25s
+            &:hover, &:active
+              background gray-light
+          slider()
+          &::-moz-range-track
+            slider()
+          &::-webkit-slider-thumb
+            slider-thumb()
+          &::-moz-range-thumb
+            slider-thumb()
   .btns
     .cropit-image-input
       &.custom
@@ -226,7 +238,7 @@ pre
       .cropit-preview
         size min-preview-height
         border 1px solid gray-lighter
-      .slider-wrapper
+      .controls-wrapper
         margin-top 20px
         text-align center
 
@@ -280,7 +292,7 @@ section.demos
             .cropit-preview
               size 560px 176px
               border 1px solid gray-lighter
-            .slider-wrapper
+            .controls-wrapper
               margin-top 20px
               text-align center
           &:nth-child(2)

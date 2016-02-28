@@ -11,10 +11,11 @@ section.demos#demos
         .column
           .cropit-preview
             +in-preview
-          .slider-wrapper
-            span.icon.icon-image.small-image
-            input.cropit-image-zoom-input(type='range')
-            span.icon.icon-image.large-image
+          .controls-wrapper
+            .slider-wrapper
+              span.icon.icon-image.small-image
+              input.cropit-image-zoom-input(type='range')
+              span.icon.icon-image.large-image
         .column
           .btns
             input.cropit-image-input(type='file')
@@ -48,6 +49,11 @@ section.demos#demos
             // so it renders an image by default:
             // $('#image-cropper').cropit({ imageState: { src: { imageSrc } } });
 
+            // Exporting cropped image
+            $('.download-btn').click(function() {
+              var imageData = $('#image-cropper').cropit('export');
+              window.open(imageData);
+            });
         .css
           :csssrc
             .cropit-preview {
@@ -63,10 +69,14 @@ section.demos#demos
         .column
           .cropit-preview
             +in-preview
-          .slider-wrapper
-            span.icon.icon-image.small-image
-            input.cropit-image-zoom-input.custom(type='range')
-            span.icon.icon-image.large-image
+          .controls-wrapper
+            .rotation-btns
+              span.icon.icon-rotate-left.rotate-ccw-btn
+              span.icon.icon-rotate-right.rotate-cw-btn
+            .slider-wrapper
+              span.icon.icon-image.small-image
+              input.cropit-image-zoom-input.custom(type='range')
+              span.icon.icon-image.large-image
         .column
           .btns
             input.cropit-image-input.custom(type='file')
@@ -98,6 +108,14 @@ section.demos#demos
             $('.select-image-btn').click(function() {
               $('.cropit-image-input').click();
             });
+
+            // Handle rotation
+            $('.rotate-cw-btn').click(function() {
+              $('#image-cropper').cropit('rotateCW');
+            });
+            $('.rotate-ccw-btn').click(function() {
+              $('#image-cropper').cropit('rotateCCW');
+            });
         .css
           :csssrc
             /* Hide file input */
@@ -117,10 +135,14 @@ section.demos#demos
         .column
           .cropit-preview
             +in-preview
-          .slider-wrapper
-            span.icon.icon-image.small-image
-            input.cropit-image-zoom-input.custom(type='range')
-            span.icon.icon-image.large-image
+          .controls-wrapper
+            .rotation-btns
+              span.icon.icon-rotate-left.rotate-ccw-btn
+              span.icon.icon-rotate-right.rotate-cw-btn
+            .slider-wrapper
+              span.icon.icon-image.small-image
+              input.cropit-image-zoom-input.custom(type='range')
+              span.icon.icon-image.large-image
         .column
           .btns
             input.cropit-image-input.custom(type='file')
@@ -171,10 +193,14 @@ section.demos#demos
         .column
           .cropit-preview
             +in-preview
-          .slider-wrapper
-            span.icon.icon-image.small-image
-            input.cropit-image-zoom-input.custom(type='range')
-            span.icon.icon-image.large-image
+          .controls-wrapper
+            .rotation-btns
+              span.icon.icon-rotate-left.rotate-ccw-btn
+              span.icon.icon-rotate-right.rotate-cw-btn
+            .slider-wrapper
+              span.icon.icon-image.small-image
+              input.cropit-image-zoom-input.custom(type='range')
+              span.icon.icon-image.large-image
         .column
           .btns
             input.cropit-image-input.custom(type='file')

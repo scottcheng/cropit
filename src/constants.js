@@ -9,7 +9,6 @@ export const CLASS_NAMES = {
   FILE_INPUT: 'cropit-image-input',
   ZOOM_SLIDER: 'cropit-image-zoom-input',
 
-  PREVIEW_HOVERED: 'cropit-preview-hovered',
   DRAG_HOVERED: 'cropit-drag-hovered',
   IMAGE_LOADING: 'cropit-image-loading',
   IMAGE_LOADED: 'cropit-image-loaded',

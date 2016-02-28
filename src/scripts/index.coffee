@@ -1,3 +1,7 @@
+rotateCW = ->
+  @cropit 'rotateCW'
+rotateCCW = ->
+  @cropit 'rotateCCW'
 openFileInput = ->
   @find('input.cropit-image-input').click()
 downloadCroppedImage = ->
@@ -30,6 +34,8 @@ do ->
     onZoomDisabled: onZoomDisabled.bind $splash
     onImageError: onImageError.bind $splash.find '.cropit-preview'
 
+  $splash.on 'click', '.rotate-cw-btn', rotateCW.bind $splash
+  $splash.on 'click', '.rotate-ccw-btn', rotateCCW.bind $splash
   $splash.on 'click', '.select-image-btn', openFileInput.bind $splash
   $splash.on 'click', '.download-btn', downloadCroppedImage.bind $splash
 
@@ -61,6 +67,8 @@ do ->
     onZoomDisabled: onZoomDisabled.bind $demo
     onImageError: onImageError.bind $demo.find '.cropit-preview'
 
+  $demo.on 'click', '.rotate-cw-btn', rotateCW.bind $demo
+  $demo.on 'click', '.rotate-ccw-btn', rotateCCW.bind $demo
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
 
@@ -78,6 +86,8 @@ do ->
     onZoomDisabled: onZoomDisabled.bind $demo
     onImageError: onImageError.bind $demo.find '.cropit-preview'
 
+  $demo.on 'click', '.rotate-cw-btn', rotateCW.bind $demo
+  $demo.on 'click', '.rotate-ccw-btn', rotateCCW.bind $demo
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo
 
@@ -96,5 +106,7 @@ do ->
     onZoomDisabled: onZoomDisabled.bind $demo
     onImageError: onImageError.bind $demo.find '.cropit-preview'
 
+  $demo.on 'click', '.rotate-cw-btn', rotateCW.bind $demo
+  $demo.on 'click', '.rotate-ccw-btn', rotateCCW.bind $demo
   $demo.on 'click', '.select-image-btn', openFileInput.bind $demo
   $demo.on 'click', '.download-btn', downloadCroppedImage.bind $demo

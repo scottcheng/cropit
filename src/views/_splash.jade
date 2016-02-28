@@ -11,10 +11,14 @@
     .preview-wrapper
       .cropit-preview
         +in-preview
-      .slider-wrapper
-        span.icon.icon-image.small-image
-        input.cropit-image-zoom-input.custom(type='range')
-        span.icon.icon-image.large-image
+      .controls-wrapper
+        .rotation-btns
+          span.icon.icon-rotate-left.rotate-ccw-btn
+          span.icon.icon-rotate-right.rotate-cw-btn
+        .slider-wrapper
+          span.icon.icon-image.small-image
+          input.cropit-image-zoom-input.custom(type='range')
+          span.icon.icon-image.large-image
 
   .btns-wrapper
     .btns
