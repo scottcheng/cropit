@@ -27,9 +27,6 @@ do ->
     imageBackground: true
     imageState:
       src: 'http://scottcheng.github.io/cropit/images/0-1920.jpg'
-      offset:
-        x: -112
-        y: 0
     onZoomEnabled: onZoomEnabled.bind $splash
     onZoomDisabled: onZoomDisabled.bind $splash
     onImageError: onImageError.bind $splash.find '.cropit-preview'
@@ -47,7 +44,7 @@ do ->
       src: 'http://scottcheng.github.io/cropit/images/1-960.jpg'
       offset:
         x: 0
-        y: -125
+        y: -25
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
     onImageError: onImageError.bind $demo.find '.cropit-preview'
@@ -101,7 +98,7 @@ do ->
       src: 'http://scottcheng.github.io/cropit/images/4-960.jpg'
       offset:
         x: 0
-        y: -71
+        y: -154
     onZoomEnabled: onZoomEnabled.bind $demo
     onZoomDisabled: onZoomDisabled.bind $demo
     onImageError: onImageError.bind $demo.find '.cropit-preview'
