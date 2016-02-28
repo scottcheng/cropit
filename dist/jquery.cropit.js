@@ -221,7 +221,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        webkitTransformOrigin: 'top left',
 	        willChange: 'transform'
 	      });
-	      var $imageContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE_CONTAINER).css({
+	      this.$imageContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE_CONTAINER).css({
 	        position: 'absolute',
 	        overflow: 'hidden',
 	        left: 0,
@@ -229,7 +229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: '100%',
 	        height: '100%'
 	      }).append(this.$image);
-	      this.$preview.append($imageContainer);
+	      this.$preview.append(this.$imageContainer);
 
 	      if (this.options.imageBackground) {
 	        if (_jquery2['default'].isArray(this.options.imageBackgroundBorderWidth)) {
@@ -290,20 +290,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'bindListeners',
 	    value: function bindListeners() {
 	      this.$fileInput.on('change.cropit', this.onFileChange.bind(this));
-	      this.$preview.on(_constants.EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
+	      this.$imageContainer.on(_constants.EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
 	      this.$zoomSlider.on(_constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
 
 	      if (this.options.allowDragNDrop) {
-	        this.$preview.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
-	        this.$preview.on('drop.cropit', this.onDrop.bind(this));
+	        this.$imageContainer.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
+	        this.$imageContainer.on('drop.cropit', this.onDrop.bind(this));
 	      }
 	    }
 	  }, {
 	    key: 'unbindListeners',
 	    value: function unbindListeners() {
 	      this.$fileInput.off('change.cropit');
-	      this.$preview.off(_constants.EVENTS.PREVIEW);
-	      this.$preview.off('dragover.cropit dragleave.cropit drop.cropit');
+	      this.$imageContainer.off(_constants.EVENTS.PREVIEW);
+	      this.$imageContainer.off('dragover.cropit dragleave.cropit drop.cropit');
 	      this.$zoomSlider.off(_constants.EVENTS.ZOOM_INPUT);
 	    }
 	  }, {
@@ -476,12 +476,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      this.moveContinue = false;
-	      this.$preview.off(_constants.EVENTS.PREVIEW_MOVE);
+	      this.$imageContainer.off(_constants.EVENTS.PREVIEW_MOVE);
 
 	      if (e.type === 'mousedown' || e.type === 'touchstart') {
 	        this.origin = this.getEventPosition(e);
 	        this.moveContinue = true;
-	        this.$preview.on(_constants.EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
+	        this.$imageContainer.on(_constants.EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
 	      } else {
 	        (0, _jquery2['default'])(document.body).focus();
 	      }
@@ -630,7 +630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      })) {
 	        this.rotation = (this.rotation + 180) % 360;
 	      } else {
-	        this.rotation = (this.rotation + 90) % 360;;
+	        this.rotation = (this.rotation + 90) % 360;
 	      }
 	    }
 	  }, {
@@ -646,7 +646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      })) {
 	        this.rotation = (this.rotation + 180) % 360;
 	      } else {
-	        this.rotation = (this.rotation + 270) % 360;;
+	        this.rotation = (this.rotation + 270) % 360;
 	      }
 	    }
 	  }, {

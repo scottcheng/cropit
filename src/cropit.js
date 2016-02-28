@@ -41,7 +41,7 @@ class Cropit {
         webkitTransformOrigin: 'top left',
         willChange: 'transform',
       });
-    const $imageContainer = $('<div />')
+    this.$imageContainer = $('<div />')
       .addClass(CLASS_NAMES.PREVIEW_IMAGE_CONTAINER)
       .css({
         position: 'absolute',
@@ -52,7 +52,7 @@ class Cropit {
         height: '100%',
       })
       .append(this.$image);
-    this.$preview.append($imageContainer);
+    this.$preview.append(this.$imageContainer);
 
     if (this.options.imageBackground) {
       if ($.isArray(this.options.imageBackgroundBorderWidth)) {
@@ -117,19 +117,19 @@ class Cropit {
 
   bindListeners() {
     this.$fileInput.on('change.cropit', this.onFileChange.bind(this));
-    this.$preview.on(EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
+    this.$imageContainer.on(EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
     this.$zoomSlider.on(EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
 
     if (this.options.allowDragNDrop) {
-      this.$preview.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
-      this.$preview.on('drop.cropit', this.onDrop.bind(this));
+      this.$imageContainer.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
+      this.$imageContainer.on('drop.cropit', this.onDrop.bind(this));
     }
   }
 
   unbindListeners() {
     this.$fileInput.off('change.cropit');
-    this.$preview.off(EVENTS.PREVIEW);
-    this.$preview.off('dragover.cropit dragleave.cropit drop.cropit');
+    this.$imageContainer.off(EVENTS.PREVIEW);
+    this.$imageContainer.off('dragover.cropit dragleave.cropit drop.cropit');
     this.$zoomSlider.off(EVENTS.ZOOM_INPUT);
   }
 
@@ -283,12 +283,12 @@ class Cropit {
     if (!this.imageLoaded) { return; }
 
     this.moveContinue = false;
-    this.$preview.off(EVENTS.PREVIEW_MOVE);
+    this.$imageContainer.off(EVENTS.PREVIEW_MOVE);
 
     if (e.type === 'mousedown' || e.type === 'touchstart') {
       this.origin = this.getEventPosition(e);
       this.moveContinue = true;
-      this.$preview.on(EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
+      this.$imageContainer.on(EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
     }
     else {
       $(document.body).focus();
@@ -485,7 +485,7 @@ class Cropit {
       this.rotation = (this.rotation + 180) % 360;
     }
     else {
-      this.rotation = (this.rotation + 90) % 360;;
+      this.rotation = (this.rotation + 90) % 360;
     }
   }
 
@@ -501,7 +501,7 @@ class Cropit {
       this.rotation = (this.rotation + 180) % 360;
     }
     else {
-      this.rotation = (this.rotation + 270) % 360;;
+      this.rotation = (this.rotation + 270) % 360;
     }
   }
 

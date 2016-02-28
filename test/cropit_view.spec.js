@@ -143,30 +143,30 @@ describe('Cropit View', () => {
 
     describe('#onPreviewEvent', () => {
       describe('mouse event', () => {
-        it('is invoked on mousedown on preview', () => {
+        it('is invoked on mousedown on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('mousedown');
+          $imageContainer.trigger('mousedown');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('is invoked on mouseup on preview', () => {
+        it('is invoked on mouseup on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('mouseup');
+          $imageContainer.trigger('mouseup');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('is invoked on mouseleave on preview', () => {
+        it('is invoked on mouseleave on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('mouseleave');
+          $imageContainer.trigger('mouseleave');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
@@ -176,7 +176,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
 
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
           spyOn(Cropit.prototype, 'onMove');
           cropit.onPreviewEvent({
@@ -184,7 +184,7 @@ describe('Cropit View', () => {
             stopPropagation: () => {},
           });
 
-          $preview.trigger('mousemove');
+          $imageContainer.trigger('mousemove');
           expect(Cropit.prototype.onMove).toHaveBeenCalled();
         });
 
@@ -215,39 +215,39 @@ describe('Cropit View', () => {
       });
 
       describe('touch event', () => {
-        it('is invoked on touchstart on preview', () => {
+        it('is invoked on touchstart on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('touchstart');
+          $imageContainer.trigger('touchstart');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('is invoked on touchend on preview', () => {
+        it('is invoked on touchend on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('touchend');
+          $imageContainer.trigger('touchend');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('is invoked on touchcancel on preview', () => {
+        it('is invoked on touchcancel on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('touchcancel');
+          $imageContainer.trigger('touchcancel');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
-        it('is invoked on touchleave on preview', () => {
+        it('is invoked on touchleave on image container', () => {
           spyOn(Cropit.prototype, 'onPreviewEvent');
           $el.cropit();
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
-          $preview.trigger('touchleave');
+          $imageContainer.trigger('touchleave');
           expect(Cropit.prototype.onPreviewEvent).toHaveBeenCalled();
         });
 
@@ -257,7 +257,7 @@ describe('Cropit View', () => {
           cropit.imageLoaded = true;
           cropit.image = { width: 8, height: 6 };
 
-          const $preview = $el.find(`.${CLASS_NAMES.PREVIEW}`);
+          const $imageContainer = $el.find(`.${CLASS_NAMES.PREVIEW_IMAGE_CONTAINER}`);
 
           spyOn(Cropit.prototype, 'onMove');
           cropit.onPreviewEvent({
@@ -265,7 +265,7 @@ describe('Cropit View', () => {
             stopPropagation: () => {},
           });
 
-          $preview.trigger('touchmove');
+          $imageContainer.trigger('touchmove');
           expect(Cropit.prototype.onMove).toHaveBeenCalled();
         });
 
