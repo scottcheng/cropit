@@ -1,3 +1,11 @@
+## 0.5.1 (February 27, 2016)
+
+### Bug fixes
+
+* Fixed wrong image offset when rotation is negative.
+* Fixed bug where image background can be dragged and moved.
+
+
 ## 0.5.0 (February 27, 2016)
 
 ### Breaking changes
