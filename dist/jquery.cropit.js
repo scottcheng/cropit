@@ -260,12 +260,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.$bgContainer.css('overflow', 'hidden');
 	        }
 	        this.$preview.prepend(this.$bgContainer);
-
-	        this.$preview.hover(function () {
-	          _this.$bg.addClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
-	        }, function () {
-	          _this.$bg.removeClass(_constants.CLASS_NAMES.PREVIEW_HOVERED);
-	        });
 	      }
 
 	      this.initialZoom = this.options.initialZoom;
@@ -1002,7 +996,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  FILE_INPUT: 'cropit-image-input',
 	  ZOOM_SLIDER: 'cropit-image-zoom-input',
 
-	  PREVIEW_HOVERED: 'cropit-preview-hovered',
 	  DRAG_HOVERED: 'cropit-drag-hovered',
 	  IMAGE_LOADING: 'cropit-image-loading',
 	  IMAGE_LOADED: 'cropit-image-loaded',

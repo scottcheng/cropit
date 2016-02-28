@@ -88,12 +88,6 @@ class Cropit {
         this.$bgContainer.css('overflow', 'hidden');
       }
       this.$preview.prepend(this.$bgContainer);
-
-      this.$preview.hover(() => {
-        this.$bg.addClass(CLASS_NAMES.PREVIEW_HOVERED);
-      }, () => {
-        this.$bg.removeClass(CLASS_NAMES.PREVIEW_HOVERED);
-      });
     }
 
     this.initialZoom = this.options.initialZoom;
