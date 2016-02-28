@@ -1,34 +1,42 @@
 @font-face {
-	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-vkrzy0');
-	src:url('fonts/icomoon.eot?#iefix-vkrzy0') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-vkrzy0') format('woff'),
-		url('fonts/icomoon.ttf?-vkrzy0') format('truetype'),
-		url('fonts/icomoon.svg?-vkrzy0#icomoon') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'iconfont';
+  src: url('fonts/iconfont.eot?penqtf');
+  src: url('fonts/iconfont.eot?penqtf#iefix') format('embedded-opentype'),
+    url('fonts/iconfont.ttf?penqtf') format('truetype'),
+    url('fonts/iconfont.woff?penqtf') format('woff'),
+    url('fonts/iconfont.svg?penqtf#iconfont') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'icomoon';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'iconfont' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-image:before {
-	content: "\e600";
+  content: "\e900";
 }
 .icon-box-add:before {
-	content: "\e601";
+  content: "\e901";
 }
-.icon-github2:before {
-	content: "\e603";
+.icon-github:before {
+  content: "\e902";
 }
+.icon-rotate-right:before {
+  content: "\f01e";
+}
+.icon-rotate-left:before {
+  content: "\f0e2";
+}
+
