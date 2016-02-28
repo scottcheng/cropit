@@ -5,7 +5,7 @@
   .description
     :markdown
       The HTML element that displays image preview.
-  .default: code $imageCropper.find('.cropit-image-preview')
+  .default: code $imageCropper.find('.cropit-preview')
 .option#docs-options-fileInput
   .name $fileInput
   .type jQuery element
@@ -20,13 +20,6 @@
     :markdown
       Range input element that controls image zoom.
   .default: code $imageCropper.find('input.cropit-image-zoom-input')
-.option#docs-options-previewContainer
-  .name $previewContainer
-  .type jQuery element
-  .description
-    :markdown
-      Preview container. Only needed when `imageBackground` is true.
-  .default: code $imageCropper.find('.cropit-image-preview-container')
 
 //- values
 .option#docs-options-width
@@ -118,13 +111,6 @@
         When set to `'allow'`, images smaller than the container can be zoomed down to its original size, overiding `minZoom` option.
         When set to `'stretch'`, the minimum zoom of small images would follow `minZoom` option.
   .default: code 'reject'
-.option#docs-options-allowCrossOrigin
-  .name allowCrossOrigin
-  .type boolean
-  .description
-    :markdown
-      Set to true if you need to crop image served from other domains.
-  .default: code false
 
 //- callbacks
 .option#docs-options-onFileChange

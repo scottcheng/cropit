@@ -70,7 +70,6 @@ module.exports = (grunt) ->
       compile:
         options:
           mangle: true
-          compress: true
         src: [
           '.tmp/scripts/index.js'
         ]

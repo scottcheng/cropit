@@ -9,7 +9,7 @@ section.demos#demos
       h3.title Basic image cropper
       .demo
         .column
-          .cropit-image-preview
+          .cropit-preview
             +in-preview
           .slider-wrapper
             span.icon.icon-image.small-image
@@ -27,7 +27,7 @@ section.demos#demos
             <!-- This wraps the whole cropper -->
             <div id="image-cropper">
               <!-- This is where the preview image is displayed -->
-              <div class="cropit-image-preview"></div>
+              <div class="cropit-preview"></div>
 
               <!-- This range input controls zoom -->
               <!-- You can add additional elements here, e.g. the image icons -->
@@ -50,7 +50,7 @@ section.demos#demos
 
         .css
           :csssrc
-            .cropit-image-preview {
+            .cropit-preview {
               /* You can specify preview size in CSS */
               width: 960px;
               height: 540px;
@@ -61,7 +61,7 @@ section.demos#demos
       h3.title Custom select image button and zoom slider
       .demo
         .column
-          .cropit-image-preview
+          .cropit-preview
             +in-preview
           .slider-wrapper
             span.icon.icon-image.small-image
@@ -80,7 +80,7 @@ section.demos#demos
         .html
           :htmlsrc
             <div id="image-cropper">
-              <div class="cropit-image-preview"></div>
+              <div class="cropit-preview"></div>
 
               <input type="range" class="cropit-image-zoom-input" />
 
@@ -115,9 +115,8 @@ section.demos#demos
       h3.title Image cropper with background
       .demo
         .column
-          .cropit-image-preview-container
-            .cropit-image-preview
-              +in-preview
+          .cropit-preview
+            +in-preview
           .slider-wrapper
             span.icon.icon-image.small-image
             input.cropit-image-zoom-input.custom(type='range')
@@ -135,10 +134,7 @@ section.demos#demos
         .html
           :htmlsrc
             <div id="image-cropper">
-              <!-- The preview container is needed for background image to work -->
-              <div class="cropit-image-preview-container">
-                <div class="cropit-image-preview"></div>
-              </div>
+              <div class="cropit-preview"></div>
 
               <input type="range" class="cropit-image-zoom-input" />
 
@@ -151,7 +147,7 @@ section.demos#demos
         .css
           :csssrc
             /* Translucent background image */
-            .cropit-image-background {
+            .cropit-preview-background {
               opacity: .2;
             }
 
@@ -173,9 +169,8 @@ section.demos#demos
       h3.title Image cropper with thin background border
       .demo
         .column
-          .cropit-image-preview-container
-            .cropit-image-preview
-              +in-preview
+          .cropit-preview
+            +in-preview
           .slider-wrapper
             span.icon.icon-image.small-image
             input.cropit-image-zoom-input.custom(type='range')
@@ -193,9 +188,7 @@ section.demos#demos
         .html
           :htmlsrc
             <div id="image-cropper">
-              <div class="cropit-image-preview-container">
-                <div class="cropit-image-preview"></div>
-              </div>
+              <div class="cropit-preview"></div>
 
               <input type="range" class="cropit-image-zoom-input" />
 

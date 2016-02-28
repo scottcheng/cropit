@@ -1,12 +1,14 @@
 export const PLUGIN_KEY = 'cropit';
 
 export const CLASS_NAMES = {
-  PREVIEW: 'cropit-image-preview',
-  PREVIEW_CONTAINER: 'cropit-image-preview-container',
+  PREVIEW: 'cropit-preview',
+  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
+  PREVIEW_IMAGE: 'cropit-preview-image',
+  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
+  PREVIEW_BACKGROUND: 'cropit-preview-background',
   FILE_INPUT: 'cropit-image-input',
   ZOOM_SLIDER: 'cropit-image-zoom-input',
-  IMAGE_BACKGROUND: 'cropit-image-background',
-  IMAGE_BACKGROUND_CONTAINER: 'cropit-image-background-container',
+
   PREVIEW_HOVERED: 'cropit-preview-hovered',
   DRAG_HOVERED: 'cropit-drag-hovered',
   IMAGE_LOADING: 'cropit-image-loading',

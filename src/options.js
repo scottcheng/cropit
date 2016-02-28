@@ -17,11 +17,6 @@ const options = {
       description: 'Range input element that controls image zoom.',
       defaultSelector: `input.${CLASS_NAMES.ZOOM_SLIDER}`,
     },
-    {
-      name: '$previewContainer',
-      description: 'Preview container. Only needed when `imageBackground` is true.',
-      defaultSelector: `.${CLASS_NAMES.PREVIEW_CONTAINER}`,
-    },
   ].map((o) => {
     o.type = 'jQuery element';
     o.default = `$imageCropper.find('${o.defaultSelector}')`;
@@ -106,12 +101,6 @@ const options = {
         When set to \`'allow'\`, images smaller than the container can be zoomed down to its original size, overiding \`minZoom\` option.
         When set to \`'stretch'\`, the minimum zoom of small images would follow \`minZoom\` option.`,
       default: 'reject',
-    },
-    {
-      name: 'allowCrossOrigin',
-      type: 'boolean',
-      description: 'Set to true if you need to crop image served from other domains.',
-      default: false,
     },
   ],
 

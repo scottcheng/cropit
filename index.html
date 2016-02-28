@@ -1,7 +1,7 @@
-<!DOCTYPE html><html><head><title>cropit | a "customizable crop and zoom" jQuery plugin</title><meta name="description" content="A &quot;customizable crop and zoom&quot; jQuery plugin."><meta charset="utf-8"><link rel="stylesheet" href="//brick.a.ssl.fastly.net/Lato:300,300i,400,400i,700"><link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/tomorrow.min.css"><link rel="stylesheet" href="styles/index.css"></head><body><div class="splash"><div class="title-wrapper"><h1 class="title">cropit</h1><div class="tagline">a "customizable crop and zoom" jQuery plugin</div><div class="github-link"><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>GitHub</a></div></div><div class="demo-wrapper"><div class="preview-wrapper"><div class="cropit-image-preview-container"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div></div><div class="btns-wrapper"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><section id="what-it-is" class="what-it-is"><div class="container"><h2 class="title">What it is</h2><div class="content"><ul><li>A jQuery plugin for image cropping and zooming.</li><li>Loads images locally via <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" target="_blank">FileReader</a>, and crops them using <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Canvas" target="_blank">canvas</a>.</li><li>Designed to be extremely customizable via CSS.</li><li>Best for the cases where you want users to upload images of a specific size and aspect ratio.</li></ul><h3 class="title">Features</h3><ul><li>Works on desktop and mobile with touch support (<a href="http://caniuse.com/#feat=filereader" target="_blank">except IE 9 and below</a>).</li><li>Drag'n'drop image into cropper.</li><li>Extensive options and APIs to give you full control.</li></ul></div></div></section><section id="getting-started" class="getting-started"><div class="container"><h2 class="title">Getting started</h2><div class="content"><p>Install with <a href="http://bower.io/" target="_blank">Bower</a>:</p><pre><code class="bash">$ bower install cropit</code></pre><p>Or with <a href="https://www.npmjs.org/" target="_blank">npm</a>:</p><pre><code class="bash">$ npm install cropit</code></pre></div></div></section><section id="demos" class="demos"><div class="title-wrapper"><div class="container"><h2 class="title">Demos</h2></div></div><div id="demos-basic" class="sub-section demo-wrapper basic"><div class="container"><h3 class="title">Basic image cropper</h3><div class="demo"><div class="column"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input"><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;!-- This wraps the whole cropper --&gt;
+<!DOCTYPE html><html><head><title>cropit | a "customizable crop and zoom" jQuery plugin</title><meta name="description" content="A &quot;customizable crop and zoom&quot; jQuery plugin."><meta charset="utf-8"><link rel="stylesheet" href="//brick.a.ssl.fastly.net/Lato:300,300i,400,400i,700"><link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/tomorrow.min.css"><link rel="stylesheet" href="styles/index.css"></head><body><div class="splash"><div class="title-wrapper"><h1 class="title">cropit</h1><div class="tagline">a "customizable crop and zoom" jQuery plugin</div><div class="github-link"><a href="https://github.com/scottcheng/cropit"><span class="icon icon-github2"></span>GitHub</a></div></div><div class="demo-wrapper"><div class="preview-wrapper"><div class="cropit-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div></div><div class="btns-wrapper"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><section id="what-it-is" class="what-it-is"><div class="container"><h2 class="title">What it is</h2><div class="content"><ul><li>A jQuery plugin for image cropping and zooming.</li><li>Loads images locally via <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" target="_blank">FileReader</a>, and crops them using <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Canvas" target="_blank">canvas</a>.</li><li>Designed to be extremely customizable via CSS.</li><li>Best for the cases where you want users to upload images of a specific size and aspect ratio.</li></ul><h3 class="title">Features</h3><ul><li>Works on desktop and mobile with touch support (<a href="http://caniuse.com/#feat=filereader" target="_blank">except IE 9 and below</a>).</li><li>Drag'n'drop image into cropper.</li><li>Extensive options and APIs to give you full control.</li></ul></div></div></section><section id="getting-started" class="getting-started"><div class="container"><h2 class="title">Getting started</h2><div class="content"><p>Install with <a href="http://bower.io/" target="_blank">Bower</a>:</p><pre><code class="bash">$ bower install cropit</code></pre><p>Or with <a href="https://www.npmjs.org/" target="_blank">npm</a>:</p><pre><code class="bash">$ npm install cropit</code></pre></div></div></section><section id="demos" class="demos"><div class="title-wrapper"><div class="container"><h2 class="title">Demos</h2></div></div><div id="demos-basic" class="sub-section demo-wrapper basic"><div class="container"><h3 class="title">Basic image cropper</h3><div class="demo"><div class="column"><div class="cropit-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input"><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;!-- This wraps the whole cropper --&gt;
 &lt;div id=&quot;image-cropper&quot;&gt;
   &lt;!-- This is where the preview image is displayed --&gt;
-  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;cropit-preview&quot;&gt;&lt;/div&gt;
   
   &lt;!-- This range input controls zoom --&gt;
   &lt;!-- You can add additional elements here, e.g. the image icons --&gt;
@@ -18,13 +18,13 @@
 // In the demos I'm passing in an imageState option
 // so it renders an image by default:
 // $('#image-cropper').cropit({ imageState: { src: { imageSrc } } });
-</code></pre></div><div class="css"><pre><code class="css">.cropit-image-preview {
+</code></pre></div><div class="css"><pre><code class="css">.cropit-preview {
   /* You can specify preview size in CSS */
   width: 960px;
   height: 540px;
 }
-</code></pre></div></div></div></div><div id="demos-custom-button" class="sub-section demo-wrapper custom-button"><div class="container"><h3 class="title">Custom select image button and zoom slider</h3><div class="demo"><div class="column"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
-  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+</code></pre></div></div></div></div><div id="demos-custom-button" class="sub-section demo-wrapper custom-button"><div class="container"><h3 class="title">Custom select image button and zoom slider</h3><div class="demo"><div class="column"><div class="cropit-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;div class=&quot;cropit-preview&quot;&gt;&lt;/div&gt;
   
   &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
   
@@ -47,18 +47,15 @@ input.cropit-image-input {
  * See http://www.htmllion.com/html5-range-input-with-css.html
  * for styling range input
  */
- </code></pre></div></div></div></div><div id="demos-image-background" class="sub-section demo-wrapper image-background"><div class="container"><h3 class="title">Image cropper with background</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
-  &lt;!-- The preview container is needed for background image to work --&gt;
-  &lt;div class=&quot;cropit-image-preview-container&quot;&gt;
-    &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
-  &lt;/div&gt;
+ </code></pre></div></div></div></div><div id="demos-image-background" class="sub-section demo-wrapper image-background"><div class="container"><h3 class="title">Image cropper with background</h3><div class="demo"><div class="column"><div class="cropit-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;div class=&quot;cropit-preview&quot;&gt;&lt;/div&gt;
   
   &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
   
   &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
   &lt;div class=&quot;select-image-btn&quot;&gt;Select new image&lt;/div&gt;
 &lt;/div&gt;</code></pre></div><div class="javascript"><pre><code class="javascript">$('#image-cropper').cropit({ imageBackground: true });</code></pre></div><div class="css"><pre><code class="css">/* Translucent background image */
-.cropit-image-background {
+.cropit-preview-background {
   opacity: .2;
 }
 
@@ -74,10 +71,8 @@ input.cropit-image-zoom-input {
 #image-cropper {
   overflow: hidden;
 }
-</code></pre></div></div></div></div><div id="demos-image-background-border" class="sub-section demo-wrapper image-background-border"><div class="container"><h3 class="title">Image cropper with thin background border</h3><div class="demo"><div class="column"><div class="cropit-image-preview-container"><div class="cropit-image-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
-  &lt;div class=&quot;cropit-image-preview-container&quot;&gt;
-    &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
-  &lt;/div&gt;
+</code></pre></div></div></div></div><div id="demos-image-background-border" class="sub-section demo-wrapper image-background-border"><div class="container"><h3 class="title">Image cropper with thin background border</h3><div class="demo"><div class="column"><div class="cropit-preview"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div><div class="error-msg"></div></div><div class="slider-wrapper"><span class="icon icon-image small-image"></span><input type="range" class="cropit-image-zoom-input custom"><span class="icon icon-image large-image"></span></div></div><div class="column"><div class="btns"><input type="file" class="cropit-image-input custom"><div class="btn select-image-btn"><span class="icon icon-image"></span>Select new image</div><div class="btn download-btn"><span class="icon icon-box-add"></span>Download cropped image</div></div></div></div><div class="code"><div class="html"><pre><code class="html">&lt;div id=&quot;image-cropper&quot;&gt;
+  &lt;div class=&quot;cropit-preview&quot;&gt;&lt;/div&gt;
   
   &lt;input type=&quot;range&quot; class=&quot;cropit-image-zoom-input&quot; /&gt;
   
@@ -88,10 +83,9 @@ input.cropit-image-zoom-input {
   imageBackgroundBorderWidth: 15 // Width of background border
 });</code></pre></div></div></div></div></section><section id="docs" class="docs"><div class="title-wrapper"><div class="container"><h2 class="title">Documentation</h2></div></div><div id="docs-options" class="sub-section doc-wrapper options"><div class="container"><h3 class="title">Initialization options</h3><pre><code class="javascript">$imageCropper.cropit(options);
 </code></pre><div id="docs-options-preview" class="option"><div class="name">$preview</div><div class="type">jQuery element</div><div class="description"><p>The HTML element that displays image preview.</p>
-</div><div class="default"><code>$imageCropper.find('.cropit-image-preview')</code></div></div><div id="docs-options-fileInput" class="option"><div class="name">$fileInput</div><div class="type">jQuery element</div><div class="description"><p>File input element.</p>
+</div><div class="default"><code>$imageCropper.find('.cropit-preview')</code></div></div><div id="docs-options-fileInput" class="option"><div class="name">$fileInput</div><div class="type">jQuery element</div><div class="description"><p>File input element.</p>
 </div><div class="default"><code>$imageCropper.find('input.cropit-image-input')</code></div></div><div id="docs-options-zoomSlider" class="option"><div class="name">$zoomSlider</div><div class="type">jQuery element</div><div class="description"><p>Range input element that controls image zoom.</p>
-</div><div class="default"><code>$imageCropper.find('input.cropit-image-zoom-input')</code></div></div><div id="docs-options-previewContainer" class="option"><div class="name">$previewContainer</div><div class="type">jQuery element</div><div class="description"><p>Preview container. Only needed when <code>imageBackground</code> is true.</p>
-</div><div class="default"><code>$imageCropper.find('.cropit-image-preview-container')</code></div></div><div id="docs-options-width" class="option"><div class="name">width</div><div class="type">number</div><div class="description"><p>Width of image preview in pixels. If set, it will override the CSS property.</p>
+</div><div class="default"><code>$imageCropper.find('input.cropit-image-zoom-input')</code></div></div><div id="docs-options-width" class="option"><div class="name">width</div><div class="type">number</div><div class="description"><p>Width of image preview in pixels. If set, it will override the CSS property.</p>
 </div><div class="default"><code>null</code></div></div><div id="docs-options-height" class="option"><div class="name">height</div><div class="type">number</div><div class="description"><p>Height of image preview in pixels. If set, it will override the CSS property.</p>
 </div><div class="default"><code>null</code></div></div><div id="docs-options-imageBackground" class="option"><div class="name">imageBackground</div><div class="type">boolean</div><div class="description"><p>Whether or not to display the background image beyond the preview area.</p>
 </div><div class="default"><code>false</code></div></div><div id="docs-options-imageBackgroundBorderWidth" class="option"><div class="name">imageBackgroundBorderWidth</div><div class="type">array or number</div><div class="description"><p>Width of background image border in pixels.
@@ -114,8 +108,7 @@ input.cropit-image-zoom-input {
 </div><div class="default"><code>false</code></div></div><div id="docs-options-smallImage" class="option"><div class="name">smallImage</div><div class="type">string</div><div class="description"><p>When set to <code>&#39;reject&#39;</code>, <code>onImageError</code> would be called when cropit loads an image that is smaller than the container.
   When set to <code>&#39;allow&#39;</code>, images smaller than the container can be zoomed down to its original size, overiding <code>minZoom</code> option.
   When set to <code>&#39;stretch&#39;</code>, the minimum zoom of small images would follow <code>minZoom</code> option.</p>
-</div><div class="default"><code>'reject'</code></div></div><div id="docs-options-allowCrossOrigin" class="option"><div class="name">allowCrossOrigin</div><div class="type">boolean</div><div class="description"><p>Set to true if you need to crop image served from other domains.</p>
-</div><div class="default"><code>false</code></div></div><div id="docs-options-onFileChange" class="option"><div class="name">onFileChange</div><div class="type">function</div><div class="description"><p>Called when user selects a file in the select file input.</p>
+</div><div class="default"><code>'reject'</code></div></div><div id="docs-options-onFileChange" class="option"><div class="name">onFileChange</div><div class="type">function</div><div class="description"><p>Called when user selects a file in the select file input.</p>
 </div><div class="param"><p><code>{object} event</code> - File change event object</p>
 </div></div><div id="docs-options-onFileReaderError" class="option"><div class="name">onFileReaderError</div><div class="type">function</div><div class="description"><p>Called when <code>FileReader</code> encounters an error while loading the image file.</p>
 </div></div><div id="docs-options-onImageLoading" class="option"><div class="name">onImageLoading</div><div class="type">function</div><div class="description"><p>Called when image starts to be loaded.</p>
@@ -214,20 +207,17 @@ $imageCropper.cropit('disable');
 // Re-enables the cropper.
 // Does the opposite to `disable` method.
 $imageCropper.cropit('reenable');
-</code></pre></div></div><div id="docs-styles" class="sub-section doc-wrapper styles"><div class="container"><h3 class="title">Styling with CSS</h3><pre><code class="html">&lt;!-- Cropper preview without background image --&gt;
-&lt;!-- Preview image is displayed using background-image on preview --&gt;
-&lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
-
-&lt;!-- Cropper preview with background image --&gt;
-&lt;!-- Preview container is relative positioned --&gt;
+</code></pre></div></div><div id="docs-styles" class="sub-section doc-wrapper styles"><div class="container"><h3 class="title">Styling with CSS</h3><pre><code class="html">&lt;!-- Preview is relative positioned --&gt;
 &lt;!-- Add a wrapper if you need to absolute position it --&gt;
-&lt;div class=&quot;cropit-image-preview-container&quot;&gt;
+&lt;div class=&quot;cropit-preview&quot;&gt;
   &lt;!-- Background image container is absolute positioned --&gt;
-  &lt;div class=&quot;cropit-image-background-container&quot;&gt;
-    &lt;!-- Background image is absolute positioned --&gt;
-    &lt;img class=&quot;cropit-image-background&quot; /&gt;
+  &lt;div class=&quot;cropit-preview-background-container&quot;&gt;
+    &lt;img class=&quot;cropit-preview-background&quot; /&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;cropit-image-preview&quot;&gt;&lt;/div&gt;
+  &lt;!-- Image container is also absolute positioned --&gt;
+  &lt;div class=&quot;cropit-preview-image-container&quot;&gt;
+    &lt;img class=&quot;cropit-preview-image&quot; /&gt;
+  &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;!-- Zoom slider --&gt;
@@ -237,12 +227,12 @@ $imageCropper.cropit('reenable');
 &lt;!-- cropit will add accept=&quot;image/*&quot; attribute to it --&gt;
 &lt;input type=&quot;file&quot; class=&quot;cropit-image-input&quot; /&gt;
 </code></pre><pre><code class="css">/* Show load indicator when image is being loaded */
-.cropit-image-preview.cropit-image-loading .spinner {
+.cropit-preview.cropit-image-loading .spinner {
   opacity: 1;
 }
 
 /* Show move cursor when image has been loaded */
-.cropit-image-preview.cropit-image-loaded {
+.cropit-preview.cropit-image-loaded {
   cursor: move;
 }
 
@@ -259,12 +249,12 @@ input.cropit-image-input {
 /* The following styles are only relevant to when background image is enabled */
 
 /* Translucent background image */
-.cropit-image-background {
+.cropit-preview-background {
   opacity: .1;
 }
 
 /* Style the background image differently when preview area is hovered */
-.cropit-image-background.cropit-preview-hovered {
+.cropit-preview-background.cropit-preview-hovered {
   opacity: .2;
 }
 

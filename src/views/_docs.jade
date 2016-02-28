@@ -108,20 +108,17 @@ section.docs#docs
       h3.title Styling with CSS
 
       :htmlsrc
-        <!-- Cropper preview without background image -->
-        <!-- Preview image is displayed using background-image on preview -->
-        <div class="cropit-image-preview"></div>
-
-        <!-- Cropper preview with background image -->
-        <!-- Preview container is relative positioned -->
+        <!-- Preview is relative positioned -->
         <!-- Add a wrapper if you need to absolute position it -->
-        <div class="cropit-image-preview-container">
+        <div class="cropit-preview">
           <!-- Background image container is absolute positioned -->
-          <div class="cropit-image-background-container">
-            <!-- Background image is absolute positioned -->
-            <img class="cropit-image-background" />
+          <div class="cropit-preview-background-container">
+            <img class="cropit-preview-background" />
           </div>
-          <div class="cropit-image-preview"></div>
+          <!-- Image container is also absolute positioned -->
+          <div class="cropit-preview-image-container">
+            <img class="cropit-preview-image" />
+          </div>
         </div>
 
         <!-- Zoom slider -->
@@ -133,12 +130,12 @@ section.docs#docs
 
       :csssrc
         /* Show load indicator when image is being loaded */
-        .cropit-image-preview.cropit-image-loading .spinner {
+        .cropit-preview.cropit-image-loading .spinner {
           opacity: 1;
         }
 
         /* Show move cursor when image has been loaded */
-        .cropit-image-preview.cropit-image-loaded {
+        .cropit-preview.cropit-image-loaded {
           cursor: move;
         }
 
@@ -155,12 +152,12 @@ section.docs#docs
         /* The following styles are only relevant to when background image is enabled */
 
         /* Translucent background image */
-        .cropit-image-background {
+        .cropit-preview-background {
           opacity: .1;
         }
 
         /* Style the background image differently when preview area is hovered */
-        .cropit-image-background.cropit-preview-hovered {
+        .cropit-preview-background.cropit-preview-hovered {
           opacity: .2;
         }
 
