@@ -1,7 +1,7 @@
 {
   "name": "cropit",
   "description": "Customizable crop and zoom.",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "authors": [
     "Scott Cheng <me@scottcheng.com>",
     "Yufei Liu <liu.yufei@gmail.com>"

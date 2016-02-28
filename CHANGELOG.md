@@ -1,3 +1,27 @@
+## 0.5.0 (February 27, 2016)
+
+### Breaking changes
+
+* Markup structure and class name changes. Importantly, changed `.cropit-image-preview` to `.cropit-preview`, `.cropit-image-background-container` to `.cropit-preview-background-container`, and `.cropit-image-background` to `.cropit-preview-background`. `.cropit-image-preview-container` element is no longer needed, and all you need is a `.cropit-preview` (previously `.cropit-image-preview`) whether or not you want image background beyond the preview. New markup structure (after cropit is initialized) is as follows:
+
+```jade
+.cropit-preview
+  .cropit-preview-background-container
+    img.cropit-preview-background
+  .cropit-preview-image-container
+    img.cropit-preview-image
+```
+
+### New features
+
+* Added rotation APIs `rotateCW` and `rotateCCW`, which rotates the image by 90 degrees clockwise/counterclockwise. If, after rotated by 90 degrees, the dimension of the image no longer meets the requirements, it would be rotated by 180 degrees.
+* Render image using CSS transformation, which drastically improved performance.
+
+### Bug fixes
+
+* Now remote images are loaded through AJAX and rendered as data URI strings, which addresses CORS issues. `allowCrossOrigin` option is no longer necessary and therefore removed.
+
+
 ## 0.4.5 (September 27, 2015)
 
 ### Bug fixes
