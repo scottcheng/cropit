@@ -151,6 +151,12 @@ $imageCropper.cropit('export', {
   originalSize: true
 });
 
+// Rotates the image by 90 degrees in clockwise/counterclockwise.
+// If, after rotated by 90 degrees, the image dimensions no longer meets
+// the requirement, it would be rotated by 180 degrees instead.
+$imageCropper.cropit('rotateCW');
+$imageCropper.cropit('rotateCCW');
+
 // Returns whether the current image is big enough to be zoomable.
 // Note that an image cannot be zoomed to larger than its original size.
 $imageCropper.cropit('isZoomable');
@@ -245,7 +251,7 @@ $imageCropper.cropit('reenable');
 }
 
 /* Show move cursor when image has been loaded */
-.cropit-preview.cropit-image-loaded {
+.cropit-preview.cropit-image-loaded .cropit-preview-image-container {
   cursor: move;
 }
 
@@ -263,11 +269,6 @@ input.cropit-image-input {
 
 /* Translucent background image */
 .cropit-preview-background {
-  opacity: .1;
-}
-
-/* Style the background image differently when hovered */
-.cropit-preview:hover .cropit-preview-background {
   opacity: .2;
 }
 
