@@ -67,9 +67,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _cropit2 = _interopRequireDefault(_cropit);
 
-	var _constants = __webpack_require__(3);
+	var _constants = __webpack_require__(4);
 
-	var _utils = __webpack_require__(4);
+	var _utils = __webpack_require__(6);
 
 	var applyOnEach = function applyOnEach($el, callback) {
 	  return $el.each(function () {
@@ -172,15 +172,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _Zoomer = __webpack_require__(5);
+	var _Zoomer = __webpack_require__(3);
 
 	var _Zoomer2 = _interopRequireDefault(_Zoomer);
 
-	var _constants = __webpack_require__(3);
+	var _constants = __webpack_require__(4);
 
-	var _options = __webpack_require__(6);
+	var _options = __webpack_require__(5);
 
-	var _utils = __webpack_require__(4);
+	var _utils = __webpack_require__(6);
 
 	var Cropit = (function () {
 	  function Cropit(jQuery, element, options) {
@@ -902,68 +902,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	var PLUGIN_KEY = 'cropit';
-
-	exports.PLUGIN_KEY = PLUGIN_KEY;
-	var CLASS_NAMES = {
-	  PREVIEW: 'cropit-preview',
-	  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
-	  PREVIEW_IMAGE: 'cropit-preview-image',
-	  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
-	  PREVIEW_BACKGROUND: 'cropit-preview-background',
-	  FILE_INPUT: 'cropit-image-input',
-	  ZOOM_SLIDER: 'cropit-image-zoom-input',
-
-	  PREVIEW_HOVERED: 'cropit-preview-hovered',
-	  DRAG_HOVERED: 'cropit-drag-hovered',
-	  IMAGE_LOADING: 'cropit-image-loading',
-	  IMAGE_LOADED: 'cropit-image-loaded',
-	  DISABLED: 'cropit-disabled'
-	};
-
-	exports.CLASS_NAMES = CLASS_NAMES;
-	var ERRORS = {
-	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
-	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
-	};
-
-	exports.ERRORS = ERRORS;
-	var eventName = function eventName(events) {
-	  return events.map(function (e) {
-	    return '' + e + '.cropit';
-	  }).join(' ');
-	};
-	var EVENTS = {
-	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
-	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
-	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
-	};
-	exports.EVENTS = EVENTS;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var exists = function exists(v) {
-	  return typeof v !== 'undefined';
-	};
-
-	exports.exists = exists;
-	var round = function round(x) {
-	  return +(Math.round(x * 100) + 'e-2');
-	};
-	exports.round = round;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -1046,14 +984,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 6 */
+/* 4 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var PLUGIN_KEY = 'cropit';
+
+	exports.PLUGIN_KEY = PLUGIN_KEY;
+	var CLASS_NAMES = {
+	  PREVIEW: 'cropit-preview',
+	  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
+	  PREVIEW_IMAGE: 'cropit-preview-image',
+	  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
+	  PREVIEW_BACKGROUND: 'cropit-preview-background',
+	  FILE_INPUT: 'cropit-image-input',
+	  ZOOM_SLIDER: 'cropit-image-zoom-input',
+
+	  PREVIEW_HOVERED: 'cropit-preview-hovered',
+	  DRAG_HOVERED: 'cropit-drag-hovered',
+	  IMAGE_LOADING: 'cropit-image-loading',
+	  IMAGE_LOADED: 'cropit-image-loaded',
+	  DISABLED: 'cropit-disabled'
+	};
+
+	exports.CLASS_NAMES = CLASS_NAMES;
+	var ERRORS = {
+	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
+	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
+	};
+
+	exports.ERRORS = ERRORS;
+	var eventName = function eventName(events) {
+	  return events.map(function (e) {
+	    return '' + e + '.cropit';
+	  }).join(' ');
+	};
+	var EVENTS = {
+	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
+	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
+	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
+	};
+	exports.EVENTS = EVENTS;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
-	var _constants = __webpack_require__(3);
+	var _constants = __webpack_require__(4);
 
 	var options = {
 	  elements: [{
@@ -1210,6 +1193,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.loadDefaults = loadDefaults;
 	exports['default'] = options;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var exists = function exists(v) {
+	  return typeof v !== 'undefined';
+	};
+
+	exports.exists = exists;
+	var round = function round(x) {
+	  return +(Math.round(x * 100) + 'e-2');
+	};
+	exports.round = round;
 
 /***/ }
 /******/ ])
