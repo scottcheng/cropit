@@ -26,14 +26,14 @@
         margin-top: 10px;
       }
 
-      input {
+      input, .export {
         /* Use relative position to prevent from being covered by image background */
         position: relative;
         z-index: 10;
         display: block;
       }
 
-      .export {
+      button {
         margin-top: 10px;
       }
     </style>
@@ -46,6 +46,9 @@
         Resize image
       </div>
       <input type="range" class="cropit-image-zoom-input">
+      <button class="rotate-ccw">Rotate counterclockwise</button>
+      <button class="rotate-cw">Rotate clockwise</button>
+
       <button class="export">Export</button>
     </div>
 
@@ -58,6 +61,13 @@
           imageState: {
             src: 'http://lorempixel.com/500/400/',
           },
+        });
+
+        $('.rotate-cw').click(function() {
+          $('.image-editor').cropit('rotateCW');
+        });
+        $('.rotate-ccw').click(function() {
+          $('.image-editor').cropit('rotateCCW');
         });
 
         $('.export').click(function() {

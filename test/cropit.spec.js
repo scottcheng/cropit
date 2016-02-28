@@ -233,6 +233,7 @@ describe('Cropit', () => {
     beforeEach(() => {
       cropit = newCropit({ width: 1, height: 1 });
       cropit.imageLoaded = true;
+      cropit._rotation = 0;
     });
 
     describe('fixes x', () => {
@@ -294,6 +295,15 @@ describe('Cropit', () => {
         expect(offset.y).toBe(-0.12);
       });
     });
+
+    it('takes rotation into account', () => {
+      cropit.image = { width: 2, height: 1 };
+      cropit._zoom = 1;
+      cropit._rotation = 90;
+
+      const offset = cropit.fixOffset({ x: -0.5, y: -0.5 });
+      expect(offset).toEqual({ x: 0, y: -0.5 });
+    });
   });
 
   describe('#centerImage', () => {
@@ -302,6 +312,7 @@ describe('Cropit', () => {
       cropit.imageLoaded = true;
       cropit.image = { width: 12, height: 8 };
       cropit._zoom = 0.5;
+      cropit._rotation = 0;
 
       cropit.offset = { x: 0, y: 1 };
       expect(cropit.offset).not.toEqual({ x: -1, y: -1 });

@@ -44,30 +44,24 @@ const methods = {
   export(options) {
     return callOnFirst(this, 'getCroppedImageData', options);
   },
+};
 
-  prop(name, value) {
-    if (exists(value)) {
-      return applyOnEach(this, (cropit) => {
-        cropit[name] = value;
-      });
-    }
-    else {
-      const cropit = this.first().data(PLUGIN_KEY);
-      return cropit[name];
-    }
-  },
+const delegate = ($el, fnName) => {
+  return applyOnEach($el, (cropit) => {
+    cropit[fnName]();
+  });
+};
 
-  disable() {
-    return applyOnEach(this, (cropit) => {
-      cropit.disable();
+const prop = ($el, name, value) => {
+  if (exists(value)) {
+    return applyOnEach($el, (cropit) => {
+      cropit[name] = value;
     });
-  },
-
-  reenable() {
-    return applyOnEach(this, (cropit) => {
-      cropit.reenable();
-    });
-  },
+  }
+  else {
+    const cropit = $el.first().data(PLUGIN_KEY);
+    return cropit[name];
+  }
 };
 
 $.fn.cropit = function(method) {
@@ -76,7 +70,10 @@ $.fn.cropit = function(method) {
   }
   else if (['imageState', 'imageSrc', 'offset', 'previewSize', 'imageSize', 'zoom',
             'initialZoom', 'exportZoom', 'minZoom', 'maxZoom'].indexOf(method) >= 0) {
-    return methods.prop.apply(this, arguments);
+    return prop(this, ...arguments);
+  }
+  else if (['rotateCW', 'rotateCCW', 'disable', 'reenable'].indexOf(method) >= 0) {
+    return delegate(this, ...arguments);
   }
   else {
     return methods.init.apply(this, arguments);
