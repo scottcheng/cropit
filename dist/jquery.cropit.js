@@ -628,9 +628,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        exportZoom: this.options.exportZoom,
 	        smallImage: this.options.smallImage
 	      })) {
-	        this.rotation += 180;
+	        this.rotation = (this.rotation + 180) % 360;
 	      } else {
-	        this.rotation += 90;
+	        this.rotation = (this.rotation + 90) % 360;;
 	      }
 	    }
 	  }, {
@@ -644,9 +644,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        exportZoom: this.options.exportZoom,
 	        smallImage: this.options.smallImage
 	      })) {
-	        this.rotation -= 180;
+	        this.rotation = (this.rotation + 180) % 360;
 	      } else {
-	        this.rotation -= 90;
+	        this.rotation = (this.rotation + 270) % 360;;
 	      }
 	    }
 	  }, {
@@ -770,8 +770,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'rotatedOffset',
 	    get: function () {
 	      return {
-	        x: this.offset.x + (this.rotation % 360 === 90 ? this.image.height * this.zoom : 0) + (this.rotation % 360 === 180 ? this.image.width * this.zoom : 0),
-	        y: this.offset.y + (this.rotation % 360 === 180 ? this.image.height * this.zoom : 0) + (this.rotation % 360 === 270 ? this.image.width * this.zoom : 0)
+	        x: this.offset.x + (this.rotation === 90 ? this.image.height * this.zoom : 0) + (this.rotation === 180 ? this.image.width * this.zoom : 0),
+	        y: this.offset.y + (this.rotation === 180 ? this.image.height * this.zoom : 0) + (this.rotation === 270 ? this.image.width * this.zoom : 0)
 	      };
 	    }
 	  }, {
