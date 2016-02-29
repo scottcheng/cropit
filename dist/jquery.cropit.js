@@ -212,8 +212,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
 	      this.previewSize = {
-	        width: this.options.width || this.$preview.width(),
-	        height: this.options.height || this.$preview.height()
+	        width: this.options.width || this.$preview.innerWidth(),
+	        height: this.options.height || this.$preview.innerHeight()
 	      };
 
 	      this.$image = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE).attr('alt', '').css({
@@ -873,8 +873,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height: size.height
 	      };
 	      this.$preview.css({
-	        width: this.previewSize.width,
-	        height: this.previewSize.height
+	        innerWidth: this.previewSize.width,
+	        innerHeight: this.previewSize.height
 	      });
 
 	      if (this.imageLoaded) {
