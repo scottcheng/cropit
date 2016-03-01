@@ -872,10 +872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        width: size.width,
 	        height: size.height
 	      };
-	      this.$preview.css({
-	        innerWidth: this.previewSize.width,
-	        innerHeight: this.previewSize.height
-	      });
+	      this.$preview.innerWidth(this.previewSize.width).innerHeight(this.previewSize.height);
 
 	      if (this.imageLoaded) {
 	        this.setupZoomer();
