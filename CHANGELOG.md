@@ -8,9 +8,30 @@
 
 ## 0.5.0 (February 27, 2016)
 
-### Breaking changes
+### Migration guide
 
-* Markup structure and class name changes. Importantly, changed `.cropit-image-preview` to `.cropit-preview`, `.cropit-image-background-container` to `.cropit-preview-background-container`, and `.cropit-image-background` to `.cropit-preview-background`. `.cropit-image-preview-container` element is no longer needed, and all you need is a `.cropit-preview` (previously `.cropit-image-preview`) whether or not you want image background beyond the preview. New markup structure (after cropit is initialized) is as follows:
+Markup in v0.4:
+
+```html
+<div class="image-editor">
+  <!-- .cropit-image-preview-container is needed for background image to work -->
+  <div class="cropit-image-preview-container">
+    <div class="cropit-image-preview"></div>
+  </div>
+  <!-- Other stuff -->
+</div>
+```
+
+New markup in v0.5:
+
+```html
+<div class="image-editor">
+  <div class="cropit-preview"></div>
+  <!-- Other stuff -->
+</div>
+```
+
+Note that `.cropit-image-preview-container` element is no longer needed, and all you need is a `.cropit-preview` (previously `.cropit-image-preview`) whether or not you want image background that goes beyond the preview area. New markup structure (after cropit is initialized) is as follows:
 
 ```jade
 .cropit-preview
@@ -19,6 +40,20 @@
   .cropit-preview-image-container
     img.cropit-preview-image
 ```
+
+Note the class name changes:
+
+```
+.cropit-image-preview              => .cropit-preview
+.cropit-image-background-container => .cropit-preview-background-container
+.cropit-image-background           => .cropit-preview-background
+```
+
+Make sure to update class names in your selectors.
+
+### Breaking changes
+
+* Markup structure and class name changes. See migration guide above for details.
 
 ### New features
 
