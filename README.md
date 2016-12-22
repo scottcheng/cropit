@@ -1,4 +1,5 @@
 # cropit
+[![CDNJS](https://img.shields.io/cdnjs/v/cropit.svg)](https://cdnjs.com/libraries/cropit)
 
 Customizable crop and zoom.
 
