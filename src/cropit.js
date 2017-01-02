@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import Zoomer from './Zoomer';
+import Zoomer from './zoomer';
 import { CLASS_NAMES, ERRORS, EVENTS } from './constants';
 import { loadDefaults } from './options';
 import { exists, round } from './utils';
