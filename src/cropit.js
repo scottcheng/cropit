@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import Zoomer from './Zoomer';
+import Zoomer from './zoomer';
 import { CLASS_NAMES, ERRORS, EVENTS } from './constants';
 import { loadDefaults } from './options';
 import { exists, round } from './utils';
@@ -99,7 +99,12 @@ class Cropit {
     this.zoomer = new Zoomer();
 
     if (this.options.allowDragNDrop) {
-      $.event.props.push('dataTransfer');
+      if ($.event.props) {
+        $.event.props.push('dataTransfer');
+      }
+      else {
+        $.event.addProp('dataTransfer');
+      }
     }
 
     this.bindListeners();
