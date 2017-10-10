@@ -1,5 +1,6 @@
 # cropit
 [![CDNJS](https://img.shields.io/cdnjs/v/cropit.svg)](https://cdnjs.com/libraries/cropit)
+[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/cropit/badge?style=rounded)](https://www.jsdelivr.com/package/npm/cropit)
 
 Customizable crop and zoom.
 
