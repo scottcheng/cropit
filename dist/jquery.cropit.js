@@ -270,10 +270,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.zoomer = new _Zoomer2['default']();
 
-	      if (this.options.allowDragNDrop) {
-	        _jquery2['default'].event.props.push('dataTransfer');
-	      }
-
 	      this.bindListeners();
 
 	      if (this.options.imageState && this.options.imageState.src) {
@@ -335,7 +331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onDragOver',
 	    value: function onDragOver(e) {
 	      e.preventDefault();
-	      e.dataTransfer.dropEffect = 'copy';
+	      e.originalEvent.dataTransfer.dropEffect = 'copy';
 	      this.$preview.toggleClass(_constants.CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
 	    }
 	  }, {
@@ -346,7 +342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      e.preventDefault();
 	      e.stopPropagation();
 
-	      var files = Array.prototype.slice.call(e.dataTransfer.files, 0);
+	      var files = Array.prototype.slice.call(e.originalEvent.dataTransfer.files, 0);
 	      files.some(function (file) {
 	        if (!file.type.match('image')) {
 	          return false;

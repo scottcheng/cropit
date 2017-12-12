@@ -98,10 +98,6 @@ class Cropit {
 
     this.zoomer = new Zoomer();
 
-    if (this.options.allowDragNDrop) {
-      $.event.props.push('dataTransfer');
-    }
-
     this.bindListeners();
 
     if (this.options.imageState && this.options.imageState.src) {
@@ -157,7 +153,7 @@ class Cropit {
 
   onDragOver(e) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
+    e.originalEvent.dataTransfer.dropEffect = 'copy';
     this.$preview.toggleClass(CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
   }
 
@@ -165,7 +161,7 @@ class Cropit {
     e.preventDefault();
     e.stopPropagation();
 
-    const files = Array.prototype.slice.call(e.dataTransfer.files, 0);
+    const files = Array.prototype.slice.call(e.originalEvent.dataTransfer.files, 0);
     files.some((file) => {
       if (!file.type.match('image')) { return false; }
 
