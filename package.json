@@ -47,7 +47,8 @@
     ]
   },
   "dependencies": {
-    "jquery": ">=1.9"
+    "jquery": ">=1.9",
+    "jquery-migrate": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "~5.5.8",

@@ -1,5 +1,4 @@
-import $ from 'jquery';
-
+import 'jquery-migrate';
 import Cropit from './cropit';
 import { PLUGIN_KEY } from './constants';
 import { exists } from './utils';

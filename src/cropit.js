@@ -1,6 +1,4 @@
-import $ from 'jquery';
-
-import Zoomer from './Zoomer';
+import Zoomer from './zoomer';
 import { CLASS_NAMES, ERRORS, EVENTS } from './constants';
 import { loadDefaults } from './options';
 import { exists, round } from './utils';
@@ -25,7 +23,7 @@ class Cropit {
     };
 
     this.$preview = this.options.$preview.css('position', 'relative');
-    this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
+    this.$fileInput = this.options.$fileInput.attr({ accept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg' });
     this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
     this.previewSize = {
