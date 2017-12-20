@@ -25,7 +25,7 @@ class Cropit {
     };
 
     this.$preview = this.options.$preview.css('position', 'relative');
-    this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
+    this.$fileInput = this.options.$fileInput.attr({ accept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg' });
     this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
 
     this.previewSize = {
