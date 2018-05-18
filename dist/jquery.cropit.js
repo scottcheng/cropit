@@ -1,14 +1,14 @@
 /*! cropit - v0.5.1 <https://github.com/scottcheng/cropit> */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"));
+		module.exports = factory(require("jquery"), require("exif-js"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery"], factory);
+		define(["jquery", "exif-js"], factory);
 	else if(typeof exports === 'object')
-		exports["cropit"] = factory(require("jquery"));
+		exports["cropit"] = factory(require("jquery"), require("exif-js"));
 	else
-		root["cropit"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+		root["cropit"] = factory(root["jQuery"], root["EXIF"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -67,9 +67,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _cropit2 = _interopRequireDefault(_cropit);
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
-	var _utils = __webpack_require__(6);
+	var _utils = __webpack_require__(7);
 
 	var applyOnEach = function applyOnEach($el, callback) {
 	  return $el.each(function () {
@@ -158,44 +158,48 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _Zoomer = __webpack_require__(3);
+	var _exifJs = __webpack_require__(4);
+
+	var _exifJs2 = _interopRequireDefault(_exifJs);
+
+	var _Zoomer = __webpack_require__(5);
 
 	var _Zoomer2 = _interopRequireDefault(_Zoomer);
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
-	var _options = __webpack_require__(5);
+	var _options = __webpack_require__(6);
 
-	var _utils = __webpack_require__(6);
+	var _utils = __webpack_require__(7);
 
 	var Cropit = (function () {
 	  function Cropit(jQuery, element, options) {
 	    _classCallCheck(this, Cropit);
 
-	    this.$el = (0, _jquery2['default'])(element);
+	    this.$el = (0, _jquery2["default"])(element);
 
 	    var defaults = (0, _options.loadDefaults)(this.$el);
-	    this.options = _jquery2['default'].extend({}, defaults, options);
+	    this.options = _jquery2["default"].extend({}, defaults, options);
 
 	    this.init();
 	  }
 
 	  _createClass(Cropit, [{
-	    key: 'init',
+	    key: "init",
 	    value: function init() {
 	      var _this = this;
 
@@ -207,32 +211,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.onImageError.call(_this, _constants.ERRORS.IMAGE_FAILED_TO_LOAD);
 	      };
 
-	      this.$preview = this.options.$preview.css('position', 'relative');
-	      this.$fileInput = this.options.$fileInput.attr({ accept: 'image/*' });
-	      this.$zoomSlider = this.options.$zoomSlider.attr({ min: 0, max: 1, step: 0.01 });
+	      this.$preview = this.options.$preview.css("position", "relative");
+	      this.$fileInput = this.options.$fileInput.attr({ accept: "image/*" });
+	      this.$zoomSlider = this.options.$zoomSlider.attr({
+	        min: 0,
+	        max: 1,
+	        step: 0.01
+	      });
 
 	      this.previewSize = {
 	        width: this.options.width || this.$preview.innerWidth(),
 	        height: this.options.height || this.$preview.innerHeight()
 	      };
 
-	      this.$image = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE).attr('alt', '').css({
-	        transformOrigin: 'top left',
-	        webkitTransformOrigin: 'top left',
-	        willChange: 'transform'
+	      this.$image = (0, _jquery2["default"])("<img />").addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE).attr("alt", "").css({
+	        transformOrigin: "top left",
+	        webkitTransformOrigin: "top left",
+	        willChange: "transform"
 	      });
-	      this.$imageContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE_CONTAINER).css({
-	        position: 'absolute',
-	        overflow: 'hidden',
+	      this.$imageContainer = (0, _jquery2["default"])("<div />").addClass(_constants.CLASS_NAMES.PREVIEW_IMAGE_CONTAINER).css({
+	        position: "absolute",
+	        overflow: "hidden",
 	        left: 0,
 	        top: 0,
-	        width: '100%',
-	        height: '100%'
+	        width: "100%",
+	        height: "100%"
 	      }).append(this.$image);
 	      this.$preview.append(this.$imageContainer);
 
 	      if (this.options.imageBackground) {
-	        if (_jquery2['default'].isArray(this.options.imageBackgroundBorderWidth)) {
+	        if (_jquery2["default"].isArray(this.options.imageBackgroundBorderWidth)) {
 	          this.bgBorderWidthArray = this.options.imageBackgroundBorderWidth;
 	        } else {
 	          this.bgBorderWidthArray = [0, 1, 2, 3].map(function () {
@@ -240,16 +248,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	          });
 	        }
 
-	        this.$bg = (0, _jquery2['default'])('<img />').addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND).attr('alt', '').css({
-	          position: 'relative',
+	        this.$bg = (0, _jquery2["default"])("<img />").addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND).attr("alt", "").css({
+	          position: "relative",
 	          left: this.bgBorderWidthArray[3],
 	          top: this.bgBorderWidthArray[0],
-	          transformOrigin: 'top left',
-	          webkitTransformOrigin: 'top left',
-	          willChange: 'transform'
+	          transformOrigin: "top left",
+	          webkitTransformOrigin: "top left",
+	          willChange: "transform"
 	        });
-	        this.$bgContainer = (0, _jquery2['default'])('<div />').addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND_CONTAINER).css({
-	          position: 'absolute',
+	        this.$bgContainer = (0, _jquery2["default"])("<div />").addClass(_constants.CLASS_NAMES.PREVIEW_BACKGROUND_CONTAINER).css({
+	          position: "absolute",
 	          zIndex: 0,
 	          top: -this.bgBorderWidthArray[0],
 	          right: -this.bgBorderWidthArray[1],
@@ -257,7 +265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          left: -this.bgBorderWidthArray[3]
 	        }).append(this.$bg);
 	        if (this.bgBorderWidthArray[0] > 0) {
-	          this.$bgContainer.css('overflow', 'hidden');
+	          this.$bgContainer.css("overflow", "hidden");
 	        }
 	        this.$preview.prepend(this.$bgContainer);
 	      }
@@ -268,10 +276,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.moveContinue = false;
 
-	      this.zoomer = new _Zoomer2['default']();
+	      this.zoomer = new _Zoomer2["default"]();
 
 	      if (this.options.allowDragNDrop) {
-	        _jquery2['default'].event.props.push('dataTransfer');
+	        _jquery2["default"].event.props.push("dataTransfer");
 	      }
 
 	      this.bindListeners();
@@ -281,27 +289,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'bindListeners',
+	    key: "bindListeners",
 	    value: function bindListeners() {
-	      this.$fileInput.on('change.cropit', this.onFileChange.bind(this));
+	      this.$fileInput.on("change.cropit", this.onFileChange.bind(this));
 	      this.$imageContainer.on(_constants.EVENTS.PREVIEW, this.onPreviewEvent.bind(this));
 	      this.$zoomSlider.on(_constants.EVENTS.ZOOM_INPUT, this.onZoomSliderChange.bind(this));
 
 	      if (this.options.allowDragNDrop) {
-	        this.$imageContainer.on('dragover.cropit dragleave.cropit', this.onDragOver.bind(this));
-	        this.$imageContainer.on('drop.cropit', this.onDrop.bind(this));
+	        this.$imageContainer.on("dragover.cropit dragleave.cropit", this.onDragOver.bind(this));
+	        this.$imageContainer.on("drop.cropit", this.onDrop.bind(this));
 	      }
 	    }
 	  }, {
-	    key: 'unbindListeners',
+	    key: "unbindListeners",
 	    value: function unbindListeners() {
-	      this.$fileInput.off('change.cropit');
+	      this.$fileInput.off("change.cropit");
 	      this.$imageContainer.off(_constants.EVENTS.PREVIEW);
-	      this.$imageContainer.off('dragover.cropit dragleave.cropit drop.cropit');
+	      this.$imageContainer.off("dragover.cropit dragleave.cropit drop.cropit");
 	      this.$zoomSlider.off(_constants.EVENTS.ZOOM_INPUT);
 	    }
 	  }, {
-	    key: 'onFileChange',
+	    key: "onFileChange",
 	    value: function onFileChange(e) {
 	      this.options.onFileChange(e);
 
@@ -310,10 +318,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'loadFile',
+	    key: "loadFile",
 	    value: function loadFile(file) {
 	      var fileReader = new FileReader();
-	      if (file && file.type.match('image')) {
+	      if (file && file.type.match("image")) {
 	        fileReader.readAsDataURL(file);
 	        fileReader.onload = this.onFileReaderLoaded.bind(this);
 	        fileReader.onerror = this.onFileReaderError.bind(this);
@@ -322,24 +330,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'onFileReaderLoaded',
+	    key: "onFileReaderLoaded",
 	    value: function onFileReaderLoaded(e) {
 	      this.loadImage(e.target.result);
 	    }
 	  }, {
-	    key: 'onFileReaderError',
+	    key: "onFileReaderError",
 	    value: function onFileReaderError() {
 	      this.options.onFileReaderError();
 	    }
 	  }, {
-	    key: 'onDragOver',
+	    key: "onDragOver",
 	    value: function onDragOver(e) {
 	      e.preventDefault();
-	      e.dataTransfer.dropEffect = 'copy';
-	      this.$preview.toggleClass(_constants.CLASS_NAMES.DRAG_HOVERED, e.type === 'dragover');
+	      e.dataTransfer.dropEffect = "copy";
+	      this.$preview.toggleClass(_constants.CLASS_NAMES.DRAG_HOVERED, e.type === "dragover");
 	    }
 	  }, {
-	    key: 'onDrop',
+	    key: "onDrop",
 	    value: function onDrop(e) {
 	      var _this2 = this;
 
@@ -348,7 +356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var files = Array.prototype.slice.call(e.dataTransfer.files, 0);
 	      files.some(function (file) {
-	        if (!file.type.match('image')) {
+	        if (!file.type.match("image")) {
 	          return false;
 	        }
 
@@ -359,7 +367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$preview.removeClass(_constants.CLASS_NAMES.DRAG_HOVERED);
 	    }
 	  }, {
-	    key: 'loadImage',
+	    key: "loadImage",
 	    value: function loadImage(imageSrc) {
 	      var _this3 = this;
 
@@ -370,7 +378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.options.onImageLoading();
 	      this.setImageLoadingClass();
 
-	      if (imageSrc.indexOf('data') === 0) {
+	      if (imageSrc.indexOf("data") === 0) {
 	        this.preImage.src = imageSrc;
 	      } else {
 	        var xhr = new XMLHttpRequest();
@@ -382,13 +390,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          _this3.loadFile(e.target.response);
 	        };
-	        xhr.open('GET', imageSrc);
-	        xhr.responseType = 'blob';
+	        xhr.open("GET", imageSrc);
+	        xhr.responseType = "blob";
 	        xhr.send();
 	      }
 	    }
 	  }, {
-	    key: 'onPreImageLoaded',
+	    key: "onPreImageLoaded",
 	    value: function onPreImageLoaded() {
 	      if (this.shouldRejectImage({
 	        imageWidth: this.preImage.width,
@@ -405,10 +413,77 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      this.image.src = this.preImage.src;
+	      function _base64ToArrayBuffer(base64) {
+	        var binary_string = window.atob(base64.split(",")[1]);
+	        var len = binary_string.length;
+	        var bytes = new Uint8Array(len);
+	        for (var i = 0; i < len; i++) {
+	          bytes[i] = binary_string.charCodeAt(i);
+	        }
+	        return bytes.buffer;
+	      }
+
+	      var exif = _exifJs2["default"].readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
+
+	      var canvas = document.createElement("canvas");
+	      canvas.width = this.preImage.width;
+	      canvas.height = this.preImage.height;
+	      var ctx = canvas.getContext("2d");
+	      var x = 0;
+	      var y = 0;
+	      ctx.save();
+
+	      if (exif.Oriendation != "undefined") {
+	        switch (exif.Orientation) {
+	          case 2:
+	            // horizontal flip
+	            ctx.translate(canvas.width, 0);
+	            ctx.scale(-1, 1);
+	            break;
+	          case 3:
+	            // 180° rotate left
+	            ctx.translate(canvas.width, canvas.height);
+	            ctx.rotate(Math.PI);
+	            break;
+	          case 4:
+	            // vertical flip
+	            ctx.translate(0, canvas.height);
+	            ctx.scale(1, -1);
+	            break;
+	          case 5:
+	            // vertical flip + 90 rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.scale(1, -1);
+	            break;
+	          case 6:
+	            // 90° rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.translate(0, -canvas.height);
+	            break;
+	          case 7:
+	            // horizontal flip + 90 rotate right
+	            ctx.rotate(0.5 * Math.PI);
+	            ctx.translate(canvas.width, -canvas.height);
+	            ctx.scale(-1, 1);
+	            break;
+	          case 8:
+	            // 90° rotate left
+	            ctx.rotate(-0.5 * Math.PI);
+	            ctx.translate(-canvas.width, 0);
+	            break;
+	        }
+
+	        ctx.drawImage(this.preImage, x, y);
+	        ctx.restore();
+	        var finalImage = canvas.toDataURL("image/*", 1);
+
+	        this.image.src = this.imageSrc = finalImage;
+	      } else {
+	        this.image.src = this.imageSrc = this.preImage.src;
+	      }
 	    }
 	  }, {
-	    key: 'onImageLoaded',
+	    key: "onImageLoaded",
 	    value: function onImageLoaded() {
 	      this.rotation = 0;
 	      this.setupZoomer(this.options.imageState && this.options.imageState.zoom || this._initialZoom);
@@ -420,9 +495,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.options.imageState = {};
 
-	      this.$image.attr('src', this.image.src);
+	      this.$image.attr("src", this.image.src);
 	      if (this.options.imageBackground) {
-	        this.$bg.attr('src', this.image.src);
+	        this.$bg.attr("src", this.image.src);
 	      }
 
 	      this.setImageLoadedClass();
@@ -432,28 +507,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.options.onImageLoaded();
 	    }
 	  }, {
-	    key: 'onImageError',
+	    key: "onImageError",
 	    value: function onImageError() {
 	      this.options.onImageError.apply(this, arguments);
 	      this.removeImageLoadingClass();
 	    }
 	  }, {
-	    key: 'setImageLoadingClass',
+	    key: "setImageLoadingClass",
 	    value: function setImageLoadingClass() {
 	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADED).addClass(_constants.CLASS_NAMES.IMAGE_LOADING);
 	    }
 	  }, {
-	    key: 'setImageLoadedClass',
+	    key: "setImageLoadedClass",
 	    value: function setImageLoadedClass() {
 	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADING).addClass(_constants.CLASS_NAMES.IMAGE_LOADED);
 	    }
 	  }, {
-	    key: 'removeImageLoadingClass',
+	    key: "removeImageLoadingClass",
 	    value: function removeImageLoadingClass() {
 	      this.$preview.removeClass(_constants.CLASS_NAMES.IMAGE_LOADING);
 	    }
 	  }, {
-	    key: 'getEventPosition',
+	    key: "getEventPosition",
 	    value: function getEventPosition(e) {
 	      if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0]) {
 	        e = e.originalEvent.touches[0];
@@ -463,7 +538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'onPreviewEvent',
+	    key: "onPreviewEvent",
 	    value: function onPreviewEvent(e) {
 	      if (!this.imageLoaded) {
 	        return;
@@ -472,19 +547,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.moveContinue = false;
 	      this.$imageContainer.off(_constants.EVENTS.PREVIEW_MOVE);
 
-	      if (e.type === 'mousedown' || e.type === 'touchstart') {
+	      if (e.type === "mousedown" || e.type === "touchstart") {
 	        this.origin = this.getEventPosition(e);
 	        this.moveContinue = true;
 	        this.$imageContainer.on(_constants.EVENTS.PREVIEW_MOVE, this.onMove.bind(this));
 	      } else {
-	        (0, _jquery2['default'])(document.body).focus();
+	        (0, _jquery2["default"])(document.body).focus();
 	      }
 
 	      e.stopPropagation();
 	      return false;
 	    }
 	  }, {
-	    key: 'onMove',
+	    key: "onMove",
 	    value: function onMove(e) {
 	      var eventPosition = this.getEventPosition(e);
 
@@ -501,7 +576,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return false;
 	    }
 	  }, {
-	    key: 'fixOffset',
+	    key: "fixOffset",
 	    value: function fixOffset(offset) {
 	      if (!this.imageLoaded) {
 	        return offset;
@@ -529,7 +604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return ret;
 	    }
 	  }, {
-	    key: 'centerImage',
+	    key: "centerImage",
 	    value: function centerImage() {
 	      if (!this.image.width || !this.image.height || !this.zoom) {
 	        return;
@@ -541,7 +616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'onZoomSliderChange',
+	    key: "onZoomSliderChange",
 	    value: function onZoomSliderChange() {
 	      if (!this.imageLoaded) {
 	        return;
@@ -555,19 +630,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.zoom = newZoom;
 	    }
 	  }, {
-	    key: 'enableZoomSlider',
+	    key: "enableZoomSlider",
 	    value: function enableZoomSlider() {
-	      this.$zoomSlider.removeAttr('disabled');
+	      this.$zoomSlider.removeAttr("disabled");
 	      this.options.onZoomEnabled();
 	    }
 	  }, {
-	    key: 'disableZoomSlider',
+	    key: "disableZoomSlider",
 	    value: function disableZoomSlider() {
-	      this.$zoomSlider.attr('disabled', true);
+	      this.$zoomSlider.attr("disabled", true);
 	      this.options.onZoomDisabled();
 	    }
 	  }, {
-	    key: 'setupZoomer',
+	    key: "setupZoomer",
 	    value: function setupZoomer(zoom) {
 	      this.zoomer.setup({
 	        imageSize: this.imageSize,
@@ -586,19 +661,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'fixZoom',
+	    key: "fixZoom",
 	    value: function fixZoom(zoom) {
 	      return this.zoomer.fixZoom(zoom);
 	    }
 	  }, {
-	    key: 'isZoomable',
+	    key: "isZoomable",
 	    value: function isZoomable() {
 	      return this.zoomer.isZoomable();
 	    }
 	  }, {
-	    key: 'renderImage',
+	    key: "renderImage",
 	    value: function renderImage() {
-	      var transformation = '\n      translate(' + this.rotatedOffset.x + 'px, ' + this.rotatedOffset.y + 'px)\n      scale(' + this.zoom + ')\n      rotate(' + this.rotation + 'deg)';
+	      var transformation = "\n      translate(" + this.rotatedOffset.x + "px, " + this.rotatedOffset.y + "px)\n      scale(" + this.zoom + ")\n      rotate(" + this.rotation + "deg)";
 
 	      this.$image.css({
 	        transform: transformation,
@@ -612,7 +687,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'rotateCW',
+	    key: "rotateCW",
 	    value: function rotateCW() {
 	      if (this.shouldRejectImage({
 	        imageWidth: this.image.height,
@@ -628,7 +703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'rotateCCW',
+	    key: "rotateCCW",
 	    value: function rotateCCW() {
 	      if (this.shouldRejectImage({
 	        imageWidth: this.image.height,
@@ -644,7 +719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'shouldRejectImage',
+	    key: "shouldRejectImage",
 	    value: function shouldRejectImage(_ref) {
 	      var imageWidth = _ref.imageWidth;
 	      var imageHeight = _ref.imageHeight;
@@ -653,26 +728,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var exportZoom = _ref.exportZoom;
 	      var smallImage = _ref.smallImage;
 
-	      if (smallImage !== 'reject') {
+	      if (smallImage !== "reject") {
 	        return false;
 	      }
 
 	      return imageWidth * maxZoom < previewSize.width * exportZoom || imageHeight * maxZoom < previewSize.height * exportZoom;
 	    }
 	  }, {
-	    key: 'getCroppedImageData',
+	    key: "getCroppedImageData",
 	    value: function getCroppedImageData(exportOptions) {
 	      if (!this.image.src) {
 	        return;
 	      }
 
 	      var exportDefaults = {
-	        type: 'image/png',
+	        type: "image/png",
 	        quality: 0.75,
 	        originalSize: false,
-	        fillBg: '#fff'
+	        fillBg: "#fff"
 	      };
-	      exportOptions = _jquery2['default'].extend({}, exportDefaults, exportOptions);
+	      exportOptions = _jquery2["default"].extend({}, exportDefaults, exportOptions);
 
 	      var exportZoom = exportOptions.originalSize ? 1 / this.zoom : this.options.exportZoom;
 
@@ -681,13 +756,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height: this.zoom * exportZoom * this.image.height
 	      };
 
-	      var canvas = (0, _jquery2['default'])('<canvas />').attr({
+	      var canvas = (0, _jquery2["default"])("<canvas />").attr({
 	        width: this.previewSize.width * exportZoom,
 	        height: this.previewSize.height * exportZoom
 	      }).get(0);
-	      var canvasContext = canvas.getContext('2d');
+	      var canvasContext = canvas.getContext("2d");
 
-	      if (exportOptions.type === 'image/jpeg') {
+	      if (exportOptions.type === "image/jpeg") {
 	        canvasContext.fillStyle = exportOptions.fillBg;
 	        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 	      }
@@ -699,21 +774,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return canvas.toDataURL(exportOptions.type, exportOptions.quality);
 	    }
 	  }, {
-	    key: 'disable',
+	    key: "disable",
 	    value: function disable() {
 	      this.unbindListeners();
 	      this.disableZoomSlider();
 	      this.$el.addClass(_constants.CLASS_NAMES.DISABLED);
 	    }
 	  }, {
-	    key: 'reenable',
+	    key: "reenable",
 	    value: function reenable() {
 	      this.bindListeners();
 	      this.enableZoomSlider();
 	      this.$el.removeClass(_constants.CLASS_NAMES.DISABLED);
 	    }
 	  }, {
-	    key: '$',
+	    key: "$",
 	    value: function $(selector) {
 	      if (!this.$el) {
 	        return null;
@@ -721,7 +796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.$el.find(selector);
 	    }
 	  }, {
-	    key: 'offset',
+	    key: "offset",
 	    set: function (position) {
 	      if (!position || !(0, _utils.exists)(position.x) || !(0, _utils.exists)(position.y)) {
 	        return;
@@ -736,7 +811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this._offset;
 	    }
 	  }, {
-	    key: 'zoom',
+	    key: "zoom",
 	    set: function (newZoom) {
 	      newZoom = this.fixZoom(newZoom);
 
@@ -761,7 +836,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this._zoom;
 	    }
 	  }, {
-	    key: 'rotatedOffset',
+	    key: "rotatedOffset",
 	    get: function () {
 	      return {
 	        x: this.offset.x + (this.rotation === 90 ? this.image.height * this.zoom : 0) + (this.rotation === 180 ? this.image.width * this.zoom : 0),
@@ -769,7 +844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'rotation',
+	    key: "rotation",
 	    set: function (newRotation) {
 	      this._rotation = newRotation;
 
@@ -782,7 +857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this._rotation;
 	    }
 	  }, {
-	    key: 'imageState',
+	    key: "imageState",
 	    get: function () {
 	      return {
 	        src: this.image.src,
@@ -791,7 +866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'imageSrc',
+	    key: "imageSrc",
 	    get: function () {
 	      return this.image.src;
 	    },
@@ -799,17 +874,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.loadImage(imageSrc);
 	    }
 	  }, {
-	    key: 'imageWidth',
+	    key: "imageWidth",
 	    get: function () {
 	      return this.rotation % 180 === 0 ? this.image.width : this.image.height;
 	    }
 	  }, {
-	    key: 'imageHeight',
+	    key: "imageHeight",
 	    get: function () {
 	      return this.rotation % 180 === 0 ? this.image.height : this.image.width;
 	    }
 	  }, {
-	    key: 'imageSize',
+	    key: "imageSize",
 	    get: function () {
 	      return {
 	        width: this.imageWidth,
@@ -817,22 +892,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    }
 	  }, {
-	    key: 'initialZoom',
+	    key: "initialZoom",
 	    get: function () {
 	      return this.options.initialZoom;
 	    },
 	    set: function (initialZoomOption) {
 	      this.options.initialZoom = initialZoomOption;
-	      if (initialZoomOption === 'min') {
+	      if (initialZoomOption === "min") {
 	        this._initialZoom = 0; // Will be fixed when image loads
-	      } else if (initialZoomOption === 'image') {
+	      } else if (initialZoomOption === "image") {
 	        this._initialZoom = 1;
 	      } else {
 	        this._initialZoom = 0;
 	      }
 	    }
 	  }, {
-	    key: 'exportZoom',
+	    key: "exportZoom",
 	    get: function () {
 	      return this.options.exportZoom;
 	    },
@@ -841,7 +916,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setupZoomer();
 	    }
 	  }, {
-	    key: 'minZoom',
+	    key: "minZoom",
 	    get: function () {
 	      return this.options.minZoom;
 	    },
@@ -850,7 +925,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setupZoomer();
 	    }
 	  }, {
-	    key: 'maxZoom',
+	    key: "maxZoom",
 	    get: function () {
 	      return this.options.maxZoom;
 	    },
@@ -859,7 +934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setupZoomer();
 	    }
 	  }, {
-	    key: 'previewSize',
+	    key: "previewSize",
 	    get: function () {
 	      return this._previewSize;
 	    },
@@ -883,11 +958,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Cropit;
 	})();
 
-	exports['default'] = Cropit;
-	module.exports = exports['default'];
+	exports["default"] = Cropit;
+	module.exports = exports["default"];
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var PLUGIN_KEY = 'cropit';
+
+	exports.PLUGIN_KEY = PLUGIN_KEY;
+	var CLASS_NAMES = {
+	  PREVIEW: 'cropit-preview',
+	  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
+	  PREVIEW_IMAGE: 'cropit-preview-image',
+	  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
+	  PREVIEW_BACKGROUND: 'cropit-preview-background',
+	  FILE_INPUT: 'cropit-image-input',
+	  ZOOM_SLIDER: 'cropit-image-zoom-input',
+
+	  DRAG_HOVERED: 'cropit-drag-hovered',
+	  IMAGE_LOADING: 'cropit-image-loading',
+	  IMAGE_LOADED: 'cropit-image-loaded',
+	  DISABLED: 'cropit-disabled'
+	};
+
+	exports.CLASS_NAMES = CLASS_NAMES;
+	var ERRORS = {
+	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
+	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
+	};
+
+	exports.ERRORS = ERRORS;
+	var eventName = function eventName(events) {
+	  return events.map(function (e) {
+	    return '' + e + '.cropit';
+	  }).join(' ');
+	};
+	var EVENTS = {
+	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
+	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
+	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
+	};
+	exports.EVENTS = EVENTS;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {
@@ -975,58 +1100,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var PLUGIN_KEY = 'cropit';
-
-	exports.PLUGIN_KEY = PLUGIN_KEY;
-	var CLASS_NAMES = {
-	  PREVIEW: 'cropit-preview',
-	  PREVIEW_IMAGE_CONTAINER: 'cropit-preview-image-container',
-	  PREVIEW_IMAGE: 'cropit-preview-image',
-	  PREVIEW_BACKGROUND_CONTAINER: 'cropit-preview-background-container',
-	  PREVIEW_BACKGROUND: 'cropit-preview-background',
-	  FILE_INPUT: 'cropit-image-input',
-	  ZOOM_SLIDER: 'cropit-image-zoom-input',
-
-	  DRAG_HOVERED: 'cropit-drag-hovered',
-	  IMAGE_LOADING: 'cropit-image-loading',
-	  IMAGE_LOADED: 'cropit-image-loaded',
-	  DISABLED: 'cropit-disabled'
-	};
-
-	exports.CLASS_NAMES = CLASS_NAMES;
-	var ERRORS = {
-	  IMAGE_FAILED_TO_LOAD: { code: 0, message: 'Image failed to load.' },
-	  SMALL_IMAGE: { code: 1, message: 'Image is too small.' }
-	};
-
-	exports.ERRORS = ERRORS;
-	var eventName = function eventName(events) {
-	  return events.map(function (e) {
-	    return '' + e + '.cropit';
-	  }).join(' ');
-	};
-	var EVENTS = {
-	  PREVIEW: eventName(['mousedown', 'mouseup', 'mouseleave', 'touchstart', 'touchend', 'touchcancel', 'touchleave']),
-	  PREVIEW_MOVE: eventName(['mousemove', 'touchmove']),
-	  ZOOM_INPUT: eventName(['mousemove', 'touchmove', 'change'])
-	};
-	exports.EVENTS = EVENTS;
-
-/***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 
-	var _constants = __webpack_require__(4);
+	var _constants = __webpack_require__(3);
 
 	var options = {
 	  elements: [{
@@ -1185,7 +1266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = options;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, '__esModule', {
