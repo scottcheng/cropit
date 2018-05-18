@@ -477,9 +477,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ctx.restore();
 	        var finalImage = canvas.toDataURL("image/*", 1);
 
-	        this.image.src = this.imageSrc = finalImage;
+	        this.image.src = finalImage;
 	      } else {
-	        this.image.src = this.imageSrc = this.preImage.src;
+	        this.image.src = this.preImage.src;
 	      }
 	    }
 	  }, {
