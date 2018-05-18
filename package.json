@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "exif-js": "^2.3.0",
-    "jquery": ">=1.9"
+    "jquery": "^2.2.4"
   },
   "devDependencies": {
     "babel-core": "~5.5.8",
