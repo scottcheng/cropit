@@ -425,15 +425,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var exif = _exifJs2["default"].readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
 
-	      var canvas = document.createElement("canvas");
-	      canvas.width = this.preImage.width;
-	      canvas.height = this.preImage.height;
-	      var ctx = canvas.getContext("2d");
-	      var x = 0;
-	      var y = 0;
-	      ctx.save();
+	      if (exif.Orientation !== undefined && exif.Orientation > 1) {
+	        var canvas = document.createElement("canvas");
+	        canvas.width = this.preImage.width;
+	        canvas.height = this.preImage.height;
+	        var ctx = canvas.getContext("2d");
+	        var x = 0;
+	        var y = 0;
+	        ctx.save();
 
-	      if (exif.Oriendation != "undefined") {
 	        switch (exif.Orientation) {
 	          case 2:
 	            // horizontal flip
