@@ -241,8 +241,9 @@ class Cropit {
     }
 
     var exif = EXIF.readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
+    var styleForAutoRotateCheck = getComputedStyle(document.querySelector("img"));
 
-    if (exif.Orientation !== undefined && exif.Orientation > 1) {
+    if (styleForAutoRotateCheck.getPropertyValue("image-orientation") !== "from-image" && exif.Orientation !== undefined && exif.Orientation > 1) {
       var canvas = document.createElement("canvas");
       canvas.width = this.preImage.width;
       canvas.height = this.preImage.height;
