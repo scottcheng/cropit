@@ -1,10 +1,15 @@
+## 0.5.2 (May 18, 2018)
+
+### Bug fixes
+
+* Added exif orientation fix
+
 ## 0.5.1 (February 27, 2016)
 
 ### Bug fixes
 
 * Fixed wrong image offset when rotation is negative.
 * Fixed bug where image background can be dragged and moved.
-
 
 ## 0.5.0 (February 27, 2016)
 
@@ -64,13 +69,11 @@ Make sure to update class names in your selectors.
 
 * Now remote images are loaded through AJAX and rendered as data URI strings, which addresses CORS issues. `allowCrossOrigin` option is no longer necessary and therefore removed.
 
-
 ## 0.4.5 (September 27, 2015)
 
 ### Bug fixes
 
 * Fixed an issue where cropit exports blank images on Safari. Removed progressive resizing, which may degrade cropped image quality. For high quality resizing, using a server-side tool is recommended.
-
 
 ## 0.4.4 (September 12, 2015)
 
@@ -84,13 +87,11 @@ Make sure to update class names in your selectors.
 
 * Fixed bug where `image-loaded` class is removed if a small image is loaded and rejected
 
-
 ## 0.4.1 (August 2, 2015)
 
 ### Bug fixes
 
 * Fixed crossOrigin preventing image from loading in Safari and Firefox.
-
 
 ## 0.4.0 (July 7, 2015)
 
@@ -102,20 +103,17 @@ Make sure to update class names in your selectors.
 
 * Replaced `rejectSmallImage` option with `smallImage`. `rejectSmallImage: true` is now `smallImage: 'reject'`, and `rejectSmallImage: false` is now `smallImage: 'allow'`.
 
-
 ## 0.3.2 (July 3, 2015)
 
 ### New features
 
 * Added back `allowCrossOrigin` option
 
-
 ## 0.3.1 (June 30, 2015)
 
 ### Bug fixes
 
 * Fixed jQuery import in AMD and CommonJS.
-
 
 ## 0.3.0 (June 21, 2015)
 
@@ -136,7 +134,6 @@ Make sure to update class names in your selectors.
 * Major refactor -- rewrote in ES6! No more CoffeeScript.
 * Now build with Webpack and removed Grunt
 
-
 ## 0.2.0 (December 16, 2014)
 
 ### New features
@@ -148,7 +145,6 @@ Make sure to update class names in your selectors.
 ### Breaking changes
 
 * Renamed option `freeImageMove` -> `freeMove`
-
 
 ## 0.1.9 (October 19, 2014)
 

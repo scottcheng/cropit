@@ -1,7 +1,7 @@
 {
   "name": "cropit",
   "description": "Customizable crop and zoom.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "authors": [
     "Scott Cheng <me@scottcheng.com>",
     "Yufei Liu <liu.yufei@gmail.com>"
@@ -20,6 +20,7 @@
     "test"
   ],
   "dependencies": {
-    "jquery": ">=1.9"
+    "exif-js": "^2.3.0",
+    "jquery": "^2.2.4"
   }
 }
